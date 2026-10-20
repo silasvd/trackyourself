@@ -62,6 +62,7 @@ Das erste lieferbare Produkt umfasst:
 - Automatische Budget-Nachführung bei Gewichtsänderung.
 - Erweiterte Statistiken/Auswertungen über die Tages-/Wochenansicht hinaus.
 - Cloud-Backup oder geräteübergreifende Synchronisierung.
+- Gamification (Abzeichen, Streaks).
 
 ## 1.5 Nicht geplant
 
@@ -69,7 +70,6 @@ Das erste lieferbare Produkt umfasst:
 - Community- und Social-Funktionen.
 - KI-basierte Ernährungsempfehlungen.
 - Automatische Bewegungserfassung, GPS, Fitnessgeräte-Anbindung.
-- Gamification (Abzeichen, Streaks).
 - Mehrere Punkteprogramme parallel.
 - Nutzerkonten und Serverbackend.
 
