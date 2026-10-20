@@ -129,7 +129,18 @@ Die Gewichtserfassung soll einfach sein und keinen täglichen Wiegezwang vorauss
 - Gewichtsverlauf als Diagramm darstellen.
 - Veränderung seit dem ersten und optional seit dem letzten Eintrag anzeigen.
 
-## 8. Offline-Nutzung und lokale Datenspeicherung
+## 8. Gamification, Abzeichen und Streaks
+
+Leichte Gamification ist erwünscht und soll die regelmäßige Nutzung unterstützen, ohne Druck oder Wettbewerb zu erzeugen:
+
+- **Streaks** zeigen aufeinanderfolgende Tage mit einem Tagebucheintrag. Ein aktiver Tag setzt kein Wiegen voraus.
+- **Abzeichen** würdigen nachvollziehbare Nutzungsmeilensteine, zum Beispiel den ersten Eintrag oder regelmäßiges Tracken.
+- Die Anzeige bleibt optional und dezent; Streaks und Abzeichen dürfen weder Ernährungsziele noch Gewichtsveränderungen bewerten.
+- Ranglisten, Vergleiche mit anderen und Strafen für unterbrochene Streaks sind nicht vorgesehen.
+
+Die genauen Abzeichen, die Definition eines aktiven Tages und die Möglichkeit, Erinnerungen oder Gamification auszuschalten, sind im neuen Konzept festzulegen.
+
+## 9. Offline-Nutzung und lokale Datenspeicherung
 
 Profil, Tagebuch, Basislebensmittel, eigene Produkte, Portionsgrößen, Gewichtsdaten und Berechnungen sollen lokal verfügbar sein. Bereits geladene Produktdaten können lokal zwischengespeichert werden. Neue Produktsuchen über Open Food Facts benötigen normalerweise Internetzugang.
 
@@ -137,19 +148,18 @@ Für das MVP sind Server, Nutzerkonten, Cloud-Backup und geräteübergreifende S
 
 Die bisherige Umsetzung speicherte Profildaten, Lebensmittel- und Aktivitätseinträge in IndexedDB. IndexedDB ist eine mögliche Option für die Neuentwicklung, aber noch keine festgelegte Architektur. Service-Worker-Caching der App und dauerhafte Nutzerdatenspeicherung sind unterschiedliche Dinge.
 
-## 9. Zunächst nicht geplant
+## 10. Zunächst nicht geplant
 
 - Rezepte und Rezeptplanung
 - Wochenmenüs und Einkaufslisten
 - Community, soziale Funktionen oder Teilen von Tagebüchern
 - KI-basierte Ernährungsempfehlungen
 - Automatische Bewegungserfassung, GPS oder Fitnessgeräte
-- Gamification, Abzeichen und Streaks
 - Umfangreiche Statistiken und Analysen
 - Mehrere WW-Programme parallel
 - Mehrgeräte-Synchronisierung und Serverkonto
 
-## 10. Vorhandener Copilot-Branch als Referenz
+## 11. Vorhandener Copilot-Branch als Referenz
 
 Der Branch `copilot/create-pwa-nutrition-points-system` enthält einen React-/TypeScript-/Vite-PWA-Prototyp mit Dashboard, Barcode-Scan, Open-Food-Facts-Abfrage, Portionsauswahl, Aktivitätserfassung, Profil, Diagramm und IndexedDB-Speicherung. Die lokale Datenbank umfasst Profil-, Lebensmittel- und Aktivitätseinträge.
 
@@ -157,7 +167,7 @@ Der Prototyp nutzt Formel A für Lebensmittelpunkte und enthält vereinfachte Ta
 
 Diese Informationen halten bereits untersuchte Ansätze und bekannte Grenzen fest. Der Branch ist weder eine verbindliche Produktvorgabe noch die vorgesehene Codebasis für die Neuentwicklung.
 
-## 11. Offene Entscheidungen und Recherchebedarf
+## 12. Offene Entscheidungen und Recherchebedarf
 
 1. Welche Rundungs- und Mindestwertregeln gelten für die beibehaltene SmartPoints-Formel?
 2. Welche persönlichen Angaben und historische Regel bestimmen das Tagesbudget?
@@ -169,8 +179,9 @@ Diese Informationen halten bereits untersuchte Ansätze und bekannte Grenzen fes
 8. Welche Aktionen müssen im Dashboard besonders schnell erreichbar sein?
 9. Wie können lokale Daten exportiert, importiert und vor versehentlichem Verlust geschützt werden?
 10. Welche Plattformen, mobilen Browser und Barrierefreiheitsanforderungen sind MVP-Ziel?
+11. Welche Abzeichen, Kriterien für aktive Tage und Optionen zum Abschalten der Gamification sind sinnvoll?
 
-## 12. Vorschlag für die Konzept-Neuerstellung
+## 13. Vorschlag für die Konzept-Neuerstellung
 
 Das nächste Konzept sollte klar zwischen bestätigten Entscheidungen, vorläufigen Annahmen, zu recherchierenden historischen Regeln und späteren Erweiterungen unterscheiden.
 
