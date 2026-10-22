@@ -48,6 +48,12 @@ async function seed(data: Dataset) {
   await repository.replace(data);
   repository.close();
 }
+function chip(name: string) {
+  return within(screen.getByRole('group', { name: 'Auswahl' })).getByRole(
+    'button',
+    { name },
+  );
+}
 function change(label: string, value: string) {
   fireEvent.change(screen.getByLabelText(label, { exact: true }), {
     target: { value },
@@ -57,7 +63,9 @@ function change(label: string, value: string) {
 describe('dashboard and capture', () => {
   it('shows storage failures inside the active dialog and permits a safe retry', async () => {
     const user = await start();
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Haferflocken auswählen' }),
     );
@@ -109,7 +117,9 @@ describe('dashboard and capture', () => {
   });
   it('known standard food takes exactly three clicks, remains after remount and edits/deletes', async () => {
     const user = await start();
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Haferflocken auswählen' }),
     );
@@ -202,7 +212,9 @@ describe('dashboard and capture', () => {
   });
   it('favorites, filters, search, portion selection and dismiss/back navigation', async () => {
     const user = await start();
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Haferflocken: Favorit' }),
     );
@@ -211,15 +223,15 @@ describe('dashboard and capture', () => {
         screen.getByRole('button', { name: 'Haferflocken: Favorit' }),
       ).toHaveAttribute('aria-pressed', 'true'),
     );
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'favorites');
+    await user.click(chip('Favoriten'));
     expect(
       screen.getByRole('button', { name: 'Haferflocken auswählen' }),
     ).toBeVisible();
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'recent');
+    await user.click(chip('Zuletzt'));
     expect(screen.getByText('Keine Lebensmittel gefunden.')).toBeVisible();
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'base');
+    await user.click(chip('Basisliste'));
     expect(screen.getByText('Keine Lebensmittel gefunden.')).toBeVisible();
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'custom');
+    await user.click(chip('Eigene'));
     change('Lebensmittel suchen', 'NICHT VORHANDEN');
     expect(screen.getByText('Keine Lebensmittel gefunden.')).toBeVisible();
     change('Lebensmittel suchen', 'Hafer');
@@ -293,7 +305,9 @@ describe('quick capture, templates and recipes', () => {
     expect(saved.foods.filter((food) => food.lastUsedAt !== null)).toHaveLength(
       2,
     );
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Haferflocken auswählen' }),
     );
@@ -384,7 +398,9 @@ describe('quick capture, templates and recipes', () => {
       }),
     ]);
     change('Tag auswählen', '2026-10-25');
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     change('Lebensmittel suchen', 'zzz');
     expect(
       screen.queryByRole('region', { name: 'Mahlzeit-Vorlagen' }),
@@ -424,8 +440,10 @@ describe('quick capture, templates and recipes', () => {
         portionLabel: null,
       }),
     ]);
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'templates');
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
+    await user.click(chip('Vorlagen'));
     expect(
       screen.queryByRole('button', { name: 'Haferflocken auswählen' }),
     ).not.toBeInTheDocument();
@@ -465,7 +483,9 @@ describe('quick capture, templates and recipes', () => {
     ];
     await seed(data);
     const user = await start();
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(screen.getByRole('button', { name: 'Rezept anlegen' }));
     expect(screen.getByText(/Name, mindestens eine Zutat/)).toBeVisible();
     expect(screen.getByText('Noch keine Zutaten.')).toBeVisible();
@@ -525,7 +545,9 @@ describe('quick capture, templates and recipes', () => {
       },
     });
     expect(saved.diaryEntries[0]).toMatchObject({ amount: 200, points: 11 });
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Haferflocken: bearbeiten' }),
     );
@@ -546,7 +568,7 @@ describe('quick capture, templates and recipes', () => {
       '„Haferflocken“ wird in „Overnight Oats“ verwendet.',
     );
     expect((await stored()).foods).toHaveLength(3);
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'recipes');
+    await user.click(chip('Rezepte'));
     expect(screen.getByText('Rezept · 1 Zutaten')).toBeVisible();
     await user.click(
       screen.getByRole('button', { name: 'Overnight Oats: bearbeiten' }),
@@ -571,7 +593,7 @@ describe('quick capture, templates and recipes', () => {
     await waitFor(async () =>
       expect((await stored()).foods.some((food) => food.recipe)).toBe(false),
     );
-    await user.selectOptions(screen.getByLabelText('Auswahl'), 'all');
+    await user.click(chip('Alle'));
     await user.click(
       screen.getByRole('button', { name: 'Haferflocken: löschen' }),
     );
@@ -725,9 +747,61 @@ describe('all settings, food, activity and weight forms', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Speicher voll');
     expect((await stored()).profile?.dailyBudgetOverride).toBeNull();
   });
+  it('offers creation via the compact "+ Neu" header menu', async () => {
+    const user = await start();
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
+    const toggle = screen.getByRole('button', { name: 'Neu anlegen' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.getAllByRole('button', { name: 'Eigenes Lebensmittel anlegen' }),
+    ).toHaveLength(1);
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    const options = screen.getAllByRole('button', {
+      name: 'Eigenes Lebensmittel anlegen',
+    });
+    expect(options).toHaveLength(2);
+    await user.click(options[0]!);
+    expect(
+      await screen.findByRole('button', { name: 'Lebensmittel speichern' }),
+    ).toBeInTheDocument();
+  });
+  it('shows filters as chips and moves them aside while typing', async () => {
+    const user = await start();
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
+    expect(chip('Alle')).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByRole('button', { name: 'Neu anlegen' }));
+    await user.click(chip('Eigene'));
+    expect(chip('Eigene')).toHaveAttribute('aria-pressed', 'true');
+    expect(chip('Alle')).toHaveAttribute('aria-pressed', 'false');
+    change('Lebensmittel suchen', 'Hafer');
+    expect(
+      screen.queryByRole('group', { name: 'Auswahl' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByRole('button', { name: 'Eigenes Lebensmittel anlegen' }),
+    ).toHaveLength(1);
+    expect(
+      screen.getByRole('button', { name: 'Haferflocken auswählen' }),
+    ).toBeVisible();
+    await user.click(
+      screen.getByRole('button', { name: 'Filter Eigene aufheben' }),
+    );
+    expect(
+      screen.queryByRole('button', { name: /^Filter .* aufheben$/ }),
+    ).not.toBeInTheDocument();
+    change('Lebensmittel suchen', '');
+    expect(chip('Alle')).toHaveAttribute('aria-pressed', 'true');
+  });
   it('creates, modifies and deletes foods and reusable portions without altering diary snapshots', async () => {
     const user = await start();
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Eigenes Lebensmittel anlegen' }),
     );
@@ -761,7 +835,9 @@ describe('all settings, food, activity and weight forms', () => {
     await waitFor(() =>
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
     );
-    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
     await user.click(
       screen.getByRole('button', { name: 'Mein Drink: bearbeiten' }),
     );

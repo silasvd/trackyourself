@@ -89,7 +89,7 @@ npm run test:e2e         # Desktop und mobile Chromium-Emulation
 Die [CI](.github/workflows/ci.yml) führt dieselben Prüfungen bei Push und Pull Request aus.
 Die Abdeckung wird unter `coverage/` erzeugt: **100 % Zweig-/Zeilenabdeckung der Domäne** und
 **mindestens 80 % Gesamtzeilenabdeckung** sind verpflichtende, automatisch geprüfte Schwellen.
-Playwright prüft E1–E9 aus dem Testkonzept sowie Tastaturfokus und mobiles Layout, gegen den
+Playwright prüft E1–E10 aus dem Testkonzept sowie Tastaturfokus und mobiles Layout, gegen den
 Produktionsbuild mit echtem Service Worker. Mobile Emulation ersetzt keinen Test auf echten
 iOS-/Android-Geräten.
 

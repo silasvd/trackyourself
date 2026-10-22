@@ -5,7 +5,8 @@
 ### Flow A – Lebensmittel eintragen (wichtigster Flow)
 
 1. Start auf dem Dashboard.
-2. Aktion **„Hinzufügen"** antippen (prominent, immer sichtbar).
+2. Aktion **„Hinzufügen"** antippen (runder „+"-Button unten rechts, schwebt über dem Inhalt und
+   ist immer sichtbar).
 3. Mahlzeit wählen (Vorauswahl nach Tageszeit: morgens → Frühstück usw.; über „+ Mahlzeit" direkt
    an der Mahlzeit ist sie bereits gesetzt).
 4. Lebensmittel finden über:
@@ -15,7 +16,18 @@
    - Suche (Freitext über Basis-, eigene Lebensmittel, Rezepte und Vorlagen; findet auch
      Alltagsnamen, Synonyme, Pluralformen und einfache Tippfehler, Dok. 05, 5.2.3),
    - Mahlzeit-Vorlagen und Rezepte (eigene Filter),
-   - „Eigenes Lebensmittel anlegen" bzw. „Rezept anlegen".
+   - „Eigenes Lebensmittel anlegen" bzw. „Rezept anlegen" (über „+ Neu" im Dialogkopf und unter
+     „Nicht gefunden?" am Listenende).
+
+   Ohne Suchbegriff stehen Favoriten oben, danach zuletzt verwendete, dann alphabetisch. Auf dem
+   Smartphone öffnet der Auswahldialog bildschirmfüllend mit schmalem Kopf; das Suchfeld steht ganz
+   oben und bleibt beim Scrollen fixiert, Ergebnisse sind einzeilig (Favorit-, Bearbeiten- und
+   Löschen-Symbol), damit die Treffer auch bei eingeblendeter Tastatur sichtbar sind. Alle
+   Eingabefelder haben mindestens 16 px Schrift, sonst zoomt iOS Safari beim Fokus hinein.
+   Die Filter (Alle, Favoriten, Zuletzt, Vorlagen, Rezepte, Eigene, Basisliste) stehen als
+   horizontal scrollbare Chip-Leiste unter dem Suchfeld. Sobald ein Suchbegriff eingegeben ist,
+   verschwinden Chip-Leiste und „+ Neu"-Menü; ein aktiver Filter bleibt als einzelner Chip
+   („Rezepte ×") sichtbar und lässt sich damit aufheben.
 5. Portion wählen (zuletzt verwendete Menge vorausgewählt, sonst Standardportion; Menge in g/ml
    oder Alltagseinheit anpassbar).
 6. Punkte werden live berechnet und angezeigt.
@@ -144,4 +156,7 @@ Untere Navigationsleiste (mobil) mit fünf Bereichen; die Beschriftungen sind ku
 4. **Gewicht**
 5. **Profil/Einstellungen**
 
-Die Primäraktion „Hinzufügen" ist aus dem Tag-Bereich und als zentraler Button erreichbar.
+Die Primäraktion „Hinzufügen" ist als runder „+"-Button (unten rechts über der Navigation) und
+über „+ Mahlzeit" in jeder Mahlzeit erreichbar. Der Kopfbereich ist kompakt (kleiner
+Schriftzug, Datumsnavigation direkt darunter), damit auf kleinen Displays möglichst viel Inhalt
+sichtbar ist.

@@ -121,7 +121,7 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
 | S6 | Eingaben < 3 Zeichen | nur am Wortanfang |
 | S7 | Rangfolge exakter Name → Synonym → Präfixe → Wortanfänge → Rest | wie Dok. 05, 5.2.3 |
 | S8 | Gleichstand | Favoriten, dann kürzerer Name, dann alphabetisch |
-| S9 | leere Suche | Favoriten zuerst, dann alphabetisch |
+| S9 | leere Suche | Favoriten zuerst, dann zuletzt verwendet, dann alphabetisch |
 | C1 | Alltagsbegriffe auf echter Basisliste (Nudeln, Kartoffeln, Hafermilch, Hackfleisch …) | sinnvoller erster Treffer (z. B. Nudeln → „Nudeln, gekocht") |
 | C2 | Zubereitete Formen und Gerichte | gekochte Varianten, Chili con carne u. a. vorhanden |
 | C3 | jedes Basislebensmittel | über eigenen Namen auffindbar, Portion mit Gewicht |
@@ -154,6 +154,8 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
   löschen.
 - Rezepte: anlegen mit Live-Vorschau, eintragen, Neuberechnung nach Zutatenänderung, Schutz vor
   Löschen verwendeter Zutaten, Bereinigung von Vorlagen.
+- Auswahldialog: Filter-Chips, beim Tippen ausgeblendete Chips und „+ Neu"-Menü, aktiver Filter
+  als aufhebbarer Chip.
 - Bereich „Rezepte & Vorlagen": leere Zustände, Auflistung mit Punkten und Inhalt, Vorlage
   umbenennen und eintragen, Rezept bearbeiten und löschen, Vorlage löschen.
 - Gewichtsdiagramm: Veränderung seit erstem und letztem Eintrag korrekt.
@@ -171,6 +173,9 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
   eintragen → Folgetag Vorlage über „Rezepte & Vorlagen" eintragen.
 - **E8:** Chili-Rezept aus Basiszutaten anlegen → Portion eintragen → Rezept in der Suche und in
   „Rezepte & Vorlagen" mit Punkten pro Portion und Zutaten.
+- **E9:** Speichern funktioniert ohne `crypto.randomUUID` (HTTP im WLAN, z. B. iPhone).
+- **E10:** Mobiler Auswahldialog: alle Eingabefelder ≥ 16 px (kein iOS-Fokus-Zoom), Treffer
+  stehen direkt unter dem Suchfeld im sichtbaren Bereich.
 
 ## 8.12 Testdaten & Determinismus
 

@@ -23,6 +23,12 @@ input,
 select {
   font: inherit;
 }
+/* iOS Safari zooms into focused fields below 16px and keeps the zoom afterwards. */
+input,
+select,
+textarea {
+  font-size: max(16px, 1rem);
+}
 button,
 input,
 select,
@@ -56,14 +62,14 @@ a {
 .brand {
   max-width: 760px;
   margin: auto;
-  padding: 22px 20px 4px;
+  padding: 10px 16px 0;
   display: flex;
   justify-content: space-between;
   gap: 12px;
   align-items: center;
 }
 .brand a {
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   font-weight: 800;
   text-decoration: none;
 }
@@ -73,7 +79,7 @@ a {
 main {
   max-width: 760px;
   margin: auto;
-  padding: 12px 16px 110px;
+  padding: 8px 16px 160px;
 }
 h1 {
   font-size: 1.6rem;
@@ -176,12 +182,17 @@ progress {
   background: #246b5d;
 }
 .add-food {
-  position: sticky;
-  bottom: 84px;
-  z-index: 1;
-  width: 100%;
-  margin: 0 0 16px;
-  box-shadow: 0 4px 14px #164e4520;
+  position: fixed;
+  right: max(16px, calc((100vw - 760px) / 2 + 16px));
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 2rem;
+  line-height: 1;
+  box-shadow: 0 6px 18px #164e4555;
 }
 .bottom-nav {
   position: fixed;
@@ -381,13 +392,69 @@ dialog::backdrop {
   display: flex;
   gap: 4px;
   border-bottom: 1px solid var(--border);
-  padding: 8px 0;
-  flex-wrap: wrap;
+  padding: 4px 0;
+  align-items: center;
 }
 .food-select {
-  flex: 1 1 60%;
+  flex: 1 1 auto;
+  min-width: 0;
   text-align: left;
   border: 0;
+  padding: 6px 4px;
+}
+.food-select strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.dialog-heading {
+  margin-bottom: 8px;
+}
+.dialog-heading h2 {
+  flex: 1;
+  font-size: 1.1rem;
+}
+.compact {
+  padding: 6px 12px;
+}
+.picker-search {
+  position: sticky;
+  top: -12px;
+  z-index: 1;
+  margin: 0 -4px;
+  padding: 4px 4px 8px;
+  background: #fff;
+}
+.chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0 6px;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  flex: none;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  min-height: 32px;
+}
+.chip[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.create-menu {
+  margin-bottom: 8px;
+}
+.picker-footer {
+  margin-top: 12px;
+}
+.picker-footer p {
+  margin: 0 0 6px;
+  font-weight: 600;
 }
 .food-list > li > button:not(.food-select) {
   font-size: 0.75rem;
@@ -447,6 +514,21 @@ svg text {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+@media (max-width: 600px) {
+  dialog {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 12px max(12px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+}
 @media (max-width: 400px) {
   .brand small {
     display: none;
@@ -465,6 +547,7 @@ svg text {
 
 .library-list li {
   align-items: center;
+  flex-wrap: wrap;
 }
 .library-item {
   flex: 1 1 100%;
@@ -477,4 +560,10 @@ svg text {
 }
 .ingredient-row > span {
   grid-column: 1 / -1;
+}
+.food-list > li > button.icon {
+  flex: none;
+  min-width: 44px;
+  padding: 0;
+  font-size: 1.1rem;
 }

@@ -10,6 +10,17 @@ import { TemplateForm } from '../components/TemplateForm';
 import { FoodEditor } from './FoodEditor';
 import { RecipeEditor } from './RecipeEditor';
 
+const filters = [
+  ['all', 'Alle'],
+  ['favorites', 'Favoriten'],
+  ['recent', 'Zuletzt'],
+  ['templates', 'Vorlagen'],
+  ['recipes', 'Rezepte'],
+  ['custom', 'Eigene'],
+  ['base', 'Basisliste'],
+] as const;
+type Filter = (typeof filters)[number][0];
+
 export function FoodPicker({
   data,
   date,
@@ -26,7 +37,7 @@ export function FoodPicker({
   initialMeal?: Meal;
 }) {
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState<Filter>('all');
   const [selected, setSelected] = useState<Food | null>(null);
   const [template, setTemplate] = useState<MealTemplate | null>(null);
   const [editing, setEditing] = useState<Food | 'new' | null>(null);
@@ -34,6 +45,24 @@ export function FoodPicker({
   const [meal, setMeal] = useState(initialMeal);
   const [notice, setNotice] = useState('');
   const [problem, setProblem] = useState('');
+  const [menu, setMenu] = useState(false);
+  const create = (kind: 'food' | 'recipe') => {
+    setMenu(false);
+    if (kind === 'food') setEditing('new');
+    else setRecipe('new');
+  };
+  const createButtons = (
+    <>
+      <button onClick={() => create('food')}>
+        Eigenes Lebensmittel anlegen
+      </button>
+      <button onClick={() => create('recipe')}>Rezept anlegen</button>
+    </>
+  );
+  // While typing, filter chips and the create menu step aside so results start right below the search.
+  const typing = query.trim() !== '';
+  const activeLabel =
+    filters.find(([value]) => value === filter)?.[1] ?? 'Alle';
   const pool = data.foods.filter(
     (food) =>
       filter === 'all' ||
@@ -84,7 +113,22 @@ export function FoodPicker({
   }
   return (
     <>
-      <Modal title="Lebensmittel hinzufügen" onClose={onClose}>
+      <Modal
+        title="Lebensmittel hinzufügen"
+        onClose={onClose}
+        actions={
+          !selected && !template ? (
+            <button
+              className="compact"
+              aria-expanded={menu}
+              aria-label="Neu anlegen"
+              onClick={() => setMenu(!menu)}
+            >
+              + Neu
+            </button>
+          ) : null
+        }
+      >
         {selected || template ? (
           <>
             <button
@@ -125,42 +169,51 @@ export function FoodPicker({
           </>
         ) : (
           <>
+            {menu && !typing && (
+              <div className="actions create-menu">{createButtons}</div>
+            )}
             {notice && (
               <p role="status" className="notice">
                 {notice}
               </p>
             )}
-            <label>
-              Lebensmittel suchen
+            <div className="picker-search">
               <input
                 data-autofocus
                 type="search"
+                aria-label="Lebensmittel suchen"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="z. B. Nudeln, Hafermilch, Hackfleisch …"
+                placeholder="Suchen, z. B. Nudeln, Hafermilch …"
               />
-            </label>
-            <label>
-              Auswahl
-              <select
-                value={filter}
-                onChange={(event) => setFilter(event.target.value)}
-              >
-                <option value="all">Alle Lebensmittel</option>
-                <option value="favorites">Favoriten</option>
-                <option value="recent">Zuletzt verwendet</option>
-                <option value="templates">Mahlzeit-Vorlagen</option>
-                <option value="recipes">Rezepte</option>
-                <option value="base">Basisliste</option>
-                <option value="custom">Eigene Lebensmittel</option>
-              </select>
-            </label>
-            <div className="actions">
-              <button onClick={() => setEditing('new')}>
-                Eigenes Lebensmittel anlegen
-              </button>
-              <button onClick={() => setRecipe('new')}>Rezept anlegen</button>
             </div>
+            {!typing ? (
+              <div className="chips" role="group" aria-label="Auswahl">
+                {filters.map(([value, label]) => (
+                  <button
+                    key={value}
+                    className="chip"
+                    aria-pressed={filter === value}
+                    onClick={() => setFilter(value)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              filter !== 'all' && (
+                <div className="chips">
+                  <button
+                    className="chip"
+                    aria-pressed="true"
+                    aria-label={`Filter ${activeLabel} aufheben`}
+                    onClick={() => setFilter('all')}
+                  >
+                    {activeLabel} ×
+                  </button>
+                </div>
+              )
+            )}
             {problem && <p role="alert">{problem}</p>}
             {templates.length > 0 && (
               <section aria-label="Mahlzeit-Vorlagen">
@@ -180,6 +233,8 @@ export function FoodPicker({
                         </small>
                       </button>
                       <button
+                        className="icon"
+                        title="Löschen"
                         aria-label={`Vorlage ${value.name} löschen`}
                         disabled={busy}
                         onClick={() =>
@@ -191,7 +246,7 @@ export function FoodPicker({
                           })
                         }
                       >
-                        Löschen
+                        🗑
                       </button>
                     </li>
                   ))}
@@ -248,25 +303,33 @@ export function FoodPicker({
                     {food.isFavorite ? '★' : '☆'}
                   </button>
                   <button
+                    className="icon"
+                    title="Bearbeiten"
                     aria-label={`${food.name}: bearbeiten`}
                     onClick={() =>
                       food.recipe ? setRecipe(food) : setEditing(food)
                     }
                   >
-                    Bearbeiten
+                    ✎
                   </button>
                   {food.source === 'custom' && (
                     <button
+                      className="icon"
+                      title="Löschen"
                       aria-label={`${food.name}: löschen`}
                       disabled={busy}
                       onClick={() => remove(food)}
                     >
-                      Löschen
+                      🗑
                     </button>
                   )}
                 </li>
               ))}
             </ul>
+            <div className="picker-footer">
+              <p>Nicht gefunden?</p>
+              <div className="actions">{createButtons}</div>
+            </div>
           </>
         )}
       </Modal>

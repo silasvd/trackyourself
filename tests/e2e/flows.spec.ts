@@ -23,7 +23,7 @@ async function profile(page: Page) {
   await page.getByRole('button', { name: 'Tag', exact: true }).click();
 }
 async function addOats(page: Page) {
-  await page.getByRole('button', { name: '+ Hinzufügen' }).click();
+  await page.getByRole('button', { name: 'Lebensmittel hinzufügen' }).click();
   await page
     .getByRole('button', { name: 'Haferflocken auswählen', exact: true })
     .click();
@@ -44,6 +44,29 @@ test('E9 saving works without crypto.randomUUID (HTTP via LAN, e.g. iPhone)', as
   await expect(
     page.getByRole('button', { name: 'Haferflocken bearbeiten' }),
   ).toBeVisible();
+});
+
+test('E10 mobile picker: no iOS focus zoom, results visible right below the search', async ({
+  page,
+}) => {
+  await page.getByRole('button', { name: 'Lebensmittel hinzufügen' }).click();
+  const search = page.getByLabel('Lebensmittel suchen');
+  // iOS Safari zooms into focused inputs with a font size below 16px.
+  for (const field of await page.locator('input, select').all()) {
+    const size = await field.evaluate((el) =>
+      parseFloat(getComputedStyle(el).fontSize),
+    );
+    expect(size).toBeGreaterThanOrEqual(16);
+  }
+  await search.fill('Nudeln');
+  const first = page.getByRole('button', {
+    name: 'Nudeln, gekocht auswählen',
+    exact: true,
+  });
+  await expect(first).toBeInViewport();
+  const box = await first.boundingBox();
+  // Leaves room for the on-screen keyboard on small phones.
+  expect(box!.y).toBeLessThan(300);
 });
 
 test('E1 profile → three-interaction capture → persistent dashboard', async ({
@@ -101,7 +124,7 @@ test('E3 retroactive entry recalculates weekly carryover', async ({ page }) => {
   const extras = page.getByRole('region', { name: 'Wochenextras' });
   await expect(extras).toContainText('Davon 12 übertragene Tagesreste');
   await page.getByLabel('Tag auswählen').fill('2026-10-19');
-  await page.getByRole('button', { name: '+ Hinzufügen' }).click();
+  await page.getByRole('button', { name: 'Lebensmittel hinzufügen' }).click();
   await page
     .getByRole('button', { name: 'Haferflocken auswählen', exact: true })
     .click();
@@ -260,7 +283,7 @@ test('keyboard capture and responsive layout have no horizontal overflow', async
   page,
 }) => {
   await profile(page);
-  await page.getByRole('button', { name: '+ Hinzufügen' }).focus();
+  await page.getByRole('button', { name: 'Lebensmittel hinzufügen' }).focus();
   await page.keyboard.press('Enter');
   await expect(page.getByLabel('Lebensmittel suchen')).toBeFocused();
   await page.keyboard.press('Escape');
@@ -276,7 +299,7 @@ test('E7 synonym search, multi-add, meal template and previous day', async ({
   page,
 }) => {
   await profile(page);
-  await page.getByRole('button', { name: '+ Hinzufügen' }).click();
+  await page.getByRole('button', { name: 'Lebensmittel hinzufügen' }).click();
   const search = page.getByLabel('Lebensmittel suchen');
   const firstHit = page
     .getByRole('dialog')
@@ -413,7 +436,7 @@ test('E8 chili recipe from catalog ingredients is recorded per portion', async (
   await expect(page.getByRole('region', { name: 'Tagespunkte' })).toContainText(
     `Verbraucht${perPortion}`,
   );
-  await page.getByRole('button', { name: '+ Hinzufügen' }).click();
+  await page.getByRole('button', { name: 'Lebensmittel hinzufügen' }).click();
   await page.getByLabel('Lebensmittel suchen').fill('chili');
   await expect(
     page.getByRole('button', { name: 'Mein Chili auswählen' }),

@@ -23,10 +23,12 @@ export function Modal({
   title,
   onClose,
   children,
+  actions,
 }: {
   title: string;
   onClose: () => void;
   children: ReactNode;
+  actions?: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const error = useContext(StorageErrorContext);
@@ -45,8 +47,9 @@ export function Modal({
       }}
       aria-label={title}
     >
-      <header className="section-heading">
+      <header className="section-heading dialog-heading">
         <h2>{title}</h2>
+        {actions}
         <button type="button" onClick={onClose} aria-label="Schließen">
           ×
         </button>

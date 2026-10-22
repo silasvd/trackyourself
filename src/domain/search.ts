@@ -103,7 +103,10 @@ export function searchFoods(
       (a, b) =>
         a.score - b.score ||
         Number(b.food.isFavorite) - Number(a.food.isFavorite) ||
-        (query ? a.food.name.length - b.food.name.length : 0) ||
+        (query
+          ? a.food.name.length - b.food.name.length
+          : // Without a query, recently used foods follow the favorites.
+            (b.food.lastUsedAt ?? '').localeCompare(a.food.lastUsedAt ?? '')) ||
         a.food.name.localeCompare(b.food.name, 'de'),
     )
     .map((value) => value.food);

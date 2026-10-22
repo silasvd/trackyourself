@@ -43,7 +43,7 @@ export function Dashboard({
   const latestWeight = weightHistory(data.weightEntries).last;
   return (
     <>
-      <h1>Dein Tag</h1>
+      <h1 className="sr-only">Dein Tag</h1>
       <div className="date-navigation">
         <button
           aria-label="Vorheriger Tag"
@@ -87,8 +87,13 @@ export function Dashboard({
           </button>
         </section>
       )}
-      <button className="primary add-food" onClick={() => setAdding({})}>
-        + Hinzufügen
+      <button
+        className="primary add-food"
+        aria-label="Lebensmittel hinzufügen"
+        title="Lebensmittel hinzufügen"
+        onClick={() => setAdding({})}
+      >
+        +
       </button>
       <section className="card">
         <h2>Ernährungstagebuch</h2>

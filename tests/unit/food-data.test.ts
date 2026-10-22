@@ -105,10 +105,32 @@ describe('S1–S9 search', () => {
       'Apfel rot',
     ]);
   });
-  it('S9 without query lists favorites first, then alphabetically', () => {
+  it('S9 without query lists favorites first, then recently used, then alphabetically', () => {
     expect(
       names(searchFoods([milk, salad, { ...pasta, isFavorite: true }], '  ')),
     ).toEqual(['Teigwaren eifrei, gekocht', 'Milch', 'Nudelsalat']);
+    const used = (value: Food, lastUsedAt: string) => ({
+      ...value,
+      lastUsedAt,
+    });
+    expect(
+      names(
+        searchFoods(
+          [
+            milk,
+            used(salad, '2026-10-20T08:00:00.000Z'),
+            used(oats, '2026-10-21T08:00:00.000Z'),
+            { ...pasta, isFavorite: true },
+          ],
+          '',
+        ),
+      ),
+    ).toEqual([
+      'Teigwaren eifrei, gekocht',
+      'Haferflocken',
+      'Nudelsalat',
+      'Milch',
+    ]);
   });
 });
 
