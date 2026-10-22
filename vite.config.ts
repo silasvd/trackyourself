@@ -2,14 +2,38 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+
+const { version } = JSON.parse(readFileSync('./package.json', 'utf8')) as {
+  version: string;
+};
+function commit() {
+  try {
+    return execSync('git rev-parse --short HEAD', {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .toString()
+      .trim();
+  } catch {
+    return '';
+  }
+}
 
 // `--mode https` serves dev/preview with a self-signed certificate so the camera works in the LAN.
 export default defineConfig(({ mode }) => ({
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+    __APP_COMMIT__: JSON.stringify(commit()),
+    __APP_BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+  },
+  // Without caching headers, iOS Safari may keep serving an old index.html over plain HTTP.
+  preview: { headers: { 'Cache-Control': 'no-cache' } },
   plugins: [
     react(),
     mode === 'https' && basicSsl({ name: 'trackyourself' }),
     VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
       manifest: {
         name: 'TrackYourself',

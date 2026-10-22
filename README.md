@@ -87,7 +87,10 @@ Die Vorschau läuft standardmäßig unter `http://127.0.0.1:4173`.
 Die App einmal online vollständig laden; der Service Worker speichert die Anwendung inklusive
 Basisdaten. Anschließend funktioniert auch ein Neustart offline. Bei Bereitstellung außerhalb von
 localhost ist **HTTPS** erforderlich. Den Inhalt von `dist/` am Webserver-Wurzelpfad ausliefern.
-Updates werden nach Schließen aller App-Tabs und erneutem Öffnen aktiv, ohne Nutzerdaten zu löschen.
+Updates werden automatisch geladen und aktiviert, ohne Nutzerdaten zu löschen: beim Start, beim
+Zurückkehren in die App und stündlich. Die Seite lädt dabei einmal neu; nicht gespeicherte
+Eingaben gehen dann verloren. Ganz unten im Profil stehen Version, Commit und Build-Zeitpunkt, so
+lässt sich der Stand prüfen. Nach `git commit` den Build wiederholen, damit der Commit stimmt.
 
 ### Auf dem Smartphone im WLAN testen
 

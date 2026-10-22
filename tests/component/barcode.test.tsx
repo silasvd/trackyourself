@@ -307,6 +307,46 @@ describe('scan entry points', () => {
   });
 });
 
+describe('recipe and version', () => {
+  it('adds a scanned product as a recipe ingredient', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response(JSON.stringify(response))),
+    );
+    mockCamera();
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole('heading', { name: 'Dein Tag' });
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel hinzufügen' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Rezept anlegen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Zutat per Barcode scannen' }),
+    );
+    await waitFor(() => expect(scanner.decode).toHaveBeenCalled());
+    enterCode();
+    await user.click(screen.getByRole('button', { name: 'Produkt abrufen' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('dialog', { name: 'Barcode scannen' }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(await screen.findByLabelText('Test-Salami: Menge (g)')).toHaveValue(
+      15,
+    );
+  });
+  it('shows version and build time at the bottom of the profile', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole('heading', { name: 'Dein Tag' });
+    await user.click(
+      screen.getByRole('button', { name: 'Profil/Einstellungen' }),
+    );
+    expect(await screen.findByText(/^Version \d+\.\d+\.\d+/)).toBeVisible();
+  });
+});
+
 describe('camera lifecycle', () => {
   it('uses the rear camera, detects a barcode and stops its own stream', async () => {
     const getUserMedia = mockCamera();

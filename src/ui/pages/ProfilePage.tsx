@@ -186,6 +186,14 @@ export function ProfilePage({
           setSaved(false);
         }}
       />
+      <p className="version">
+        Version {__APP_VERSION__}
+        {__APP_COMMIT__ && ` (${__APP_COMMIT__})`} ·{' '}
+        {new Date(__APP_BUILD_TIME__).toLocaleString('de-DE', {
+          dateStyle: 'short',
+          timeStyle: 'short',
+        })}
+      </p>
     </>
   );
 }

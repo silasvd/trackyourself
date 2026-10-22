@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { IScannerControls } from '@zxing/browser';
 import { errorMessage } from '../../app/useTracker';
 import { lookupBarcode } from '../../data/openFoodFacts';
-import type { Dataset, Food } from '../../domain/types';
+import type { Dataset, Food, Portion } from '../../domain/types';
 import { Field, Modal } from './Form';
 
 export function BarcodeIcon() {
@@ -121,7 +121,7 @@ export function BarcodeScan({
   save: (next: Dataset) => Promise<boolean>;
   busy: boolean;
   onClose: () => void;
-  onSaved: (food: Food, cached: boolean) => void;
+  onSaved: (food: Food, cached: boolean, portions: Portion[]) => void;
 }) {
   const [barcode, setBarcode] = useState('');
   const [camera, setCamera] = useState(true);
@@ -162,7 +162,7 @@ export function BarcodeScan({
             portions: [...data.portions, ...result.portions],
           }));
         if (saved && !controller.signal.aborted) {
-          onSaved(result.food, result.cached);
+          onSaved(result.food, result.cached, result.portions);
         }
       } catch (error) {
         if (timedOut)

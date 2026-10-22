@@ -7,6 +7,7 @@ import { recipeFood, recipeWeight } from '../../domain/recipes';
 import { searchFoods } from '../../domain/search';
 import type { Dataset, Food, RecipeIngredient } from '../../domain/types';
 import { Field, Modal } from '../components/Form';
+import { BarcodeIcon, BarcodeScan } from '../components/BarcodeScan';
 
 export function RecipeEditor({
   food,
@@ -33,6 +34,7 @@ export function RecipeEditor({
     food?.recipe?.ingredients ?? [],
   );
   const [query, setQuery] = useState('');
+  const [scanning, setScanning] = useState(false);
   const candidates = query.trim()
     ? searchFoods(
         data.foods.filter((value) => !value.recipe && value.id !== id),
@@ -180,15 +182,27 @@ export function RecipeEditor({
               </button>
             </div>
           ))}
-          <label>
-            Zutat suchen
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="z. B. Hackfleisch, Kidneybohnen …"
-            />
-          </label>
+          <div className="search-box">
+            <label>
+              Zutat suchen
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="z. B. Hackfleisch, Kidneybohnen …"
+              />
+            </label>
+            <button
+              type="button"
+              className="icon search-scan"
+              aria-label="Zutat per Barcode scannen"
+              title="Zutat per Barcode scannen"
+              disabled={busy}
+              onClick={() => setScanning(true)}
+            >
+              <BarcodeIcon />
+            </button>
+          </div>
           {query.trim() !== '' && !candidates.length && (
             <p>Keine passende Zutat gefunden.</p>
           )}
@@ -240,6 +254,24 @@ export function RecipeEditor({
           Rezept speichern
         </button>
       </form>
+      {scanning && (
+        <BarcodeScan
+          data={data}
+          save={save}
+          busy={busy}
+          onClose={() => setScanning(false)}
+          onSaved={(scanned, _cached, portions) => {
+            const portion = portions.find(
+              (value) => value.id === scanned.defaultPortionId,
+            );
+            setIngredients((current) => [
+              ...current,
+              { foodId: scanned.id, grams: portion?.grams ?? 100 },
+            ]);
+            setScanning(false);
+          }}
+        />
+      )}
     </Modal>
   );
 }
