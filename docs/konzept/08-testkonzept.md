@@ -1,7 +1,7 @@
 # 08 – Testkonzept
 
-Automatische Tests sind verbindlicher Bestandteil der Umsetzung. Dieses Kapitel legt Strategie,
-Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständig abzudecken.
+Dieses Kapitel beschreibt die tatsächlich eingerichteten Testarten und die dazugehörigen
+Testfälle. Testdateien liegen in `tests/unit`, `tests/component` und `tests/e2e`.
 
 ## 8.1 Teststrategie (Testpyramide)
 

@@ -1,30 +1,21 @@
 # 01 – Produktvision & Scope
 
-## 1.1 Vision
+## 1.1 Zweck
 
-TrackYourself ist eine schlanke, moderne und persönliche App, mit der eine einzelne Person im
-Alltag schnell erfassen kann, was sie isst, wie viel sie sich bewegt und wie sich ihr Gewicht
-entwickelt. Die App bewertet Lebensmittel mit einem einfachen Punktemodell und zeigt verständlich,
-wie viel vom Tages- und Wochenbudget noch übrig ist. Kernfunktionen stehen offline zur Verfügung.
+TrackYourself ist eine persönliche App zur Erfassung von Lebensmitteln, Aktivitäten und Gewicht.
+Sie berechnet Lebensmittelpunkte und Tages-/Wochenbudgets mit dem in Kapitel 04 beschriebenen
+Modell. Nutzerdaten werden lokal gespeichert; die Kernfunktionen sind nach dem Laden offline
+nutzbar.
 
-Leitsätze:
+## 1.2 Nutzung & Plattform
 
-- **Schnelle Erfassung vor Funktionsfülle.** Ein Eintrag soll mit wenigen Schritten gelingen.
-- **Verständlichkeit vor Präzision.** Klare Zahlen und eine nachvollziehbare Logik sind wichtiger
-  als wissenschaftliche Exaktheit. Eine kleine Ungenauigkeit der Formeln ist akzeptabel.
-- **Lokal und privat.** Die Daten bleiben auf dem Gerät.
-- **Klein und wartbar.** Der Funktionsumfang bleibt bewusst fokussiert.
+- Die App ist als Progressive Web App umgesetzt und kann über unterstützte Browser installiert
+  werden.
+- Die Oberfläche funktioniert auf mobilen und größeren Bildschirmen.
+- Die Anwendung ist für eine einzelne Person ausgelegt; Profile und Tagebuchdaten werden nicht
+  zwischen Geräten synchronisiert.
 
-## 1.2 Zielnutzer & Plattform
-
-- **Zielnutzer:** Einzelperson, die ihre Ernährung und ihr Gewicht eigenständig verfolgen möchte.
-- **Primäre Plattform:** Progressive Web App (PWA), installierbar auf dem Smartphone.
-- **Primäre Geräte/Browser:** aktuelle mobile Browser (iOS Safari, Android Chrome); zusätzlich
-  nutzbar auf dem Desktop (aktuelle Chromium-/Firefox-/Safari-Versionen). Keine Unterstützung für
-  veraltete Browser.
-- **Ausrichtung:** „Mobile first", einhändige Bedienung, große Tap-Ziele.
-
-## 1.3 MVP-Umfang (verbindlich)
+## 1.3 Implementierter Umfang
 
 Das erste lieferbare Produkt umfasst:
 
@@ -50,35 +41,14 @@ Das erste lieferbare Produkt umfasst:
 6. **Gewicht**
    - Gewicht mit Datum erfassen (unregelmäßig möglich), Verlauf als Diagramm, Veränderung seit dem
      ersten und seit dem letzten Eintrag.
-7. **Dashboard** als zentrale Tagesübersicht (Dok. 02).
-8. **Offline-Nutzung** aller gespeicherten Daten und Kernfunktionen (Dok. 06).
-9. **Datenexport/-import** als lokale Sicherung (JSON-Datei) – bewusst früh im MVP, um
-   Datenverlust vorzubeugen.
+7. **Dashboard** als Tagesübersicht mit Datumsauswahl, Tages-/Wochenstatus, Ernährungstagebuch,
+   Schnellaktionen zum Hinzufügen/Scannen sowie Aktivitäts- und Gewichtskacheln.
+8. **Offline-Nutzung** der gespeicherten Daten und Kernfunktionen nach dem Laden der App (Dok. 06).
+9. **Datenexport/-import** als lokale JSON-Sicherung mit Validierung und Bestätigung.
+10. **Barcode-Erfassung** mit Kamera oder manueller Eingabe; gezielter Abruf unbekannter Produkte
+    von Open Food Facts und lokaler Produktcache.
+11. **PWA** mit installierbarer App-Shell und Offline-Start.
+12. **Bedienbarkeit:** beschriftete Formulare, Tastaturbedienung und textuelle Statusanzeigen.
 
-## 1.4 Später geplant (nicht im MVP)
-
-- Barcode-Scan und Online-Produktsuche (z. B. Open Food Facts).
-- Anrechnung von Aktivitätspunkten auf das Essensbudget (optional, abschaltbar).
-- Automatische Budget-Nachführung bei Gewichtsänderung.
-- Erweiterte Statistiken/Auswertungen über die Tages-/Wochenansicht hinaus.
-- Cloud-Backup oder geräteübergreifende Synchronisierung.
-- Gamification (Abzeichen, Streaks).
-
-## 1.5 Nicht geplant
-
-- Rezeptplanung, Wochenmenüs, Einkaufslisten. (Einfache Rezepte als Erfassungshilfe – Zutaten
-  einmal erfassen, Portionen eintragen – sind seit AP12 enthalten, Dok. 05.6.)
-- Community- und Social-Funktionen.
-- KI-basierte Ernährungsempfehlungen.
-- Automatische Bewegungserfassung, GPS, Fitnessgeräte-Anbindung.
-- Mehrere Punkteprogramme parallel.
-- Nutzerkonten und Serverbackend.
-
-## 1.6 Erfolgskriterien für das MVP
-
-- Ein Lebensmittel lässt sich vom Dashboard aus in höchstens drei Interaktionen (Antippen →
-  auswählen → Portion bestätigen) eintragen.
-- Tages- und Wochenstatus sind ohne Scrollen auf dem Dashboard erkennbar.
-- Die App startet und funktioniert vollständig offline (nach erstem Laden).
-- Alle Berechnungen sind durch automatische Tests abgedeckt (Dok. 08).
-- Ein vollständiger Export/Import stellt alle Nutzerdaten identisch wieder her.
+Die Details in den folgenden Kapiteln beschreiben diese vorhandenen Funktionen. Nicht vorhandene
+Ausbauideen werden außerhalb der Produktdokumentation als Issues nachverfolgt.

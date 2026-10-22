@@ -159,7 +159,7 @@ berechnet, die entstehenden Tagebucheinträge erhalten wie gewohnt ihren Snapsho
 
 ## 3.11 Export-/Importformat
 
-Der Export (Flow H) umfasst **alle** Entitäten in einer einzigen JSON-Datei:
+Der Export (Flow H) umfasst **alle** gespeicherten Daten in einer JSON-Datei:
 
 ```
 {
@@ -171,11 +171,13 @@ Der Export (Flow H) umfasst **alle** Entitäten in einer einzigen JSON-Datei:
   "diaryEntries": [ ... ],
   "activityEntries": [ ... ],
   "weightEntries": [ ... ],
-  "mealTemplates": [ ... ]
+  "mealTemplates": [ ... ],
+  "appMeta": { "schemaVersion": 3, "seededBaseFoodsVersion": <number> }
 }
 ```
 
-Der Import prüft `schemaVersion`, validiert die Struktur und ersetzt den bestehenden Datenbestand
-nach Bestätigung vollständig. Teil-/Fehlerhafte Dateien werden abgewiesen, ohne vorhandene Daten zu
-beschädigen. Sicherungen der Schemaversion 2 (ohne Vorlagen) werden beim Import migriert
-(`mealTemplates: []`); geschrieben wird immer Version 3.
+`schemaVersion` auf oberster Ebene bezeichnet das Exportformat (aktuell 3); zusätzlich enthält
+`appMeta` die lokale Datenbankschemaversion und die Seed-Version. Der Import akzeptiert
+Exportversion 2 und 3, validiert die Struktur und ersetzt den bestehenden Datenbestand erst nach
+Bestätigung vollständig. Version-2-Sicherungen ohne Vorlagen werden mit `mealTemplates: []`
+migriert. Fehlerhafte Dateien werden abgewiesen, bevor vorhandene Daten verändert werden.

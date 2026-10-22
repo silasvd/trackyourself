@@ -35,9 +35,6 @@
    **Speichern und weiter** → zurück zur Suche, die Mahlzeit bleibt gesetzt (Mahlzeiten aus
    mehreren Lebensmitteln, z. B. Porridge + Hafermilch).
 
-**Zielvorgabe:** aus dem Dashboard heraus mit höchstens drei Interaktionen bis zum gespeicherten
-Eintrag (bei bereits bekanntem Lebensmittel mit Standardportion).
-
 ### Flow B – Eigenes Lebensmittel anlegen
 
 1. In Flow A „Eigenes Lebensmittel anlegen".
@@ -111,37 +108,26 @@ Das Dashboard beantwortet drei Fragen auf einen Blick:
 2. Wie viel habe ich verbraucht und wie viel bleibt?
 3. Wie füge ich mit möglichst wenigen Schritten ein Lebensmittel hinzu?
 
-Informationshierarchie (von oben nach unten):
+Das Dashboard zeigt Datumsnavigation, Tages- und Wochenstatus, eine Aktion zum Hinzufügen, eine
+Aktion zum Barcode-Scan, das nach Mahlzeiten gruppierte Tagebuch sowie Kacheln für Aktivität und
+den letzten Gewichtswert. Tagebucheinträge lassen sich direkt bearbeiten oder löschen. Favoriten,
+zuletzt verwendete Lebensmittel und Basisliste sind im Auswahldialog erreichbar, nicht als eigene
+Schnellzugriffsliste auf dem Dashboard.
 
-1. **Kopf:** aktuelles Datum und Datumsnavigation (vor/zurück, „heute").
-2. **Tagesstatus:** gut lesbare Zahlen für Budget, verbraucht und verbleibend. Ein Ring/Balken
-   ergänzt die Zahlen visuell, ersetzt sie aber nie.
-3. **Wochenstatus:** kompakt – Wochenextras gesamt, davon verbraucht/verbleibend, inkl. bereits
-   übertragener Tagesreste.
-4. **Primäraktion „Hinzufügen":** prominent und dauerhaft erreichbar, mit schneller Mahlzeitenwahl.
-5. **Schnellzugriff:** Favoriten, zuletzt verwendet, Basisliste.
-6. **Heutige Einträge:** nach Mahlzeiten gruppiert, je Eintrag Name, Portion und Punkte; direkte
-   Bearbeitung/Löschung.
-7. **Sekundärbereiche (kompakt):** Aktivität des Tages und letzter Gewichtswert als kleine Kacheln
-   mit Absprung in die jeweiligen Bereiche.
-
-### Bedeutung von „verbleibend" (verbindlich)
+### Bedeutung von „verbleibend"
 
 - „Verbleibend" bezeichnet **ausschließlich die restlichen Tagespunkte** des aktuellen Tages.
 - Wochenextras werden **getrennt** ausgewiesen und nicht in „verbleibend" eingerechnet.
 - Aktivitätspunkte beeinflussen im MVP weder „verbleibend" noch das Wochenbudget.
 
-## 2.3 Bedienbarkeit & Barrierefreiheit
+## 2.3 Bedienbarkeit
 
-- **Mobile first:** einspaltiges Layout, große Tap-Ziele (mind. 44×44 px), Daumen­reichweite
-  beachten.
-- **Kein Farbzwang:** Status wird immer zusätzlich durch Text/Zahl vermittelt; Rot/Grün nie allein.
-- **Kontraste:** Zielwert WCAG 2.1 AA für Text und Bedienelemente.
-- **Semantik:** sinnvolle Überschriftenstruktur, Beschriftungen für alle Eingaben, Fokus-Reihenfolge
-  logisch, Bedienung per Tastatur möglich.
-- **Fehlertoleranz:** Eingaben validieren, verständliche Fehlermeldungen in Textform.
-- **Übersichtlichkeit:** Diagramme und Statistiken überladen die Tagesübersicht nicht; Details
-  liegen in den jeweiligen Bereichen.
+- Die Oberfläche passt sich mobilen und größeren Ansichten an; Bedienelemente sind für Touch
+  ausgelegt.
+- Formulare haben beschriftete Eingaben und validieren Werte vor dem Speichern.
+- Status- und Fehlerhinweise werden als Text ausgegeben; wichtige Aktionen sind per Tastatur
+  bedienbar.
+- Der Gewichtsverlauf ist zusätzlich als Tabelle verfügbar.
 
 ## 2.4 Navigationsstruktur
 
@@ -156,7 +142,6 @@ Untere Navigationsleiste (mobil) mit fünf Bereichen; die Beschriftungen sind ku
 4. **Gewicht**
 5. **Profil/Einstellungen**
 
-Die Primäraktion „Hinzufügen" ist als runder „+"-Button (unten rechts über der Navigation) und
-über „+ Mahlzeit" in jeder Mahlzeit erreichbar. Der Kopfbereich ist kompakt (kleiner
-Schriftzug, Datumsnavigation direkt darunter), damit auf kleinen Displays möglichst viel Inhalt
-sichtbar ist.
+Die Aktion „Hinzufügen" ist als runder „+"-Button und über „+ Mahlzeit" in jeder Mahlzeit
+erreichbar. Ein separater Schnellzugriff für Favoriten, zuletzt verwendete Lebensmittel oder die
+Basisliste ist nicht implementiert.

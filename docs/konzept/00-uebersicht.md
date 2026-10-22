@@ -1,8 +1,8 @@
 # TrackYourself – Umsetzungskonzept
 
-> **Status:** Verbindliches Umsetzungskonzept für die Neuentwicklung. Dieses Dokument und die
-> verlinkten Teildokumente bilden gemeinsam die Spezifikation für das erste lieferbare Produkt
-> (MVP) und die geplanten Ausbaustufen.
+> **Status:** Dokumentation des derzeit implementierten Stands. Die Kapitel beschreiben das
+> vorhandene Verhalten der Anwendung; nicht implementierte Ausbauideen sind nicht Teil dieses
+> Dokuments.
 
 TrackYourself ist eine schlanke, offlinefähige App zur Erfassung von Lebensmitteln, Punkten,
 Aktivitäten und Gewicht. Die Berechnung basiert auf einem einfachen, eigenständigen Punktemodell.
@@ -20,13 +20,13 @@ Aktivitäten und Gewicht. Die Berechnung basiert auf einem einfachen, eigenstän
 | 06 | [Offline-Architektur](06-offline-architektur.md) | Persistenz, Caching, Datensicherheit |
 | 07 | [Technische Architektur](07-technische-architektur.md) | Stack, Schichten, Projektstruktur |
 | 08 | [Testkonzept](08-testkonzept.md) | Teststrategie, konkrete Testfälle, CI |
-| 09 | [MVP-Backlog & Roadmap](09-mvp-backlog-und-roadmap.md) | Arbeitspakete, Reihenfolge, Ausbaustufen |
+| 09 | [Implementierter Umfang & Tests](09-implementierter-umfang-und-tests.md) | Vorhandene Funktionen und Prüfkommandos |
 
 Empfohlene Lesereihenfolge: 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09.
 
-## Begriffe (verbindlich)
+## Begriffe
 
-Diese Begriffe werden in der gesamten App (UI) und in allen Dokumenten einheitlich verwendet.
+Diese Begriffe werden in der App und in den Dokumenten verwendet.
 
 | Begriff | Bedeutung |
 | --- | --- |
@@ -37,10 +37,6 @@ Diese Begriffe werden in der gesamten App (UI) und in allen Dokumenten einheitli
 | **Aktivitätspunkte** | Punkte aus körperlicher Aktivität. Werden im MVP nur angezeigt (kein Verrechnen mit dem Essensbudget). |
 | **0‑Punkte‑Lebensmittel** | Lebensmittel, die unabhängig von der Nährwertformel mit 0 Punkten bewertet werden. |
 | **Verbleibend** | Noch verfügbare **Tagespunkte** des aktuellen Tages. Wochenextras werden getrennt ausgewiesen (siehe Dok. 02/04). |
-
-> **Namenskonvention:** Es werden ausschließlich die oben genannten, neutralen Begriffe
-> verwendet. Markennamen oder markenrechtlich geschützte Programm-/Feature-Bezeichnungen kommen
-> weder in der App noch in der Dokumentation vor.
 
 ## Grundregeln auf einen Blick
 

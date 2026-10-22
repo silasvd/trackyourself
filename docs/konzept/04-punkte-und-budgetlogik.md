@@ -218,7 +218,6 @@ faktor: low = 2, medium = 4, high = 6
 
 - Beispiel: 45 Min. „medium" → `0,75 × 4 = 3` → **3** Aktivitätspunkte.
 - Aktivitätspunkte werden ausschließlich angezeigt und im MVP nicht mit dem Essensbudget verrechnet.
-- Eine optionale Anrechnung ist als spätere Ausbaustufe vorgesehen (Dok. 09).
 
 ## 4.5 Rundungs- und Formatregeln (Zusammenfassung)
 

@@ -12,7 +12,8 @@
    (Abschnitt 5.6, Flow I in Dok. 02).
 4. **Mahlzeit-Vorlagen und Vortag:** wiederkehrende Mahlzeiten (z. B. Porridge mit Hafermilch)
    werden als Vorlage gespeichert oder vom Vortag übernommen (Abschnitt 5.7, Flow J in Dok. 02).
-5. **Online-/Barcode-Suche:** **nicht im MVP** (spätere Ausbaustufe, Dok. 09).
+5. **Barcode-Erfassung:** Kamera oder manuelle Eingabe. Unbekannte Barcodes werden gezielt bei
+   Open Food Facts abgefragt; erfolgreiche Produkte werden lokal gespeichert (Abschnitt 5.8).
 
 ## 5.2 Datenquelle der Basisliste: BLS 4.0
 
@@ -74,7 +75,7 @@ ohne Umbenennung erhalten hatten.
 
 ### 5.2.3 Suche und Suchbegriffe
 
-Die Suche soll Alltagsbegriffe und Synonyme finden, nicht nur den Anzeigenamen; auch die
+Die Suche findet Alltagsbegriffe und Synonyme, nicht nur den Anzeigenamen; auch die
 ursprüngliche BLS-Bezeichnung („Teigwaren eifrei, gekocht") bleibt ein Suchbegriff.
 
 - **Suchbegriffe (Aliase):** Jedes Basislebensmittel führt Alltagsnamen und Synonyme (z. B. Nudeln,
@@ -208,3 +209,18 @@ hohem Protein-/Wassergehalt, die typischerweise nicht abgewogen werden müssen. 
 - Wird ein Lebensmittel gelöscht, wird es aus Vorlagen entfernt; leere Vorlagen entfallen.
 - **Übersicht:** Der Bereich „Rezepte & Vorlagen" (Dok. 02.4) listet alle Vorlagen mit Inhalt und
   aktuellen Punkten sowie alle Rezepte mit Punkten pro Portion.
+
+## 5.8 Barcode-Produkte
+
+- Der Nutzer kann einen Barcode mit der Kamera erfassen oder manuell eingeben. Unterstützt werden
+  EAN-8 sowie EAN-/UPC-/GTIN-Codes mit 12 bis 14 Ziffern; gleichwertige UPC-A/EAN-Darstellungen
+  werden normalisiert.
+- Vor dem Abruf wird der lokale Open Food Facts-Bestand geprüft. Nur unbekannte Codes lösen einen
+  einzelnen API-v3-Abruf aus. Erfolgreiche Produkte und zugehörige Portionen werden lokal
+  gespeichert und in Sicherungen aufgenommen; es gibt keine automatische Aktualisierung.
+- Produktname und Energieangabe sind erforderlich. kJ werden in kcal umgerechnet, wenn kcal
+  fehlen. Andere fehlende oder ungültige Nährwerte bleiben unvollständig markiert.
+- Herstellerportionen und Packungsgrößen werden übernommen, sofern Menge und Einheit verwertbar
+  sind. Ergänzende Alltagseinheiten sind ausdrücklich als Schätzung gekennzeichnet und bearbeitbar.
+- Beim Abruf werden Barcode und technische Verbindungsdaten an Open Food Facts übertragen; keine
+  Profil- oder Tagebuchdaten. Die Kameraaufnahmen werden lokal verarbeitet.

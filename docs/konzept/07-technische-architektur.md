@@ -9,7 +9,7 @@
 | Build/Dev | **Vite** | Schnelles Dev-Setup, einfacher PWA-Build. |
 | PWA | Service Worker + Web App Manifest | Installierbarkeit, Offline-Start (Dok. 06). |
 | Persistenz | **IndexedDB** (gekapselt) | Dauerhafte lokale Nutzerdaten (Dok. 06). |
-| Diagramme | leichte Charting-Lösung | Gewichtsverlauf (Dok. 02). |
+| Diagramme | SVG-Komponente in React | Gewichtsverlauf (Dok. 02). |
 | Tests | **Vitest**, **React Testing Library**, **Playwright** | Unit, Komponente, E2E (Dok. 08). |
 | Lint/Format | ESLint + Prettier | Einheitlicher Stil, frühe Fehlererkennung. |
 
@@ -41,7 +41,7 @@ Grundsätze:
 - **UI enthält keine Rechenlogik.** Komponenten rufen Domänenfunktionen/Use-Cases auf und zeigen
   Ergebnisse an.
 
-## 7.3 Vorgeschlagene Projektstruktur
+## 7.3 Projektstruktur
 
 ```
 src/
@@ -54,17 +54,17 @@ src/
     types.ts         # Domänentypen
   data/              # Persistenz & Daten
     db.ts            # IndexedDB-Zugriff (gekapselt)
-    repositories/    # je Entität ein Repository
     seed/            # Basisliste & 0-Punkte-Liste (versioniert)
     backup.ts        # Export/Import (3.10)
+    openFoodFacts.ts # Barcode-Produktabruf und Mapping
+    validation.ts    # Daten- und Backup-Validierung
   app/               # Zustand, Use-Cases, Formatierung
   ui/                # React-Komponenten & Seiten
     pages/           # Dashboard, Aktivität, Gewicht, Profil
     components/      # wiederverwendbare Bausteine
-  pwa/               # Service Worker, Manifest
   main.tsx
 tests/
-  unit/              # Vitest (Domäne, Repositories mit Fake-DB)
+  unit/              # Vitest (Domäne, Speicherung, Datentransformation)
   component/         # React Testing Library
   e2e/               # Playwright
 docs/
@@ -87,9 +87,11 @@ docs/
 - **Fehlerbehandlung:** Persistenz-/Importfehler werden abgefangen und verständlich gemeldet.
 - **Barrierefreiheit:** als Querschnittsanforderung in Komponenten berücksichtigt (Dok. 02).
 
-## 7.6 Nicht-funktionale Anforderungen
+## 7.6 Implementierte technische Eigenschaften
 
-- **Startzeit:** App-Shell lädt offline unmittelbar.
-- **Bedien-Performance:** Eintrag speichern und Dashboard-Aktualisierung wirken verzögerungsfrei.
-- **Robustheit:** kein Datenverlust bei Abbrüchen; transaktionale Schreibzugriffe.
-- **Wartbarkeit:** kleine, klar geschnittene Module; Fachlogik ohne Framework-Bindung.
+- Schreib- und Ersetzungsvorgänge erfolgen transaktional; Fehler brechen die Änderung ab.
+- Speichern erkennt Änderungen aus einem anderen Tab, statt sie still zu überschreiben.
+- Die PWA-Konfiguration erzeugt Manifest und Service Worker beim Build; offline benötigte
+  App-Dateien werden über Workbox vorgecached.
+- Die Fachlogik liegt in TypeScript-Modulen unter `src/domain/`; UI-Komponenten verwenden sie für
+  Berechnung und Anzeige.

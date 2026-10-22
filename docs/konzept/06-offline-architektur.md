@@ -53,11 +53,13 @@ Diese beiden Dinge werden bewusst getrennt behandelt:
 - Als Schutz bietet das MVP **lokalen Export/Import** als JSON-Datei (Dok. 02 Flow H, Dok. 03,
   Abschnitt 3.10). Der Export ist vollständig und wiederherstellbar.
 
-## 6.6 Online-Abhängigkeiten
+## 6.6 Online-Abhängigkeit beim Barcode-Abruf
 
-- Im MVP gibt es **keine** laufende Online-Abhängigkeit für Kernfunktionen.
-- Die spätere Online-/Barcode-Suche (Dok. 09) benötigt eine Internetverbindung; bereits geladene
-  Produktdaten können lokal zwischengespeichert werden.
+- Tagebuch, Profil, Berechnungen, Basisliste und bereits gespeicherte Barcode-Produkte stehen
+  offline zur Verfügung.
+- Nur der erste Abruf eines unbekannten Barcodes benötigt eine Internetverbindung. Der Abruf ist
+  eine einzelne Anfrage; das gefundene Produkt wird lokal gespeichert und bleibt danach offline
+  verfügbar.
 
 ## 6.7 Robustheit
 
