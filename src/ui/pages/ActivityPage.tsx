@@ -1,3 +1,4 @@
+import { newId } from '../../app/id';
 import { useState } from 'react';
 import { activityPoints } from '../../domain/activity';
 import { localDate } from '../../domain/dates';
@@ -32,7 +33,7 @@ export function ActivityPage({
           const form = new FormData(event.currentTarget);
           const stamp = new Date().toISOString();
           const next: ActivityEntry = {
-            id: entry?.id ?? crypto.randomUUID(),
+            id: entry?.id ?? newId(),
             date: String(form.get('date')),
             activityType: String(form.get('activityType')).trim(),
             durationMin: duration,

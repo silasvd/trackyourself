@@ -1,11 +1,13 @@
+import { newId } from '../../app/id';
 import { useState } from 'react';
 import { budgets } from '../../domain/budget';
 import { shiftDate } from '../../domain/dates';
 import { weightHistory } from '../../domain/weight';
 import { displayDate, meals, number } from '../../app/format';
-import type { Dataset, DiaryEntry } from '../../domain/types';
+import { copyEntries, templateFromEntries } from '../../domain/templates';
+import type { Dataset, DiaryEntry, Meal } from '../../domain/types';
 import { DaySummary } from '../components/DaySummary';
-import { Modal } from '../components/Form';
+import { Field, Modal } from '../components/Form';
 import { EntryForm, PointLabel } from '../components/EntryForm';
 import { FoodPicker } from './FoodPicker';
 
@@ -26,10 +28,15 @@ export function Dashboard({
   setDate: (date: string) => void;
   navigate: (page: 'activity' | 'weight' | 'profile') => void;
 }) {
-  const [adding, setAdding] = useState(false);
+  const [adding, setAdding] = useState<{ meal?: Meal } | null>(null);
   const [editing, setEditing] = useState<DiaryEntry | null>(null);
+  const [saving, setSaving] = useState<Meal | null>(null);
   const budget = data.profile ? budgets(data.profile) : null;
   const dailyEntries = data.diaryEntries.filter((entry) => entry.date === date);
+  const previousDay = shiftDate(date, -1);
+  const previousEntries = data.diaryEntries.filter(
+    (entry) => entry.date === previousDay,
+  );
   const activity = data.activityEntries
     .filter((entry) => entry.date === date)
     .reduce((sum, entry) => sum + entry.activityPoints, 0);
@@ -80,7 +87,7 @@ export function Dashboard({
           </button>
         </section>
       )}
-      <button className="primary add-food" onClick={() => setAdding(true)}>
+      <button className="primary add-food" onClick={() => setAdding({})}>
         + Hinzufügen
       </button>
       <section className="card">
@@ -91,8 +98,11 @@ export function Dashboard({
             Lebensmittel hinzu.
           </p>
         )}
-        {Object.entries(meals).map(([meal, label]) => {
+        {(Object.entries(meals) as [Meal, string][]).map(([meal, label]) => {
           const entries = dailyEntries.filter((entry) => entry.meal === meal);
+          const previous = previousEntries.filter(
+            (entry) => entry.meal === meal,
+          );
           return (
             <section key={meal} className="meal" aria-label={label}>
               <h3>
@@ -101,6 +111,45 @@ export function Dashboard({
                   {entries.reduce((sum, entry) => sum + entry.points, 0)} Punkte
                 </span>
               </h3>
+              <div className="meal-actions">
+                <button
+                  aria-label={`Zu ${label} hinzufügen`}
+                  onClick={() => setAdding({ meal })}
+                >
+                  + {label}
+                </button>
+                {previous.length > 0 && (
+                  <button
+                    aria-label={`${label} vom Vortag übernehmen`}
+                    disabled={busy}
+                    onClick={() =>
+                      void save({
+                        ...data,
+                        diaryEntries: [
+                          ...data.diaryEntries,
+                          ...copyEntries(previous, {
+                            date,
+                            stamp: new Date().toISOString(),
+                            id: () => newId(),
+                          }),
+                        ],
+                      })
+                    }
+                  >
+                    Vom Vortag übernehmen
+                  </button>
+                )}
+                {entries.some((entry) =>
+                  data.foods.some((food) => food.id === entry.foodId),
+                ) && (
+                  <button
+                    aria-label={`${label} als Vorlage speichern`}
+                    onClick={() => setSaving(meal)}
+                  >
+                    Als Vorlage speichern
+                  </button>
+                )}
+              </div>
               <ul className="entry-list">
                 {entries.map((entry) => (
                   <li key={entry.id}>
@@ -147,8 +196,54 @@ export function Dashboard({
           date={date}
           save={save}
           busy={busy}
-          onClose={() => setAdding(false)}
+          initialMeal={adding.meal}
+          onClose={() => setAdding(null)}
         />
+      )}
+      {saving && (
+        <Modal title="Als Vorlage speichern" onClose={() => setSaving(null)}>
+          <form
+            onSubmit={async (event) => {
+              event.preventDefault();
+              const name = String(
+                new FormData(event.currentTarget).get('name'),
+              ).trim();
+              const template = templateFromEntries(
+                {
+                  id: newId(),
+                  name,
+                  meal: saving,
+                  stamp: new Date().toISOString(),
+                },
+                dailyEntries.filter((entry) => entry.meal === saving),
+                data.foods,
+              );
+              if (
+                await save({
+                  ...data,
+                  mealTemplates: [...data.mealTemplates, template],
+                })
+              )
+                setSaving(null);
+            }}
+          >
+            <p>
+              Speichert alle Lebensmittel und Mengen von {meals[saving]} am{' '}
+              {displayDate(date)}. Beim Eintragen werden aktuelle Nährwerte
+              verwendet.
+            </p>
+            <Field
+              label="Name der Vorlage"
+              name="name"
+              data-autofocus
+              required
+              defaultValue={meals[saving]}
+            />
+            <button className="primary" disabled={busy}>
+              Vorlage speichern
+            </button>
+          </form>
+        </Modal>
       )}
       {editing && (
         <Modal title="Eintrag bearbeiten" onClose={() => setEditing(null)}>

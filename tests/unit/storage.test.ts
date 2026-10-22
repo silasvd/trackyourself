@@ -7,9 +7,37 @@ import {
   serializeBackup,
 } from '../../src/data/backup';
 import { validateDataset } from '../../src/data/validation';
-import { baseSeed } from '../../src/data/seed';
+import { baseBlsNames, baseSeed, seedVersion } from '../../src/data/seed';
+import { recipeFood } from '../../src/domain/recipes';
+import { foodPoints } from '../../src/domain/points';
+import { snapshotOf } from '../../src/domain/templates';
 import { dataset, diary, oats, stamp, weight } from '../fixtures';
-import type { Dataset } from '../../src/domain/types';
+import type { Dataset, MealTemplate } from '../../src/domain/types';
+
+const template: MealTemplate = {
+  id: 'template',
+  name: 'Porridge',
+  meal: 'breakfast',
+  items: [{ foodId: 'oats', amount: 50, portionLabel: 'Schale' }],
+  createdAt: stamp,
+  updatedAt: stamp,
+};
+function withRecipe(data: Dataset): Dataset {
+  const built = recipeFood(
+    { ...oats, id: 'recipe', name: 'Overnight Oats', category: 'Rezepte' },
+    {
+      ingredients: [{ foodId: 'oats', grams: 50 }],
+      servings: 1,
+      yieldGrams: 200,
+    },
+    data.foods,
+  );
+  return {
+    ...data,
+    foods: [...data.foods, built.food],
+    portions: [...data.portions, ...built.portions],
+  };
+}
 
 let repository: Repository;
 let name: string;
@@ -85,8 +113,10 @@ describe('D1–D7 persistence', () => {
     expect(await repository.read()).toEqual(data);
   });
   it('round-trips every entity and metadata identically', async () => {
-    const data = dataset();
+    const data = withRecipe(dataset());
     data.diaryEntries = [diary()];
+    data.mealTemplates = [template];
+    data.foods[0].aliases = ['Porridge-Basis'];
     await repository.replace(data);
     const json = serializeBackup(await repository.read(), new Date(stamp));
     expect(parseBackup(json)).toEqual(data);
@@ -95,6 +125,7 @@ describe('D1–D7 persistence', () => {
       foods: [],
       portions: [],
       diaryEntries: [],
+      mealTemplates: [],
       profile: null,
     });
     await restoreBackup(repository, json);
@@ -116,15 +147,27 @@ describe('D1–D7 persistence', () => {
       expect(await repository.read()).toEqual(data);
     }
   });
-  it('seeds once without duplicates, validates 50–80 source-backed foods', async () => {
+  it('imports version 2 backups without templates and upgrades metadata', () => {
+    const data = dataset();
+    data.diaryEntries = [diary()];
+    const legacy = JSON.parse(serializeBackup(data, new Date(stamp)));
+    legacy.schemaVersion = 2;
+    legacy.appMeta.schemaVersion = 2;
+    delete legacy.mealTemplates;
+    expect(parseBackup(JSON.stringify(legacy))).toEqual(data);
+    legacy.appMeta = 'kaputt';
+    expect(() => parseBackup(JSON.stringify(legacy))).toThrow();
+  });
+  it('seeds once without duplicates, validates 180–260 source-backed foods', async () => {
     await repository.seed();
     const first = await repository.read();
-    expect(first.foods.length).toBeGreaterThanOrEqual(50);
-    expect(first.foods.length).toBeLessThanOrEqual(80);
+    expect(first.foods.length).toBeGreaterThanOrEqual(180);
+    expect(first.foods.length).toBeLessThanOrEqual(260);
     expect(
       first.foods.every((food) => food.sourceRef?.startsWith('BLS 4.0: ')),
     ).toBe(true);
-    expect(first.appMeta.seededBaseFoodsVersion).toBe(1);
+    expect(first.appMeta.seededBaseFoodsVersion).toBe(seedVersion);
+    expect(seedVersion).toBe(4);
     await repository.seed();
     expect(await repository.read()).toEqual(first);
     expect(
@@ -132,7 +175,7 @@ describe('D1–D7 persistence', () => {
         ?.countsAsZero,
     ).toBe(false);
     expect(
-      baseSeed.foods.find((food) => food.name === 'Zuckermais roh')
+      baseSeed.foods.find((food) => food.name === 'Zuckermais, roh')
         ?.countsAsZero,
     ).toBe(false);
   });
@@ -153,7 +196,87 @@ describe('D1–D7 persistence', () => {
     expect(next.foods.find((food) => food.id === oats.id)).toEqual(oats);
     expect(next.portions).toHaveLength(data.portions.length);
   });
-  it('migrates v1 to v2 with all data intact and adds indexes', async () => {
+  it('seed version 2 adds new base foods to version 1 installs without touching existing data', async () => {
+    await repository.seed();
+    const data = await repository.read();
+    const v1 = data.foods.slice(0, 63).map((food) => food.id);
+    data.foods = data.foods.filter((food) => v1.includes(food.id));
+    data.portions = data.portions.filter((portion) =>
+      v1.includes(portion.foodId),
+    );
+    data.foods[0].isFavorite = true;
+    data.appMeta.seededBaseFoodsVersion = 1;
+    await repository.replace(data);
+    await repository.seed();
+    const next = await repository.read();
+    expect(next.foods).toHaveLength(baseSeed.foods.length);
+    expect(next.foods.find((food) => food.id === data.foods[0].id)).toEqual(
+      data.foods[0],
+    );
+    expect(
+      next.foods.some((food) => food.name === 'Rinderhackfleisch, roh'),
+    ).toBe(true);
+  });
+  it('seed version 3 renames untouched base foods and their diary snapshots only', async () => {
+    await repository.seed();
+    const data = await repository.read();
+    const [pasta, potato, plain] = [
+      'bls4-E401032',
+      'bls4-K110132',
+      'bls4-W140000',
+    ].map((id) => data.foods.find((food) => food.id === id)!);
+    const legacy = (id: string) => baseBlsNames.get(id)!;
+    pasta.name = legacy(pasta.id);
+    pasta.isFavorite = true;
+    potato.name = 'Meine Kartoffeln';
+    const entry = (id: string, food: typeof pasta, name: string) =>
+      diary({
+        id,
+        foodId: food.id,
+        foodSnapshot: { ...snapshotOf(food), name },
+        amount: 100,
+        points: foodPoints(snapshotOf(food), 100).points,
+      });
+    data.diaryEntries = [
+      entry('old-pasta', pasta, legacy(pasta.id)),
+      entry('own-pasta', pasta, 'Spaghetti von Oma'),
+      entry('potato', potato, legacy(potato.id)),
+      entry('salami', plain, 'Salami'),
+    ];
+    data.appMeta.seededBaseFoodsVersion = 2;
+    await repository.replace(data);
+    await repository.seed();
+    const next = await repository.read();
+    const byId = (id: string) => next.foods.find((food) => food.id === id);
+    expect(byId(pasta.id)).toEqual({ ...pasta, name: 'Nudeln, gekocht' });
+    expect(byId(potato.id)?.name).toBe('Meine Kartoffeln');
+    expect(byId(plain.id)).toEqual(plain);
+    expect(next.diaryEntries.map((value) => value.foodSnapshot.name)).toEqual([
+      'Nudeln, gekocht',
+      'Spaghetti von Oma',
+      legacy(potato.id),
+      'Salami',
+    ]);
+    expect(next.diaryEntries.map((value) => value.points)).toEqual(
+      data.diaryEntries.map((value) => value.points),
+    );
+    expect(next.appMeta.seededBaseFoodsVersion).toBe(seedVersion);
+  });
+  it('seed version 4 renames installs that were stamped version 3 without the rename', async () => {
+    await repository.seed();
+    const data = await repository.read();
+    const pasta = data.foods.find((food) => food.id === 'bls4-E401032')!;
+    pasta.name = baseBlsNames.get(pasta.id)!;
+    data.appMeta.seededBaseFoodsVersion = 3;
+    await repository.replace(data);
+    await repository.seed();
+    const next = await repository.read();
+    expect(next.foods.find((food) => food.id === pasta.id)?.name).toBe(
+      'Nudeln, gekocht',
+    );
+    expect(next.appMeta.seededBaseFoodsVersion).toBe(4);
+  });
+  it('migrates v1 to v3 with all data intact and adds indexes and template store', async () => {
     repository.close();
     await deleteDB(name);
     const old = await openDB(name, 1, {
@@ -181,9 +304,48 @@ describe('D1–D7 persistence', () => {
     expect(
       migrated.transaction('diaryEntries').store.indexNames.contains('date'),
     ).toBe(true);
+    expect(migrated.objectStoreNames.contains('mealTemplates')).toBe(true);
     repository = new Repository(migrated);
     expect((await repository.read()).foods[0].name).toBe('Haferflocken');
-    expect((await repository.read()).appMeta.schemaVersion).toBe(2);
+    expect((await repository.read()).appMeta.schemaVersion).toBe(3);
+    expect((await repository.read()).mealTemplates).toEqual([]);
+  });
+  it('migrates v2 to v3 keeping diary data and enabling templates', async () => {
+    await repository.replace({ ...dataset(), diaryEntries: [diary()] });
+    repository.close();
+    // Recreate a genuine v2 database from the stored v3 records.
+    const records = new Repository(await openDatabase(name));
+    const data = await records.read();
+    records.close();
+    await deleteDB(name);
+    const old = await openDB(name, 2, {
+      upgrade(db) {
+        for (const store of [
+          'profile',
+          'foods',
+          'portions',
+          'diaryEntries',
+          'activityEntries',
+          'weightEntries',
+        ])
+          db.createObjectStore(store, { keyPath: 'id' });
+        db.createObjectStore('appMeta');
+      },
+    });
+    await old.put('profile', data.profile!);
+    await old.put('foods', data.foods[0]);
+    await old.put('portions', data.portions[0]);
+    await old.put('diaryEntries', data.diaryEntries[0]);
+    await old.put(
+      'appMeta',
+      { schemaVersion: 2, seededBaseFoodsVersion: seedVersion },
+      'meta',
+    );
+    old.close();
+    repository = new Repository(await openDatabase(name));
+    expect(await repository.read()).toEqual(data);
+    await repository.replace({ ...data, mealTemplates: [template] });
+    expect((await repository.read()).mealTemplates).toEqual([template]);
   });
   it('rejects stale writes from other tabs without losing data', async () => {
     const data = dataset();
@@ -300,17 +462,78 @@ describe('strict structural and semantic validation', () => {
       },
       'false activity points',
     ],
+    [
+      (d) => {
+        d.mealTemplates[0].items[0].foodId = 'absent';
+      },
+      'template with unknown food',
+    ],
+    [
+      (d) => {
+        d.mealTemplates[0].items = [];
+      },
+      'empty template',
+    ],
+    [
+      (d) => {
+        d.mealTemplates[0].items[0].amount = 0;
+      },
+      'template without amount',
+    ],
+    [
+      (d) => {
+        d.mealTemplates.push(d.mealTemplates[0]);
+      },
+      'duplicate templates',
+    ],
+    [
+      (d) => {
+        d.foods[1].recipe!.ingredients[0].foodId = 'absent';
+      },
+      'recipe with unknown ingredient',
+    ],
+    [
+      (d) => {
+        d.foods[1].recipe!.ingredients[0].foodId = 'recipe';
+      },
+      'recipe containing a recipe',
+    ],
+    [
+      (d) => {
+        d.foods[1].recipe!.servings = 0;
+      },
+      'recipe without servings',
+    ],
+    [
+      (d) => {
+        d.foods[1].countsAsZero = true;
+      },
+      'zero-point recipe',
+    ],
+    [
+      (d) => {
+        d.foods[0].aliases = [' '];
+      },
+      'blank search term',
+    ],
   ];
   it.each(mutations)('rejects %s (%s)', (mutate) => {
-    const data = dataset();
+    const data = withRecipe(dataset());
+    data.mealTemplates = [structuredClone(template)];
     mutate(data);
     expect(() => validateDataset(data)).toThrow('Ungültige Daten');
+  });
+  it('accepts recipes, templates and search terms', () => {
+    const data = withRecipe(dataset());
+    data.mealTemplates = [template];
+    data.foods[0].aliases = ['Hafer'];
+    expect(validateDataset(data)).toEqual(data);
   });
   it('rejects unknown top-level data and incomplete backups', () => {
     expect(() => validateDataset({ ...dataset(), unexpected: 1 })).toThrow();
     expect(() =>
       parseBackup(
-        JSON.stringify({ schemaVersion: 2, exportedAt: stamp, profile: null }),
+        JSON.stringify({ schemaVersion: 3, exportedAt: stamp, profile: null }),
       ),
     ).toThrow();
   });

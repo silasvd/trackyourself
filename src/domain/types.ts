@@ -37,6 +37,17 @@ export interface Food extends FoodSnapshot, Timestamps {
   defaultPortionId: string | null;
   isFavorite: boolean;
   lastUsedAt: string | null;
+  aliases?: string[];
+  recipe?: Recipe;
+}
+export interface RecipeIngredient {
+  foodId: string;
+  grams: number;
+}
+export interface Recipe {
+  ingredients: RecipeIngredient[];
+  servings: number;
+  yieldGrams: number | null;
 }
 export interface Portion {
   id: string;
@@ -55,6 +66,17 @@ export interface DiaryEntry extends Timestamps {
   portionLabel: string | null;
   amount: number;
   points: number;
+}
+export interface MealTemplateItem {
+  foodId: string;
+  amount: number;
+  portionLabel: string | null;
+}
+export interface MealTemplate extends Timestamps {
+  id: string;
+  name: string;
+  meal: Meal;
+  items: MealTemplateItem[];
 }
 export interface ActivityEntry extends Timestamps {
   id: string;
@@ -80,5 +102,6 @@ export interface Dataset {
   diaryEntries: DiaryEntry[];
   activityEntries: ActivityEntry[];
   weightEntries: WeightEntry[];
+  mealTemplates: MealTemplate[];
   appMeta: AppMeta;
 }

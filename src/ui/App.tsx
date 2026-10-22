@@ -6,8 +6,9 @@ import { Dashboard } from './pages/Dashboard';
 import { ProfilePage } from './pages/ProfilePage';
 import { ActivityPage } from './pages/ActivityPage';
 import { WeightPage } from './pages/WeightPage';
+import { LibraryPage } from './pages/LibraryPage';
 
-type Page = 'day' | 'activity' | 'weight' | 'profile';
+type Page = 'day' | 'library' | 'activity' | 'weight' | 'profile';
 export function App() {
   const tracker = useTracker();
   const [page, setPage] = useState<Page>('day');
@@ -46,6 +47,9 @@ export function App() {
                 navigate={setPage}
               />
             )}
+            {page === 'library' && (
+              <LibraryPage {...tracker} data={tracker.data} date={date} />
+            )}
             {page === 'activity' && (
               <ActivityPage {...tracker} data={tracker.data} />
             )}
@@ -61,14 +65,16 @@ export function App() {
       <nav className="bottom-nav" aria-label="Hauptnavigation">
         {(
           [
-            ['day', 'Tag'],
-            ['activity', 'Aktivität'],
-            ['weight', 'Gewicht'],
-            ['profile', 'Profil/Einstellungen'],
+            ['day', 'Tag', 'Tag'],
+            ['library', 'Rezepte', 'Rezepte & Vorlagen'],
+            ['activity', 'Aktivität', 'Aktivität'],
+            ['weight', 'Gewicht', 'Gewicht'],
+            ['profile', 'Profil', 'Profil/Einstellungen'],
           ] as const
-        ).map(([value, label]) => (
+        ).map(([value, label, name]) => (
           <button
             key={value}
+            aria-label={name === label ? undefined : name}
             aria-current={page === value ? 'page' : undefined}
             onClick={() => setPage(value)}
           >

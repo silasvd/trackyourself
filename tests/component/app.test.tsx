@@ -16,7 +16,10 @@ import { EntryForm, PointLabel } from '../../src/ui/components/EntryForm';
 import { WeightChart } from '../../src/ui/components/WeightChart';
 import { dataset, diary, oats, stamp, weight } from '../fixtures';
 import { serializeBackup } from '../../src/data/backup';
-import type { Dataset } from '../../src/domain/types';
+import type { Dataset, Food, MealTemplate } from '../../src/domain/types';
+import { baseSeed } from '../../src/data/seed';
+import { foodPoints } from '../../src/domain/points';
+import { recipeFood } from '../../src/domain/recipes';
 
 beforeEach(async () => {
   const repository = new Repository(await openDatabase());
@@ -39,6 +42,11 @@ async function stored() {
   const data = await repository.read();
   repository.close();
   return data;
+}
+async function seed(data: Dataset) {
+  const repository = new Repository(await openDatabase());
+  await repository.replace(data);
+  repository.close();
 }
 function change(label: string, value: string) {
   fireEvent.change(screen.getByLabelText(label, { exact: true }), {
@@ -231,6 +239,454 @@ describe('dashboard and capture', () => {
     await user.click(screen.getByRole('button', { name: 'Heute' }));
     change('Tag auswählen', '2026-10-19');
     expect(screen.getByLabelText('Tag auswählen')).toHaveValue('2026-10-19');
+  });
+});
+
+describe('quick capture, templates and recipes', () => {
+  const oatDrink = baseSeed.foods.find((food) => food.id === 'bls4-C660000')!;
+  it('searches synonyms, adds several foods in a row and suggests the last amount', async () => {
+    const data = dataset();
+    data.foods.push(oatDrink);
+    data.portions.push(
+      baseSeed.portions.find((portion) => portion.foodId === oatDrink.id)!,
+    );
+    await seed(data);
+    const user = await start();
+    await user.click(
+      screen.getByRole('button', { name: 'Zu Abendessen hinzufügen' }),
+    );
+    await user.click(
+      screen.getByRole('button', { name: 'Haferflocken auswählen' }),
+    );
+    expect(screen.getByLabelText('Mahlzeit')).toHaveValue('dinner');
+    change('Menge', '2');
+    await user.click(
+      screen.getByRole('button', { name: 'Speichern und weiter' }),
+    );
+    expect(
+      await screen.findByText('Haferflocken zu Abendessen hinzugefügt.'),
+    ).toHaveAttribute('role', 'status');
+    change('Lebensmittel suchen', 'hafermilch');
+    expect(
+      screen.queryByRole('button', { name: 'Haferflocken auswählen' }),
+    ).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole('button', {
+        name: 'Hafermilch (Haferdrink), ungesüßt auswählen',
+      }),
+    );
+    expect(screen.getByLabelText('Mahlzeit')).toHaveValue('dinner');
+    expect(
+      screen.queryByText(/wie bei deinem letzten/),
+    ).not.toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText('Einheit'), '');
+    change('Menge', '300');
+    await user.click(screen.getByRole('button', { name: 'Eintrag speichern' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    const saved = await stored();
+    expect(saved.diaryEntries.map((entry) => entry.meal)).toEqual([
+      'dinner',
+      'dinner',
+    ]);
+    expect(saved.foods.filter((food) => food.lastUsedAt !== null)).toHaveLength(
+      2,
+    );
+    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Haferflocken auswählen' }),
+    );
+    expect(
+      screen.getByText('Menge wie bei deinem letzten Eintrag.'),
+    ).toBeVisible();
+    expect(screen.getByLabelText('Einheit')).toHaveValue('oats-portion');
+    expect(screen.getByLabelText('Menge', { exact: true })).toHaveValue(2);
+    await user.click(
+      screen.getByRole('button', { name: 'Zurück zur Auswahl' }),
+    );
+    await user.click(
+      screen.getByRole('button', {
+        name: 'Hafermilch (Haferdrink), ungesüßt auswählen',
+      }),
+    );
+    expect(screen.getByLabelText('Einheit')).toHaveValue('');
+    expect(screen.getByLabelText('Menge', { exact: true })).toHaveValue(300);
+    await user.click(
+      screen.getByRole('button', { name: 'Zurück zur Auswahl' }),
+    );
+    await user.click(
+      screen.getByRole('button', {
+        name: 'Hafermilch (Haferdrink), ungesüßt: bearbeiten',
+      }),
+    );
+    expect(
+      screen.getByText(/Bereits auffindbar unter: Hafermilch/),
+    ).toBeVisible();
+    change('Weitere Suchbegriffe (durch Komma getrennt)', 'Oatly, Oatly , ');
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel speichern' }),
+    );
+    await waitFor(() => expect(screen.getAllByRole('dialog')).toHaveLength(1));
+    expect(
+      (await stored()).foods.find((food) => food.id === oatDrink.id)?.aliases,
+    ).toEqual(['Oatly']);
+    change('Lebensmittel suchen', 'oatly');
+    expect(
+      screen.getByRole('button', {
+        name: 'Hafermilch (Haferdrink), ungesüßt auswählen',
+      }),
+    ).toBeVisible();
+  });
+  it('copies a meal from the previous day and saves, applies and deletes templates', async () => {
+    const data = dataset();
+    data.diaryEntries = [diary()];
+    await seed(data);
+    const user = await start();
+    change('Tag auswählen', '2026-10-21');
+    expect(
+      screen.queryByRole('button', { name: 'Frühstück als Vorlage speichern' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', {
+        name: 'Mittagessen vom Vortag übernehmen',
+      }),
+    ).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole('button', { name: 'Frühstück vom Vortag übernehmen' }),
+    );
+    await screen.findByRole('button', { name: 'Haferflocken bearbeiten' });
+    expect(
+      (await stored()).diaryEntries.filter(
+        (entry) => entry.date === '2026-10-21',
+      ),
+    ).toEqual([
+      expect.objectContaining({ meal: 'breakfast', amount: 50, points: 6 }),
+    ]);
+    await user.click(
+      screen.getByRole('button', { name: 'Frühstück als Vorlage speichern' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Schließen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Frühstück als Vorlage speichern' }),
+    );
+    expect(screen.getByLabelText('Name der Vorlage')).toHaveValue('Frühstück');
+    change('Name der Vorlage', 'Mein Porridge');
+    await user.click(screen.getByRole('button', { name: 'Vorlage speichern' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    expect((await stored()).mealTemplates).toEqual([
+      expect.objectContaining({
+        name: 'Mein Porridge',
+        meal: 'breakfast',
+        items: [{ foodId: 'oats', amount: 50, portionLabel: 'Schale' }],
+      }),
+    ]);
+    change('Tag auswählen', '2026-10-25');
+    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    change('Lebensmittel suchen', 'zzz');
+    expect(
+      screen.queryByRole('region', { name: 'Mahlzeit-Vorlagen' }),
+    ).not.toBeInTheDocument();
+    change('Lebensmittel suchen', 'hafer');
+    await user.click(
+      screen.getByRole('button', { name: 'Vorlage Mein Porridge auswählen' }),
+    );
+    expect(screen.getByText('Schale')).toBeVisible();
+    expect(screen.getByRole('status')).toHaveTextContent(
+      '1 Lebensmittel · 6 Punkte',
+    );
+    change('Menge Haferflocken (g)', '100');
+    expect(screen.queryByText('Schale')).not.toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('11 Punkte');
+    await user.click(screen.getByLabelText('Haferflocken'));
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Bitte mindestens ein Lebensmittel',
+    );
+    expect(
+      screen.getByRole('button', { name: 'Vorlage eintragen' }),
+    ).toBeDisabled();
+    await user.click(screen.getByLabelText('Haferflocken'));
+    await user.selectOptions(screen.getByLabelText('Mahlzeit'), 'lunch');
+    await user.click(screen.getByRole('button', { name: 'Vorlage eintragen' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    const applied = (await stored()).diaryEntries.filter(
+      (entry) => entry.date === '2026-10-25',
+    );
+    expect(applied).toEqual([
+      expect.objectContaining({
+        meal: 'lunch',
+        amount: 100,
+        points: 11,
+        portionLabel: null,
+      }),
+    ]);
+    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.selectOptions(screen.getByLabelText('Auswahl'), 'templates');
+    expect(
+      screen.queryByRole('button', { name: 'Haferflocken auswählen' }),
+    ).not.toBeInTheDocument();
+    await user.click(
+      screen.getByRole('button', { name: 'Vorlage Mein Porridge löschen' }),
+    );
+    expect(
+      await screen.findByText(/Noch keine passenden Vorlagen/),
+    ).toBeVisible();
+    expect((await stored()).mealTemplates).toEqual([]);
+  });
+  it('creates and edits recipes, recalculates them and guards ingredient deletion', async () => {
+    const cinnamon: Food = {
+      ...oats,
+      id: 'cinnamon',
+      name: 'Zimt',
+      defaultPortionId: null,
+    };
+    const template = (id: string, foodIds: string[]): MealTemplate => ({
+      id,
+      name: id,
+      meal: 'snack',
+      items: foodIds.map((foodId) => ({
+        foodId,
+        amount: 10,
+        portionLabel: null,
+      })),
+      createdAt: stamp,
+      updatedAt: stamp,
+    });
+    const data = dataset();
+    data.foods.push(cinnamon);
+    data.mealTemplates = [
+      template('nur-hafer', ['oats']),
+      template('gemischt', ['oats', 'cinnamon']),
+      template('nur-zimt', ['cinnamon']),
+    ];
+    await seed(data);
+    const user = await start();
+    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(screen.getByRole('button', { name: 'Rezept anlegen' }));
+    expect(screen.getByText(/Name, mindestens eine Zutat/)).toBeVisible();
+    expect(screen.getByText('Noch keine Zutaten.')).toBeVisible();
+    change('Name des Rezepts', 'Overnight Oats');
+    change('Zutat suchen', 'xyz');
+    expect(screen.getByText('Keine passende Zutat gefunden.')).toBeVisible();
+    change('Zutat suchen', 'hafer');
+    await user.click(
+      screen.getByRole('button', { name: 'Haferflocken als Zutat hinzufügen' }),
+    );
+    expect(screen.getByLabelText('Haferflocken: Menge (g)')).toHaveValue(50);
+    change('Zutat suchen', 'zimt');
+    await user.click(
+      screen.getByRole('button', { name: 'Zimt als Zutat hinzufügen' }),
+    );
+    expect(screen.getByLabelText('Zimt: Menge (g)')).toHaveValue(100);
+    await user.click(screen.getByRole('button', { name: 'Zimt entfernen' }));
+    change('Haferflocken: Menge (g)', '200');
+    change('Anzahl Portionen', '2');
+    const preview = () =>
+      within(screen.getByRole('dialog', { name: 'Rezept anlegen' })).getByRole(
+        'status',
+      );
+    expect(preview()).toHaveTextContent(
+      'Gesamt 200 g · Portion 100 g · 11 Punkte pro Portion',
+    );
+    change('Gewicht fertig gekocht (g, optional)', '400');
+    expect(preview()).toHaveTextContent(
+      'Gesamt 400 g · Portion 200 g · 11 Punkte pro Portion',
+    );
+    change('Anzahl Portionen', '');
+    expect(
+      screen.getByRole('button', { name: 'Rezept speichern' }),
+    ).toBeDisabled();
+    change('Anzahl Portionen', '2');
+    await user.click(screen.getByRole('button', { name: 'Rezept speichern' }));
+    expect(
+      await screen.findByRole('heading', { name: 'Overnight Oats' }),
+    ).toBeVisible();
+    expect(screen.getByLabelText('Einheit')).toHaveDisplayValue(
+      'Portion (1/2) (200 g)',
+    );
+    await user.click(screen.getByRole('button', { name: 'Eintrag speichern' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+    let saved = await stored();
+    const recipe = saved.foods.find((food) => food.recipe)!;
+    expect(recipe).toMatchObject({
+      name: 'Overnight Oats',
+      category: 'Rezepte',
+      per100: { kcal: 185 },
+      recipe: {
+        ingredients: [{ foodId: 'oats', grams: 200 }],
+        servings: 2,
+        yieldGrams: 400,
+      },
+    });
+    expect(saved.diaryEntries[0]).toMatchObject({ amount: 200, points: 11 });
+    await user.click(screen.getByRole('button', { name: '+ Hinzufügen' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Haferflocken: bearbeiten' }),
+    );
+    change('Energie (kcal)', '740');
+    await user.click(
+      screen.getByRole('button', { name: 'Lebensmittel speichern' }),
+    );
+    await waitFor(() => expect(screen.getAllByRole('dialog')).toHaveLength(1));
+    saved = await stored();
+    expect(saved.foods.find((food) => food.id === recipe.id)?.per100.kcal).toBe(
+      370,
+    );
+    expect(saved.diaryEntries[0].points).toBe(11);
+    await user.click(
+      screen.getByRole('button', { name: 'Haferflocken: löschen' }),
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      '„Haferflocken“ wird in „Overnight Oats“ verwendet.',
+    );
+    expect((await stored()).foods).toHaveLength(3);
+    await user.selectOptions(screen.getByLabelText('Auswahl'), 'recipes');
+    expect(screen.getByText('Rezept · 1 Zutaten')).toBeVisible();
+    await user.click(
+      screen.getByRole('button', { name: 'Overnight Oats: bearbeiten' }),
+    );
+    expect(screen.getByLabelText('Name des Rezepts')).toHaveValue(
+      'Overnight Oats',
+    );
+    change('Name des Rezepts', 'Overnight Oats XL');
+    await user.click(screen.getByRole('button', { name: 'Rezept speichern' }));
+    await waitFor(() => expect(screen.getAllByRole('dialog')).toHaveLength(1));
+    await user.click(
+      screen.getByRole('button', { name: 'Overnight Oats XL: bearbeiten' }),
+    );
+    await user.click(
+      within(
+        screen.getByRole('dialog', { name: 'Rezept bearbeiten' }),
+      ).getByRole('button', { name: 'Schließen' }),
+    );
+    await user.click(
+      screen.getByRole('button', { name: 'Overnight Oats XL: löschen' }),
+    );
+    await waitFor(async () =>
+      expect((await stored()).foods.some((food) => food.recipe)).toBe(false),
+    );
+    await user.selectOptions(screen.getByLabelText('Auswahl'), 'all');
+    await user.click(
+      screen.getByRole('button', { name: 'Haferflocken: löschen' }),
+    );
+    await waitFor(async () =>
+      expect((await stored()).foods.map((food) => food.id)).toEqual([
+        'cinnamon',
+      ]),
+    );
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect((await stored()).mealTemplates).toEqual([
+      expect.objectContaining({
+        id: 'gemischt',
+        items: [expect.objectContaining({ foodId: 'cinnamon' })],
+      }),
+      template('nur-zimt', ['cinnamon']),
+    ]);
+  });
+  it('lists recipes and templates in their own view to log, rename, edit and delete', async () => {
+    const user = await start();
+    await user.click(
+      screen.getByRole('button', { name: 'Rezepte & Vorlagen' }),
+    );
+    expect(
+      screen.getByRole('heading', { name: 'Rezepte & Vorlagen' }),
+    ).toBeVisible();
+    expect(screen.getByText(/Noch keine Rezepte/)).toBeVisible();
+    expect(screen.getByText(/Noch keine Vorlagen/)).toBeVisible();
+    cleanup();
+
+    const data = dataset();
+    const built = recipeFood(
+      { ...oats, id: 'recipe', name: 'Overnight Oats', category: 'Rezepte' },
+      {
+        ingredients: [{ foodId: 'oats', grams: 100 }],
+        servings: 2,
+        yieldGrams: null,
+      },
+      data.foods,
+    );
+    data.foods.push(built.food);
+    data.portions.push(...built.portions);
+    data.mealTemplates = [
+      {
+        id: 'porridge',
+        name: 'Porridge',
+        meal: 'breakfast',
+        items: [{ foodId: 'oats', amount: 50, portionLabel: 'Schale' }],
+        createdAt: stamp,
+        updatedAt: stamp,
+      },
+    ];
+    await seed(data);
+    const next = await start();
+    await next.click(
+      screen.getByRole('button', { name: 'Rezepte & Vorlagen' }),
+    );
+    expect(screen.getByText('Overnight Oats')).toBeVisible();
+    expect(
+      screen.getByText(
+        `2 Portionen · 50 g · ${foodPoints(built.food, 50).points} Punkte pro Portion`,
+      ),
+    ).toBeVisible();
+    expect(screen.getByText('Haferflocken')).toBeVisible();
+    expect(
+      screen.getByText(
+        `Frühstück · 1 Lebensmittel · ${foodPoints(oats, 50).points} Punkte`,
+      ),
+    ).toBeVisible();
+    expect(screen.getByText('Haferflocken 50 g')).toBeVisible();
+
+    await next.click(
+      screen.getByRole('button', { name: 'Vorlage Porridge umbenennen' }),
+    );
+    change('Name der Vorlage', 'Porridge mit Zimt');
+    await next.click(screen.getByRole('button', { name: 'Speichern' }));
+    await waitFor(async () =>
+      expect((await stored()).mealTemplates[0].name).toBe('Porridge mit Zimt'),
+    );
+
+    await next.click(
+      screen.getByRole('button', {
+        name: 'Vorlage Porridge mit Zimt eintragen',
+      }),
+    );
+    await next.click(screen.getByRole('button', { name: 'Vorlage eintragen' }));
+    expect(
+      await screen.findByText(/„Porridge mit Zimt“ am .* eingetragen\./),
+    ).toHaveAttribute('role', 'status');
+    expect((await stored()).diaryEntries).toEqual([
+      expect.objectContaining({
+        foodId: 'oats',
+        meal: 'breakfast',
+        amount: 50,
+      }),
+    ]);
+
+    await next.click(
+      screen.getByRole('button', { name: 'Rezept Overnight Oats bearbeiten' }),
+    );
+    expect(
+      screen.getByRole('dialog', { name: 'Rezept bearbeiten' }),
+    ).toBeVisible();
+    await next.click(screen.getByRole('button', { name: 'Schließen' }));
+    await next.click(
+      screen.getByRole('button', { name: 'Rezept Overnight Oats löschen' }),
+    );
+    await next.click(
+      screen.getByRole('button', { name: 'Vorlage Porridge mit Zimt löschen' }),
+    );
+    await waitFor(async () => {
+      const saved = await stored();
+      expect(saved.foods.map((food) => food.id)).toEqual(['oats']);
+      expect(saved.portions.map((portion) => portion.foodId)).toEqual(['oats']);
+      expect(saved.mealTemplates).toEqual([]);
+    });
   });
 });
 

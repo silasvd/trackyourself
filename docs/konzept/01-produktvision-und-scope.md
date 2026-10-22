@@ -66,7 +66,8 @@ Das erste lieferbare Produkt umfasst:
 
 ## 1.5 Nicht geplant
 
-- Rezepte, Rezeptplanung, Wochenmenüs, Einkaufslisten.
+- Rezeptplanung, Wochenmenüs, Einkaufslisten. (Einfache Rezepte als Erfassungshilfe – Zutaten
+  einmal erfassen, Portionen eintragen – sind seit AP12 enthalten, Dok. 05.6.)
 - Community- und Social-Funktionen.
 - KI-basierte Ernährungsempfehlungen.
 - Automatische Bewegungserfassung, GPS, Fitnessgeräte-Anbindung.

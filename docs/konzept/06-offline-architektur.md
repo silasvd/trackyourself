@@ -25,11 +25,13 @@ Diese beiden Dinge werden bewusst getrennt behandelt:
 - **Kapselung:** Der Zugriff erfolgt ausschließlich über eine **Repository-Schicht** (Dok. 07).
   Die restliche App kennt IndexedDB-Details nicht. Dadurch bleibt die Speichertechnik austauschbar.
 - **Objektspeicher (Stores):** je Entität aus Dok. 03 (`profile`, `foods`, `portions`,
-  `diaryEntries`, `activityEntries`, `weightEntries`, `appMeta`).
+  `diaryEntries`, `activityEntries`, `weightEntries`, `mealTemplates`, `appMeta`).
 - **Indizes:** u. a. `diaryEntries` nach `date` und nach `meal`; `foods` nach `isFavorite` und
   `lastUsedAt`; `weightEntries` nach `date`.
 - **Schemaversion & Migrationen:** `AppMeta.schemaVersion` steuert Migrationen bei Strukturänderungen.
   Migrationen sind vorwärtsgerichtet und dürfen bestehende Nutzerdaten nicht verlieren.
+  Schema 3 ergänzt den Store `mealTemplates`; Rezepte und eigene Suchbegriffe sind optionale Felder
+  von `Food` und benötigen keine Datenmigration.
 
 ## 6.4 Seed-Daten (Basisliste & 0‑Punkte-Liste)
 
@@ -37,7 +39,12 @@ Diese beiden Dinge werden bewusst getrennt behandelt:
   ausgeliefert.
 - Beim ersten Start (oder bei neuer Seed-Version) werden sie nach IndexedDB eingespielt.
 - `AppMeta.seededBaseFoodsVersion` verhindert doppeltes Einspielen und ermöglicht Aktualisierungen,
-  ohne vom Nutzer angelegte/veränderte Daten zu überschreiben.
+  ohne vom Nutzer angelegte/veränderte Daten zu überschreiben. Bei einer neuen Seed-Version werden
+  nur fehlende Basislebensmittel samt Portionen ergänzt (Seed-Version 2: Erweiterung von 63 auf
+  201 Einträge). Ab Seed-Version 3 werden unveränderte Basislebensmittel und deren Tagebuch-Snapshots
+  von der BLS-Bezeichnung in den Anzeigenamen umbenannt; jede höhere Seed-Version wiederholt diese
+  idempotente Prüfung (Seed-Version 4, Dok. 05.2.2).
+- Suchbegriffe der Basisliste sind Teil des App-Bundles und wirken ohne Einspielen.
 
 ## 6.5 Datensicherung (Export/Import)
 

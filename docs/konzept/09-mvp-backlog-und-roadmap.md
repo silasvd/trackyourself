@@ -70,6 +70,16 @@ Aufwandsschätzungen enthalten.
 - E2E-Hauptflows (Dok. 08.11), Fehlermeldungen, leere Zustände.
 - **Fertig, wenn:** alle E2E-Flows grün, A11y-Grundanforderungen erfüllt.
 
+### AP12 – Schnellerfassung & Lebensmitteldaten (nach Nutzerfeedback)
+- Basisliste auf 201 BLS‑4.0-Einträge erweitert (gegarte Formen, Hackfleisch, Pflanzendrinks,
+  Brot, Saucen, Gerichte) inkl. Generator-Skript, alltagstauglicher Anzeigenamen und
+  Seed-Version 4 (Dok. 05.2.1/05.2.2).
+- Fehlertolerante Suche mit Suchbegriffen, Wortstämmen und Tippfehlertoleranz (Dok. 05.2.3).
+- Rezepte, Mahlzeit-Vorlagen, „Vom Vortag übernehmen", „Speichern und weiter",
+  Mengenvorschlag (Dok. 02 Flow I/J, Dok. 05.6/5.7), Schemaversion 3 (Dok. 03), Bereich
+  „Rezepte & Vorlagen" in der Navigation (Dok. 02.4).
+- **Fertig, wenn:** Testfälle S/C/R/T, D7–D10, PT5 und E7/E8 grün (Dok. 08).
+
 ## 9.3 Definition of Done (je Arbeitspaket)
 
 - Funktion entspricht der Spezifikation der referenzierten Kapitel.
@@ -83,6 +93,7 @@ Aufwandsschätzungen enthalten.
 Priorisierte Reihenfolge als Vorschlag:
 
 1. **Online-/Barcode-Suche** (z. B. Open Food Facts) inkl. lokalem Zwischenspeichern.
+   Ergänzt die erweiterte Basisliste um Markenprodukte.
 2. **Aktivitätspunkte optional auf das Essensbudget anrechnen** (abschaltbar; Verbrauchsreihenfolge
    erweitern).
 3. **Automatische Budget-Nachführung** bei Gewichtsänderung.

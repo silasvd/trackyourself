@@ -226,6 +226,41 @@ progress {
   padding-top: 12px;
   border-top: 1px solid var(--border);
 }
+.meal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.meal-actions button {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+}
+.hint,
+.notice {
+  margin: 0;
+  font-size: 0.85rem;
+}
+.notice {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #edf3ec;
+}
+.template-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.template-items li {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 160px);
+  align-items: end;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 4px 0;
+}
+.template-items small {
+  grid-column: 1 / -1;
+}
 .entry-list,
 .food-list {
   list-style: none;
@@ -301,6 +336,7 @@ fieldset {
   display: grid;
   gap: 8px;
   grid-template-columns: 1fr 1fr;
+  align-items: end;
 }
 .portion-row input {
   min-width: 0;
@@ -425,4 +461,20 @@ svg text {
   .date-navigation button {
     padding: 8px;
   }
+}
+
+.library-list li {
+  align-items: center;
+}
+.library-item {
+  flex: 1 1 100%;
+  display: grid;
+  gap: 2px;
+}
+.ingredient-row {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+.ingredient-row > span {
+  grid-column: 1 / -1;
 }

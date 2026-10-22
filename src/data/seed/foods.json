@@ -1,7 +1,7 @@
 [
   {
     "code": "C133000",
-    "name": "Hafer Flocken",
+    "name": "Haferflocken",
     "category": "Getreide",
     "per100": {
       "kcal": 348.0,
@@ -13,11 +13,16 @@
     "portion": {
       "label": "Portion",
       "grams": 50
-    }
+    },
+    "aliases": [
+      "Haferflocken",
+      "Hafer"
+    ],
+    "blsName": "Hafer Flocken"
   },
   {
     "code": "C352000",
-    "name": "Reis poliert, roh",
+    "name": "Reis, roh",
     "category": "Getreide",
     "per100": {
       "kcal": 351.0,
@@ -29,11 +34,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Reis roh",
+      "Reis ungekocht"
+    ],
+    "blsName": "Reis poliert, roh"
   },
   {
     "code": "C352032",
-    "name": "Reis poliert, gekocht",
+    "name": "Reis, gekocht",
     "category": "Getreide",
     "per100": {
       "kcal": 117.0,
@@ -45,11 +55,18 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Reis gekocht",
+      "Reis",
+      "Basmati",
+      "Jasminreis"
+    ],
+    "blsName": "Reis poliert, gekocht"
   },
   {
     "code": "E401032",
-    "name": "Teigwaren eifrei, gekocht",
+    "name": "Nudeln, gekocht",
     "category": "Getreide",
     "per100": {
       "kcal": 146.0,
@@ -61,7 +78,17 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Nudeln gekocht",
+      "Nudeln",
+      "Pasta",
+      "Spaghetti",
+      "Penne",
+      "Fusilli",
+      "Makkaroni"
+    ],
+    "blsName": "Teigwaren eifrei, gekocht"
   },
   {
     "code": "B121000",
@@ -77,7 +104,13 @@
     "portion": {
       "label": "Scheibe",
       "grams": 45
-    }
+    },
+    "aliases": [
+      "Vollkornbrot",
+      "Schwarzbrot",
+      "Brot"
+    ],
+    "blsName": "Roggenvollkornbrot"
   },
   {
     "code": "B111000",
@@ -93,11 +126,16 @@
     "portion": {
       "label": "Scheibe",
       "grams": 45
-    }
+    },
+    "aliases": [
+      "Vollkornbrot",
+      "Brot"
+    ],
+    "blsName": "Weizenvollkornbrot"
   },
   {
     "code": "C214100",
-    "name": "Weizen Mehl, Type 405",
+    "name": "Weizenmehl Type 405",
     "category": "Getreide",
     "per100": {
       "kcal": 348.0,
@@ -109,11 +147,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Mehl"
+    ],
+    "blsName": "Weizen Mehl, Type 405"
   },
   {
     "code": "C214200",
-    "name": "Weizen Mehl, Type 550",
+    "name": "Weizenmehl Type 550",
     "category": "Getreide",
     "per100": {
       "kcal": 349.0,
@@ -125,11 +167,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Mehl"
+    ],
+    "blsName": "Weizen Mehl, Type 550"
   },
   {
     "code": "C211000",
-    "name": "Weizen Vollkornmehl",
+    "name": "Weizenvollkornmehl",
     "category": "Getreide",
     "per100": {
       "kcal": 339.0,
@@ -141,11 +187,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Vollkornmehl",
+      "Mehl"
+    ],
+    "blsName": "Weizen Vollkornmehl"
   },
   {
     "code": "C660000",
-    "name": "Haferdrink ungesüßt",
+    "name": "Hafermilch (Haferdrink), ungesüßt",
     "category": "Getreide",
     "per100": {
       "kcal": 29.0,
@@ -157,11 +208,17 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Hafermilch",
+      "Haferdrink",
+      "Pflanzenmilch"
+    ],
+    "blsName": "Haferdrink ungesüßt"
   },
   {
     "code": "C351000",
-    "name": "Reis unpoliert, roh",
+    "name": "Naturreis, roh",
     "category": "Getreide",
     "per100": {
       "kcal": 360.0,
@@ -173,11 +230,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Naturreis roh",
+      "Vollkornreis roh"
+    ],
+    "blsName": "Reis unpoliert, roh"
   },
   {
     "code": "F110100",
-    "name": "Apfel roh",
+    "name": "Apfel",
     "category": "Obst",
     "per100": {
       "kcal": 58.0,
@@ -189,11 +251,15 @@
     "portion": {
       "label": "Stück",
       "grams": 150
-    }
+    },
+    "aliases": [
+      "Äpfel"
+    ],
+    "blsName": "Apfel roh"
   },
   {
     "code": "F503100",
-    "name": "Banane roh",
+    "name": "Banane",
     "category": "Obst",
     "per100": {
       "kcal": 79.0,
@@ -205,11 +271,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Bananen"
+    ],
+    "blsName": "Banane roh"
   },
   {
     "code": "F301100",
-    "name": "Erdbeere roh",
+    "name": "Erdbeeren",
     "category": "Obst",
     "per100": {
       "kcal": 38.0,
@@ -221,11 +291,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Erdbeeren",
+      "Beeren"
+    ],
+    "blsName": "Erdbeere roh"
   },
   {
     "code": "F304100",
-    "name": "Heidelbeere roh",
+    "name": "Heidelbeeren",
     "category": "Obst",
     "per100": {
       "kcal": 61.0,
@@ -237,11 +312,17 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Heidelbeeren",
+      "Blaubeeren",
+      "Beeren"
+    ],
+    "blsName": "Heidelbeere roh"
   },
   {
     "code": "F130100",
-    "name": "Birne roh",
+    "name": "Birne",
     "category": "Obst",
     "per100": {
       "kcal": 58.0,
@@ -253,11 +334,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Birnen"
+    ],
+    "blsName": "Birne roh"
   },
   {
     "code": "F310100",
-    "name": "Weintraube roh",
+    "name": "Weintrauben",
     "category": "Obst",
     "per100": {
       "kcal": 61.0,
@@ -269,11 +354,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Weintrauben",
+      "Trauben"
+    ],
+    "blsName": "Weintraube roh"
   },
   {
     "code": "F603100",
-    "name": "Orange roh",
+    "name": "Orange",
     "category": "Obst",
     "per100": {
       "kcal": 49.0,
@@ -285,11 +375,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Orangen",
+      "Apfelsine"
+    ],
+    "blsName": "Orange roh"
   },
   {
     "code": "G541100",
-    "name": "Gemüsepaprika grün, roh",
+    "name": "Paprika grün",
     "category": "Gemüse",
     "per100": {
       "kcal": 38.0,
@@ -301,11 +396,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Paprika"
+    ],
+    "blsName": "Gemüsepaprika grün, roh"
   },
   {
     "code": "G543100",
-    "name": "Gemüsepaprika rot, roh",
+    "name": "Paprika rot",
     "category": "Gemüse",
     "per100": {
       "kcal": 36.0,
@@ -317,11 +416,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Paprika"
+    ],
+    "blsName": "Gemüsepaprika rot, roh"
   },
   {
     "code": "G542100",
-    "name": "Gemüsepaprika gelb, roh",
+    "name": "Paprika gelb",
     "category": "Gemüse",
     "per100": {
       "kcal": 28.0,
@@ -333,11 +436,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Paprika"
+    ],
+    "blsName": "Gemüsepaprika gelb, roh"
   },
   {
     "code": "G104100",
-    "name": "Feldsalat/Rapunzel, roh",
+    "name": "Feldsalat",
     "category": "Gemüse",
     "per100": {
       "kcal": 18.0,
@@ -349,11 +456,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Feldsalat",
+      "Salat"
+    ],
+    "blsName": "Feldsalat/Rapunzel, roh"
   },
   {
     "code": "G105100",
-    "name": "Kopfsalat roh",
+    "name": "Kopfsalat",
     "category": "Gemüse",
     "per100": {
       "kcal": 18.0,
@@ -365,11 +477,17 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Kopfsalat",
+      "Blattsalat",
+      "Salat"
+    ],
+    "blsName": "Kopfsalat roh"
   },
   {
     "code": "G211100",
-    "name": "Spinat roh",
+    "name": "Spinat",
     "category": "Gemüse",
     "per100": {
       "kcal": 18.0,
@@ -381,11 +499,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Spinat",
+      "Blattspinat"
+    ],
+    "blsName": "Spinat roh"
   },
   {
     "code": "G561100",
-    "name": "Tomate roh",
+    "name": "Tomate",
     "category": "Gemüse",
     "per100": {
       "kcal": 22.0,
@@ -397,11 +520,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Tomaten"
+    ],
+    "blsName": "Tomate roh"
   },
   {
     "code": "G582100",
-    "name": "Zucchini roh",
+    "name": "Zucchini",
     "category": "Gemüse",
     "per100": {
       "kcal": 22.0,
@@ -413,11 +540,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Zucchini"
+    ],
+    "blsName": "Zucchini roh"
   },
   {
     "code": "G620100",
-    "name": "Karotte/Möhre, roh",
+    "name": "Karotte (Möhre)",
     "category": "Gemüse",
     "per100": {
       "kcal": 40.0,
@@ -429,11 +560,18 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Karotten",
+      "Möhren",
+      "Mohrrüben",
+      "Rüebli"
+    ],
+    "blsName": "Karotte/Möhre, roh"
   },
   {
     "code": "K701100",
-    "name": "Champignon roh",
+    "name": "Champignons",
     "category": "Gemüse",
     "per100": {
       "kcal": 28.0,
@@ -445,11 +583,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Champignons",
+      "Pilze"
+    ],
+    "blsName": "Champignon roh"
   },
   {
     "code": "G312100",
-    "name": "Broccoli roh",
+    "name": "Brokkoli",
     "category": "Gemüse",
     "per100": {
       "kcal": 35.0,
@@ -461,11 +604,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Brokkoli"
+    ],
+    "blsName": "Broccoli roh"
   },
   {
     "code": "G480100",
-    "name": "Speisezwiebel roh",
+    "name": "Zwiebel",
     "category": "Gemüse",
     "per100": {
       "kcal": 34.0,
@@ -477,11 +624,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Zwiebeln"
+    ],
+    "blsName": "Speisezwiebel roh"
   },
   {
     "code": "G520100",
-    "name": "Gurke roh",
+    "name": "Gurke",
     "category": "Gemüse",
     "per100": {
       "kcal": 16.0,
@@ -493,11 +644,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Gurken",
+      "Salatgurke"
+    ],
+    "blsName": "Gurke roh"
   },
   {
     "code": "K110100",
-    "name": "Kartoffel geschält, roh",
+    "name": "Kartoffeln, roh",
     "category": "Stärkehaltige Beilagen",
     "per100": {
       "kcal": 83.0,
@@ -509,11 +665,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Kartoffeln roh"
+    ],
+    "blsName": "Kartoffel geschält, roh"
   },
   {
     "code": "K420100",
-    "name": "Batate/Süßkartoffel, roh",
+    "name": "Süßkartoffel, roh",
     "category": "Stärkehaltige Beilagen",
     "per100": {
       "kcal": 119.0,
@@ -525,11 +685,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Süßkartoffeln"
+    ],
+    "blsName": "Batate/Süßkartoffel, roh"
   },
   {
     "code": "G570100",
-    "name": "Zuckermais roh",
+    "name": "Zuckermais, roh",
     "category": "Stärkehaltige Beilagen",
     "per100": {
       "kcal": 67.0,
@@ -541,11 +705,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Mais"
+    ],
+    "blsName": "Zuckermais roh"
   },
   {
     "code": "G570902",
-    "name": "Zuckermais Konserve, abgetropft",
+    "name": "Mais aus der Dose, abgetropft",
     "category": "Stärkehaltige Beilagen",
     "per100": {
       "kcal": 79.0,
@@ -557,11 +725,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Mais Dose",
+      "Mais"
+    ],
+    "blsName": "Zuckermais Konserve, abgetropft"
   },
   {
     "code": "C341000",
-    "name": "Mais roh",
+    "name": "Maiskörner, getrocknet",
     "category": "Stärkehaltige Beilagen",
     "per100": {
       "kcal": 336.0,
@@ -573,11 +746,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Mais"
+    ],
+    "blsName": "Mais roh"
   },
   {
     "code": "H730132",
-    "name": "Linse reif, gekocht",
+    "name": "Linsen, gekocht",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 119.0,
@@ -589,11 +766,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Linsen"
+    ],
+    "blsName": "Linse reif, gekocht"
   },
   {
     "code": "H730032",
-    "name": "Linse rot, reif, gekocht",
+    "name": "Rote Linsen, gekocht",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 113.0,
@@ -605,11 +786,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "rote Linsen",
+      "Linsen"
+    ],
+    "blsName": "Linse rot, reif, gekocht"
   },
   {
     "code": "G770432",
-    "name": "Kichererbse reif, gekocht",
+    "name": "Kichererbsen, gekocht",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 151.0,
@@ -621,11 +807,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Kichererbsen"
+    ],
+    "blsName": "Kichererbse reif, gekocht"
   },
   {
     "code": "H742132",
-    "name": "Kidneybohne reif, gekocht",
+    "name": "Kidneybohnen, gekocht",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 129.0,
@@ -637,11 +827,17 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Kidneybohnen",
+      "rote Bohnen",
+      "Bohnen"
+    ],
+    "blsName": "Kidneybohne reif, gekocht"
   },
   {
     "code": "H740132",
-    "name": "Gartenbohne reif, gekocht",
+    "name": "Weiße Bohnen, gekocht",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 131.0,
@@ -653,11 +849,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "weiße Bohnen",
+      "Bohnen"
+    ],
+    "blsName": "Gartenbohne reif, gekocht"
   },
   {
     "code": "G760132",
-    "name": "Erbse grün, gekocht",
+    "name": "Erbsen, gekocht",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 87.0,
@@ -669,11 +870,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Erbsen"
+    ],
+    "blsName": "Erbse grün, gekocht"
   },
   {
     "code": "H861000",
-    "name": "Tofu",
+    "name": "Tofu natur",
     "category": "Hülsenfrüchte",
     "per100": {
       "kcal": 115.0,
@@ -685,11 +890,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Tofu natur"
+    ],
+    "blsName": "Tofu"
   },
   {
     "code": "M111200",
-    "name": "Milch fettarm, frisch, 1,5 % Fett, pasteurisiert",
+    "name": "Milch 1,5 % Fett",
     "category": "Milchprodukte",
     "per100": {
       "kcal": 44.0,
@@ -701,11 +910,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Milch",
+      "fettarme Milch"
+    ],
+    "blsName": "Milch fettarm, frisch, 1,5 % Fett, pasteurisiert"
   },
   {
     "code": "M111300",
-    "name": "Vollmilch frisch, 3,5 % Fett, pasteurisiert",
+    "name": "Vollmilch 3,5 % Fett",
     "category": "Milchprodukte",
     "per100": {
       "kcal": 62.0,
@@ -717,11 +931,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Milch",
+      "Vollmilch"
+    ],
+    "blsName": "Vollmilch frisch, 3,5 % Fett, pasteurisiert"
   },
   {
     "code": "M141300",
-    "name": "Joghurt mild, mind. 3,5 % Fett",
+    "name": "Joghurt 3,5 % Fett",
     "category": "Milchprodukte",
     "per100": {
       "kcal": 67.0,
@@ -733,11 +952,16 @@
     "portion": {
       "label": "Becher",
       "grams": 150
-    }
+    },
+    "aliases": [
+      "Joghurt",
+      "Naturjoghurt"
+    ],
+    "blsName": "Joghurt mild, mind. 3,5 % Fett"
   },
   {
     "code": "M400600",
-    "name": "Schnittkäse mind. 45 % Fett i. Tr.",
+    "name": "Schnittkäse 45 % Fett i. Tr.",
     "category": "Milchprodukte",
     "per100": {
       "kcal": 337.0,
@@ -749,11 +973,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Käse",
+      "Schnittkäse"
+    ],
+    "blsName": "Schnittkäse mind. 45 % Fett i. Tr."
   },
   {
     "code": "M710800",
-    "name": "Frischkäsezubereitung Natur, mind. 60 % Fett i. Tr.",
+    "name": "Frischkäse Doppelrahmstufe",
     "category": "Milchprodukte",
     "per100": {
       "kcal": 252.0,
@@ -765,11 +994,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Frischkäse"
+    ],
+    "blsName": "Frischkäsezubereitung Natur, mind. 60 % Fett i. Tr."
   },
   {
     "code": "M141200",
-    "name": "Joghurt fettarm, mind. 1,5 % bis max. 1,8 % Fett",
+    "name": "Joghurt fettarm 1,5 % Fett",
     "category": "Fettarme Milchprodukte",
     "per100": {
       "kcal": 62.0,
@@ -781,11 +1014,17 @@
     "portion": {
       "label": "Becher",
       "grams": 150
-    }
+    },
+    "aliases": [
+      "Joghurt fettarm",
+      "Naturjoghurt",
+      "Joghurt"
+    ],
+    "blsName": "Joghurt fettarm, mind. 1,5 % bis max. 1,8 % Fett"
   },
   {
     "code": "M713100",
-    "name": "Speisequark Magerstufe, Magerquark < 10 % Fett i. Tr.",
+    "name": "Magerquark",
     "category": "Fettarme Milchprodukte",
     "per100": {
       "kcal": 66.0,
@@ -797,11 +1036,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Magerquark",
+      "Quark"
+    ],
+    "blsName": "Speisequark Magerstufe, Magerquark < 10 % Fett i. Tr."
   },
   {
     "code": "E111100",
-    "name": "Hühnerei roh",
+    "name": "Ei, roh",
     "category": "Eier und Geflügel",
     "per100": {
       "kcal": 135.0,
@@ -813,11 +1057,17 @@
     "portion": {
       "label": "Stück",
       "grams": 55
-    }
+    },
+    "aliases": [
+      "Ei",
+      "Eier",
+      "Ei roh"
+    ],
+    "blsName": "Hühnerei roh"
   },
   {
     "code": "V416100",
-    "name": "Hähnchen Brustfilet, roh",
+    "name": "Hähnchenbrust, roh",
     "category": "Eier und Geflügel",
     "per100": {
       "kcal": 109.0,
@@ -829,11 +1079,18 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Hähnchenbrust",
+      "Hühnerbrust",
+      "Hähnchen",
+      "Hühnchen"
+    ],
+    "blsName": "Hähnchen Brustfilet, roh"
   },
   {
     "code": "V486100",
-    "name": "Pute Brust, ohne Haut, roh",
+    "name": "Putenbrust, roh",
     "category": "Eier und Geflügel",
     "per100": {
       "kcal": 105.0,
@@ -845,11 +1102,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Putenbrust",
+      "Pute"
+    ],
+    "blsName": "Pute Brust, ohne Haut, roh"
   },
   {
     "code": "U211100",
-    "name": "Rind Filet/Lende, roh",
+    "name": "Rinderfilet, roh",
     "category": "Fleisch",
     "per100": {
       "kcal": 121.0,
@@ -861,11 +1123,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Rinderfilet",
+      "Rind"
+    ],
+    "blsName": "Rind Filet/Lende, roh"
   },
   {
     "code": "U611100",
-    "name": "Schwein Filet/Lende, roh",
+    "name": "Schweinefilet, roh",
     "category": "Fleisch",
     "per100": {
       "kcal": 118.0,
@@ -877,11 +1144,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Schweinefilet",
+      "Schwein"
+    ],
+    "blsName": "Schwein Filet/Lende, roh"
   },
   {
     "code": "T410100",
-    "name": "Lachs roh",
+    "name": "Lachs, roh",
     "category": "Fisch",
     "per100": {
       "kcal": 180.0,
@@ -893,11 +1165,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Lachs"
+    ],
+    "blsName": "Lachs roh"
   },
   {
     "code": "T121100",
-    "name": "Thunfisch roh",
+    "name": "Thunfisch, roh",
     "category": "Fisch",
     "per100": {
       "kcal": 139.0,
@@ -909,11 +1185,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Thunfisch"
+    ],
+    "blsName": "Thunfisch roh"
   },
   {
     "code": "T207100",
-    "name": "Köhler/Seelachs, roh",
+    "name": "Seelachs, roh",
     "category": "Fisch",
     "per100": {
       "kcal": 99.0,
@@ -925,7 +1205,12 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Seelachs",
+      "Fisch"
+    ],
+    "blsName": "Köhler/Seelachs, roh"
   },
   {
     "code": "Q120000",
@@ -941,11 +1226,16 @@
     "portion": {
       "label": "Esslöffel",
       "grams": 10
-    }
+    },
+    "aliases": [
+      "Olivenöl",
+      "Öl"
+    ],
+    "blsName": "Olivenöl"
   },
   {
     "code": "Q611000",
-    "name": "Butter mild gesäuert",
+    "name": "Butter",
     "category": "Fette und Grundzutaten",
     "per100": {
       "kcal": 747.0,
@@ -957,11 +1247,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Butter"
+    ],
+    "blsName": "Butter mild gesäuert"
   },
   {
     "code": "S111000",
-    "name": "Zucker weiß (Raffinadezucker/Weißzucker)",
+    "name": "Zucker",
     "category": "Fette und Grundzutaten",
     "per100": {
       "kcal": 400.0,
@@ -973,11 +1267,15 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Zucker"
+    ],
+    "blsName": "Zucker weiß (Raffinadezucker/Weißzucker)"
   },
   {
     "code": "S112000",
-    "name": "Zucker braun (Kandisfarin/Rohzucker)",
+    "name": "Brauner Zucker",
     "category": "Fette und Grundzutaten",
     "per100": {
       "kcal": 387.0,
@@ -989,11 +1287,16 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Rohrzucker",
+      "Zucker"
+    ],
+    "blsName": "Zucker braun (Kandisfarin/Rohzucker)"
   },
   {
     "code": "N110000",
-    "name": "Trinkwasser",
+    "name": "Wasser",
     "category": "Getränke",
     "per100": {
       "kcal": 0.0,
@@ -1005,6 +1308,2951 @@
     "portion": {
       "label": "Portion",
       "grams": 100
-    }
+    },
+    "aliases": [
+      "Wasser",
+      "Leitungswasser"
+    ],
+    "blsName": "Trinkwasser"
+  },
+  {
+    "code": "K110132",
+    "name": "Kartoffeln, gekocht",
+    "category": "Stärkehaltige Beilagen",
+    "per100": {
+      "kcal": 76.0,
+      "satFat": 0.0336,
+      "sugar": 0.65,
+      "protein": 2.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Kartoffeln gekocht",
+      "Salzkartoffeln",
+      "Kartoffeln"
+    ],
+    "blsName": "Kartoffel geschält, gekocht"
+  },
+  {
+    "code": "K120134",
+    "name": "Pellkartoffeln",
+    "category": "Stärkehaltige Beilagen",
+    "per100": {
+      "kcal": 71.0,
+      "satFat": 0.035,
+      "sugar": 1.096,
+      "protein": 1.8
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Pellkartoffeln",
+      "Kartoffeln mit Schale",
+      "Kartoffeln ungeschält"
+    ],
+    "blsName": "Kartoffel ungeschält, gekocht"
+  },
+  {
+    "code": "X634012",
+    "name": "Kartoffelpüree",
+    "category": "Stärkehaltige Beilagen",
+    "per100": {
+      "kcal": 88.0,
+      "satFat": 1.883,
+      "sugar": 1.74,
+      "protein": 2.35
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Kartoffelbrei",
+      "Püree",
+      "Stampfkartoffeln"
+    ],
+    "blsName": "Kartoffelpüree mit Milch 3,5 % Fett"
+  },
+  {
+    "code": "X651043",
+    "name": "Bratkartoffeln",
+    "category": "Stärkehaltige Beilagen",
+    "per100": {
+      "kcal": 194.0,
+      "satFat": 0.79,
+      "sugar": 1.09,
+      "protein": 2.835
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Bratkartoffeln",
+      "Röstkartoffeln"
+    ],
+    "blsName": "Bratkartoffeln aus Pellkartoffeln, mit Zwiebeln"
+  },
+  {
+    "code": "K130262",
+    "name": "Pommes frites aus dem Ofen",
+    "category": "Stärkehaltige Beilagen",
+    "per100": {
+      "kcal": 167.0,
+      "satFat": 0.4,
+      "sugar": 0.21,
+      "protein": 3.03
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Pommes",
+      "Ofenpommes",
+      "Fritten"
+    ],
+    "blsName": "Pommes frites tiefgefroren, gebacken"
+  },
+  {
+    "code": "X654042",
+    "name": "Pommes frites, frittiert",
+    "category": "Stärkehaltige Beilagen",
+    "per100": {
+      "kcal": 239.0,
+      "satFat": 0.79,
+      "sugar": 1.562,
+      "protein": 3.368
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Pommes",
+      "Fritten"
+    ],
+    "blsName": "Pommes frites"
+  },
+  {
+    "code": "X1A2010",
+    "name": "Kartoffelsalat mit Essig und Öl",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 83.0,
+      "satFat": 0.3,
+      "sugar": 1.2,
+      "protein": 1.52
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Kartoffelsalat Essig Öl",
+      "Schwäbischer Kartoffelsalat"
+    ],
+    "blsName": "Kartoffelsalat mit Marinade (Gemüsebrühe)"
+  },
+  {
+    "code": "X1A2020",
+    "name": "Kartoffelsalat mit Mayonnaise",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 154.0,
+      "satFat": 1.0,
+      "sugar": 1.11,
+      "protein": 1.6
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Kartoffelsalat Mayo"
+    ],
+    "blsName": "Kartoffelsalat mit Mayonnaise"
+  },
+  {
+    "code": "E401000",
+    "name": "Nudeln, roh",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 346.0,
+      "satFat": 0.233,
+      "sugar": 2.015,
+      "protein": 12.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Nudeln roh",
+      "Nudeln trocken",
+      "Pasta roh",
+      "Spaghetti roh",
+      "Penne roh",
+      "Fusilli roh",
+      "Makkaroni roh"
+    ],
+    "blsName": "Teigwaren eifrei, roh"
+  },
+  {
+    "code": "E432000",
+    "name": "Eiernudeln, roh",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 342.0,
+      "satFat": 0.804,
+      "sugar": 1.638,
+      "protein": 13.2
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Eiernudeln roh",
+      "Bandnudeln",
+      "Tagliatelle",
+      "Spätzle trocken"
+    ],
+    "blsName": "Eierteigwaren roh"
+  },
+  {
+    "code": "E432032",
+    "name": "Eiernudeln, gekocht",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 130.0,
+      "satFat": 0.318,
+      "sugar": 0.613,
+      "protein": 5.2
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 250
+    },
+    "aliases": [
+      "Eiernudeln gekocht",
+      "Bandnudeln",
+      "Tagliatelle"
+    ],
+    "blsName": "Eierteigwaren gekocht"
+  },
+  {
+    "code": "E510000",
+    "name": "Vollkornnudeln, roh",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 356.0,
+      "satFat": 0.429,
+      "sugar": 2.8,
+      "protein": 14.3
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Vollkornnudeln roh",
+      "Vollkornpasta roh",
+      "Vollkornspaghetti roh"
+    ],
+    "blsName": "Vollkornteigwaren eifrei, roh"
+  },
+  {
+    "code": "E500032",
+    "name": "Vollkornnudeln, gekocht",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 130.0,
+      "satFat": 0.165,
+      "sugar": 1.0,
+      "protein": 5.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 250
+    },
+    "aliases": [
+      "Vollkornnudeln gekocht",
+      "Vollkornpasta",
+      "Vollkornspaghetti"
+    ],
+    "blsName": "Vollkornteigwaren eifrei, gekocht"
+  },
+  {
+    "code": "C351032",
+    "name": "Naturreis, gekocht",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 128.0,
+      "satFat": 0.1613,
+      "sugar": 0.26,
+      "protein": 3.006
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Naturreis gekocht",
+      "Vollkornreis gekocht",
+      "Vollkornreis"
+    ],
+    "blsName": "Reis unpoliert, gekocht"
+  },
+  {
+    "code": "C119132",
+    "name": "Bulgur, gekocht",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 152.0,
+      "satFat": 0.13,
+      "sugar": 0.8,
+      "protein": 5.5
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Bulgur"
+    ],
+    "blsName": "Bulgur (Hartweizen) gekocht"
+  },
+  {
+    "code": "C119232",
+    "name": "Couscous, gekocht",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 156.0,
+      "satFat": 0.108,
+      "sugar": 0.47861,
+      "protein": 4.914
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Couscous"
+    ],
+    "blsName": "Couscous (Hartweizen) gekocht"
+  },
+  {
+    "code": "C118032",
+    "name": "Quinoa, gekocht",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 104.0,
+      "satFat": 0.173,
+      "sugar": 0.49629,
+      "protein": 3.491
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Quinoa"
+    ],
+    "blsName": "Quinoa weiß, gekocht"
+  },
+  {
+    "code": "B511000",
+    "name": "Brötchen",
+    "category": "Brot und Backwaren",
+    "per100": {
+      "kcal": 280.0,
+      "satFat": 0.3866,
+      "sugar": 3.07,
+      "protein": 10.09
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 60
+    },
+    "aliases": [
+      "Brötchen",
+      "Semmel",
+      "Schrippe",
+      "Weckle"
+    ],
+    "blsName": "Weizenbrötchen"
+  },
+  {
+    "code": "B251000",
+    "name": "Weizenmischbrot",
+    "category": "Brot und Backwaren",
+    "per100": {
+      "kcal": 207.0,
+      "satFat": 0.1,
+      "sugar": 0.836,
+      "protein": 8.61
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 45
+    },
+    "aliases": [
+      "Mischbrot",
+      "Brot"
+    ],
+    "blsName": "Weizenmischbrot"
+  },
+  {
+    "code": "B271000",
+    "name": "Roggenmischbrot",
+    "category": "Brot und Backwaren",
+    "per100": {
+      "kcal": 218.0,
+      "satFat": 0.256,
+      "sugar": 1.26,
+      "protein": 7.38
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 45
+    },
+    "aliases": [
+      "Graubrot",
+      "Bauernbrot",
+      "Mischbrot",
+      "Brot"
+    ],
+    "blsName": "Roggenmischbrot"
+  },
+  {
+    "code": "B314000",
+    "name": "Toastbrot",
+    "category": "Brot und Backwaren",
+    "per100": {
+      "kcal": 261.0,
+      "satFat": 2.186,
+      "sugar": 3.7,
+      "protein": 8.29
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 25
+    },
+    "aliases": [
+      "Toast",
+      "Toastbrot",
+      "Buttertoast"
+    ],
+    "blsName": "Weizentoastbrot/Buttertoastbrot"
+  },
+  {
+    "code": "B783012",
+    "name": "Tortilla (Weizen)",
+    "category": "Brot und Backwaren",
+    "per100": {
+      "kcal": 296.0,
+      "satFat": 2.838,
+      "sugar": 1.33,
+      "protein": 8.85
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 60
+    },
+    "aliases": [
+      "Wrap",
+      "Tortilla"
+    ],
+    "blsName": "Weizentortilla"
+  },
+  {
+    "code": "C515400",
+    "name": "Cornflakes",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 376.0,
+      "satFat": 0.113,
+      "sugar": 0.71,
+      "protein": 7.18
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 30
+    },
+    "aliases": [
+      "Cornflakes"
+    ],
+    "blsName": "Cornflakes ungesüßt"
+  },
+  {
+    "code": "C512300",
+    "name": "Müsli mit Trockenfrüchten, ungesüßt",
+    "category": "Getreide",
+    "per100": {
+      "kcal": 327.0,
+      "satFat": 1.2,
+      "sugar": 22.3,
+      "protein": 9.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 50
+    },
+    "aliases": [
+      "Müsli",
+      "Früchtemüsli"
+    ],
+    "blsName": "Müslimischung mit Trockenfrüchten, ungesüßt"
+  },
+  {
+    "code": "X9A2100",
+    "name": "Porridge mit Milch",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 134.0,
+      "satFat": 2.517,
+      "sugar": 4.25,
+      "protein": 6.29
+    },
+    "zero": false,
+    "portion": {
+      "label": "Schale",
+      "grams": 250
+    },
+    "aliases": [
+      "Porridge mit Milch",
+      "Haferbrei",
+      "Oatmeal",
+      "Haferflockenbrei"
+    ],
+    "blsName": "Porridge ungesüßt, mit Milch 3,5 % Fett"
+  },
+  {
+    "code": "X9A2120",
+    "name": "Porridge mit Wasser",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 71.0,
+      "satFat": 0.273,
+      "sugar": 0.15,
+      "protein": 2.687
+    },
+    "zero": false,
+    "portion": {
+      "label": "Schale",
+      "grams": 250
+    },
+    "aliases": [
+      "Porridge mit Wasser",
+      "Haferbrei",
+      "Oatmeal"
+    ],
+    "blsName": "Porridge ungesüßt, mit Wasser"
+  },
+  {
+    "code": "X9A2110",
+    "name": "Porridge mit Sojamilch",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 96.0,
+      "satFat": 0.431,
+      "sugar": 0.538,
+      "protein": 5.5
+    },
+    "zero": false,
+    "portion": {
+      "label": "Schale",
+      "grams": 250
+    },
+    "aliases": [
+      "Porridge mit Pflanzendrink",
+      "Porridge vegan",
+      "Haferbrei"
+    ],
+    "blsName": "Porridge ungesüßt, mit Sojadrink"
+  },
+  {
+    "code": "X810033",
+    "name": "Milchreis",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 140.0,
+      "satFat": 1.983,
+      "sugar": 5.35,
+      "protein": 4.89
+    },
+    "zero": false,
+    "portion": {
+      "label": "Schale",
+      "grams": 250
+    },
+    "aliases": [
+      "Milchreis"
+    ],
+    "blsName": "Milchreis gesüßt, mit Milch 3,5 % Fett"
+  },
+  {
+    "code": "H841100",
+    "name": "Sojamilch (Sojadrink), ungesüßt",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 30.0,
+      "satFat": 0.186,
+      "sugar": 0.389,
+      "protein": 3.22
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "Sojamilch",
+      "Sojadrink",
+      "Pflanzenmilch"
+    ],
+    "blsName": "Sojadrink ungesüßt"
+  },
+  {
+    "code": "H800000",
+    "name": "Mandelmilch (Mandeldrink), ungesüßt",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 24.0,
+      "satFat": 0.186,
+      "sugar": 0.173,
+      "protein": 0.87
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "Mandelmilch",
+      "Pflanzenmilch"
+    ],
+    "blsName": "Mandeldrink ungesüßt"
+  },
+  {
+    "code": "C650000",
+    "name": "Reismilch (Reisdrink), ungesüßt",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 59.0,
+      "satFat": 0.246,
+      "sugar": 6.58,
+      "protein": 0.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "Reismilch",
+      "Pflanzenmilch"
+    ],
+    "blsName": "Reisdrink ungesüßt"
+  },
+  {
+    "code": "F603600",
+    "name": "Orangensaft",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 41.0,
+      "satFat": 0.0,
+      "sugar": 8.5,
+      "protein": 0.75
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "O-Saft",
+      "Orangensaft",
+      "Saft"
+    ],
+    "blsName": "Orangensaft"
+  },
+  {
+    "code": "F110600",
+    "name": "Apfelsaft",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 44.0,
+      "satFat": 0.0,
+      "sugar": 9.585,
+      "protein": 0.097
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "Apfelsaft",
+      "Saft"
+    ],
+    "blsName": "Apfelsaft"
+  },
+  {
+    "code": "N330000",
+    "name": "Cola",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 41.0,
+      "satFat": 0.0,
+      "sugar": 10.3,
+      "protein": 0.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Dose",
+      "grams": 330
+    },
+    "aliases": [
+      "Cola",
+      "Softdrink"
+    ],
+    "blsName": "Colagetränk koffeinhaltig"
+  },
+  {
+    "code": "N311000",
+    "name": "Limonade light",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 1.0,
+      "satFat": 0.0,
+      "sugar": 0.1,
+      "protein": 0.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Dose",
+      "grams": 330
+    },
+    "aliases": [
+      "Cola light",
+      "Cola zero",
+      "Light-Getränk",
+      "Limo zuckerfrei"
+    ],
+    "blsName": "Limonade mit Süßungsmitteln"
+  },
+  {
+    "code": "N410100",
+    "name": "Kaffee schwarz",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 1.0,
+      "satFat": 0.0,
+      "sugar": 0.0,
+      "protein": 0.12
+    },
+    "zero": false,
+    "portion": {
+      "label": "Tasse",
+      "grams": 150
+    },
+    "aliases": [
+      "Kaffee",
+      "Kaffee schwarz",
+      "Filterkaffee",
+      "Espresso"
+    ],
+    "blsName": "Kaffee (Getränk)"
+  },
+  {
+    "code": "N410200",
+    "name": "Kaffee mit Milch",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 3.0,
+      "satFat": 0.073,
+      "sugar": 0.13,
+      "protein": 0.23
+    },
+    "zero": false,
+    "portion": {
+      "label": "Tasse",
+      "grams": 150
+    },
+    "aliases": [
+      "Kaffee mit Milch",
+      "Milchkaffee"
+    ],
+    "blsName": "Kaffee (Getränk) mit Milch 3,5 % Fett"
+  },
+  {
+    "code": "N4A0000",
+    "name": "Kaffee mit Hafermilch",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 2.0,
+      "satFat": 0.0041,
+      "sugar": 0.128,
+      "protein": 0.14
+    },
+    "zero": false,
+    "portion": {
+      "label": "Tasse",
+      "grams": 150
+    },
+    "aliases": [
+      "Kaffee mit Hafermilch",
+      "Hafer Kaffee"
+    ],
+    "blsName": "Kaffee (Getränk) mit Haferdrink, ungesüßt"
+  },
+  {
+    "code": "P163000",
+    "name": "Bier (Pils)",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 38.0,
+      "satFat": 0.0,
+      "sugar": 0.108,
+      "protein": 0.422
+    },
+    "zero": false,
+    "portion": {
+      "label": "Flasche",
+      "grams": 500
+    },
+    "aliases": [
+      "Bier",
+      "Pils"
+    ],
+    "blsName": "Pilsner Bier"
+  },
+  {
+    "code": "P2A3000",
+    "name": "Rotwein, trocken",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 70.0,
+      "satFat": 0.0,
+      "sugar": 0.67,
+      "protein": 0.22
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "Rotwein",
+      "Wein"
+    ],
+    "blsName": "Rotwein trocken"
+  },
+  {
+    "code": "P210000",
+    "name": "Weißwein, trocken",
+    "category": "Getränke",
+    "per100": {
+      "kcal": 64.0,
+      "satFat": 0.0,
+      "sugar": 0.32,
+      "protein": 0.1
+    },
+    "zero": false,
+    "portion": {
+      "label": "Glas",
+      "grams": 200
+    },
+    "aliases": [
+      "Weißwein",
+      "Wein"
+    ],
+    "blsName": "Weißwein trocken"
+  },
+  {
+    "code": "M710100",
+    "name": "Skyr natur",
+    "category": "Fettarme Milchprodukte",
+    "per100": {
+      "kcal": 64.0,
+      "satFat": 0.47,
+      "sugar": 3.14,
+      "protein": 10.35
+    },
+    "zero": true,
+    "portion": {
+      "label": "Becher",
+      "grams": 150
+    },
+    "aliases": [
+      "Skyr"
+    ],
+    "blsName": "Skyr, Frischkäse < 10 % Fett i. Tr."
+  },
+  {
+    "code": "M711100",
+    "name": "Hüttenkäse (körniger Frischkäse)",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 73.0,
+      "satFat": 0.771,
+      "sugar": 3.0,
+      "protein": 11.8
+    },
+    "zero": false,
+    "portion": {
+      "label": "Becher",
+      "grams": 200
+    },
+    "aliases": [
+      "Hüttenkäse",
+      "Cottage Cheese"
+    ],
+    "blsName": "Körniger Frischkäse < 10 % Fett i. Tr."
+  },
+  {
+    "code": "M141500",
+    "name": "Sahnejoghurt",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 124.0,
+      "satFat": 6.571,
+      "sugar": 4.5,
+      "protein": 3.3
+    },
+    "zero": false,
+    "portion": {
+      "label": "Becher",
+      "grams": 150
+    },
+    "aliases": [
+      "Griechischer Joghurt",
+      "Joghurt griechischer Art"
+    ],
+    "blsName": "Sahnejoghurt mind. 10 % Fett"
+  },
+  {
+    "code": "M032100",
+    "name": "Mozzarella",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 259.0,
+      "satFat": 14.259,
+      "sugar": 0.0,
+      "protein": 17.12
+    },
+    "zero": false,
+    "portion": {
+      "label": "Kugel",
+      "grams": 125
+    },
+    "aliases": [
+      "Mozzarella"
+    ],
+    "blsName": "Mozzarella mind. 45 % Fett i. Tr."
+  },
+  {
+    "code": "M402600",
+    "name": "Gouda",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 379.0,
+      "satFat": 22.53,
+      "sugar": 0.0,
+      "protein": 22.47
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 20
+    },
+    "aliases": [
+      "Gouda",
+      "Käse"
+    ],
+    "blsName": "Gouda 48 % Fett i. Tr."
+  },
+  {
+    "code": "M306400",
+    "name": "Parmesan",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 391.0,
+      "satFat": 17.826,
+      "sugar": 0.056,
+      "protein": 35.6
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Parmesan",
+      "Parmigiano",
+      "Reibekäse"
+    ],
+    "blsName": "Parmesan mind. 30 % Fett i. Tr."
+  },
+  {
+    "code": "M012200",
+    "name": "Feta",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 284.0,
+      "satFat": 16.06,
+      "sugar": 0.0,
+      "protein": 15.68
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 50
+    },
+    "aliases": [
+      "Feta",
+      "Schafskäse",
+      "Hirtenkäse"
+    ],
+    "blsName": "Feta mind. 45 % Fett i. Tr."
+  },
+  {
+    "code": "M173800",
+    "name": "Schlagsahne",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 308.0,
+      "satFat": 16.88,
+      "sugar": 3.27,
+      "protein": 2.312
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Sahne",
+      "Schlagsahne"
+    ],
+    "blsName": "Schlagsahne mind. 30 % Fett"
+  },
+  {
+    "code": "M171500",
+    "name": "Kaffeesahne",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 124.0,
+      "satFat": 6.397,
+      "sugar": 4.05,
+      "protein": 3.037
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Kaffeesahne",
+      "Kochsahne",
+      "Sahne"
+    ],
+    "blsName": "Kaffeesahne mind. 10 % Fett"
+  },
+  {
+    "code": "M172500",
+    "name": "Saure Sahne",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 119.0,
+      "satFat": 5.3,
+      "sugar": 4.1,
+      "protein": 3.1
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Saure Sahne",
+      "Sauerrahm"
+    ],
+    "blsName": "Sauerrahm/Saure Sahne, mind. 10 % Fett"
+  },
+  {
+    "code": "M172700",
+    "name": "Schmand",
+    "category": "Milchprodukte",
+    "per100": {
+      "kcal": 206.0,
+      "satFat": 10.4,
+      "sugar": 3.0,
+      "protein": 2.8
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Schmand"
+    ],
+    "blsName": "Sauerrahm/Schmand, mind. 20 % Fett"
+  },
+  {
+    "code": "E111132",
+    "name": "Ei, gekocht",
+    "category": "Eier und Geflügel",
+    "per100": {
+      "kcal": 144.0,
+      "satFat": 2.6,
+      "sugar": 0.34,
+      "protein": 14.1
+    },
+    "zero": true,
+    "portion": {
+      "label": "Stück",
+      "grams": 55
+    },
+    "aliases": [
+      "Ei gekocht",
+      "Frühstücksei",
+      "Eier"
+    ],
+    "blsName": "Hühnerei gekocht"
+  },
+  {
+    "code": "Y720143",
+    "name": "Rührei",
+    "category": "Eier und Geflügel",
+    "per100": {
+      "kcal": 203.0,
+      "satFat": 2.98,
+      "sugar": 0.38,
+      "protein": 12.88
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 120
+    },
+    "aliases": [
+      "Rührei",
+      "Rühreier"
+    ],
+    "blsName": "Rührei gebraten"
+  },
+  {
+    "code": "Y710142",
+    "name": "Spiegelei",
+    "category": "Eier und Geflügel",
+    "per100": {
+      "kcal": 210.0,
+      "satFat": 3.11,
+      "sugar": 0.353,
+      "protein": 13.419
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 60
+    },
+    "aliases": [
+      "Spiegelei",
+      "Spiegeleier"
+    ],
+    "blsName": "Spiegelei gebraten"
+  },
+  {
+    "code": "V413000",
+    "name": "Hähnchenfleisch ohne Haut, roh",
+    "category": "Eier und Geflügel",
+    "per100": {
+      "kcal": 131.0,
+      "satFat": 0.979,
+      "sugar": 0.0,
+      "protein": 20.2
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Hähnchenfleisch",
+      "Hühnchen",
+      "Hähnchenschenkel ohne Haut"
+    ],
+    "blsName": "Hähnchen Fleisch, ohne Haut, roh"
+  },
+  {
+    "code": "U010100",
+    "name": "Rinderhackfleisch, roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 224.0,
+      "satFat": 7.395,
+      "sugar": 0.0,
+      "protein": 19.102
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 125
+    },
+    "aliases": [
+      "Hackfleisch",
+      "Rinderhack",
+      "Hack",
+      "Faschiertes"
+    ],
+    "blsName": "Rind Hackfleisch, roh"
+  },
+  {
+    "code": "U050100",
+    "name": "Hackfleisch gemischt (Rind/Schwein), roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 236.0,
+      "satFat": 7.392,
+      "sugar": 0.0,
+      "protein": 18.8
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 125
+    },
+    "aliases": [
+      "Hackfleisch",
+      "Gemischtes Hack",
+      "Hack",
+      "Halb und halb",
+      "Faschiertes"
+    ],
+    "blsName": "Rind/Schwein, Hackfleisch gemischt, roh"
+  },
+  {
+    "code": "U020100",
+    "name": "Schweinehackfleisch, roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 271.0,
+      "satFat": 7.391,
+      "sugar": 0.0,
+      "protein": 17.88
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 125
+    },
+    "aliases": [
+      "Hackfleisch",
+      "Schweinehack",
+      "Hack",
+      "Mett"
+    ],
+    "blsName": "Schwein Hackfleisch, roh"
+  },
+  {
+    "code": "U151100",
+    "name": "Rindergulasch, roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 128.0,
+      "satFat": 2.325,
+      "sugar": 0.0,
+      "protein": 20.2
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Gulaschfleisch",
+      "Rindergulasch"
+    ],
+    "blsName": "Rind Gulasch (Bug) roh"
+  },
+  {
+    "code": "U541100",
+    "name": "Schweineschnitzel, roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 106.0,
+      "satFat": 0.715,
+      "sugar": 0.0,
+      "protein": 22.2
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 150
+    },
+    "aliases": [
+      "Schnitzel",
+      "Schweineschnitzel"
+    ],
+    "blsName": "Schwein Schnitzel (Oberschale) roh"
+  },
+  {
+    "code": "U284100",
+    "name": "Rinderhüfte (Steak), roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 110.0,
+      "satFat": 1.019,
+      "sugar": 0.0,
+      "protein": 22.1
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 180
+    },
+    "aliases": [
+      "Steak",
+      "Hüftsteak",
+      "Rindersteak"
+    ],
+    "blsName": "Rind Hüfte, roh"
+  },
+  {
+    "code": "U685100",
+    "name": "Schweinehüfte, roh",
+    "category": "Fleisch",
+    "per100": {
+      "kcal": 127.0,
+      "satFat": 1.396,
+      "sugar": 0.0,
+      "protein": 22.28
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 15
+    },
+    "aliases": [
+      "Schinkenspeck",
+      "Speck",
+      "Bacon"
+    ],
+    "blsName": "Schwein Hüfte/Schinkenspeck, roh"
+  },
+  {
+    "code": "W424000",
+    "name": "Kochschinken",
+    "category": "Wurst und Aufschnitt",
+    "per100": {
+      "kcal": 130.0,
+      "satFat": 1.328,
+      "sugar": 0.74,
+      "protein": 22.5
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 20
+    },
+    "aliases": [
+      "Kochschinken",
+      "Schinken",
+      "gekochter Schinken"
+    ],
+    "blsName": "Schwein Kochschinken, Kochpökelware"
+  },
+  {
+    "code": "U681700",
+    "name": "Rohschinken (Räucherschinken)",
+    "category": "Wurst und Aufschnitt",
+    "per100": {
+      "kcal": 138.0,
+      "satFat": 0.7,
+      "sugar": 0.11,
+      "protein": 28.45
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 15
+    },
+    "aliases": [
+      "Rohschinken",
+      "roher Schinken",
+      "Schwarzwälder Schinken",
+      "Schinken"
+    ],
+    "blsName": "Schwein Rohschinken, mager, Rohpökelware, geräuchert"
+  },
+  {
+    "code": "W140000",
+    "name": "Salami",
+    "category": "Wurst und Aufschnitt",
+    "per100": {
+      "kcal": 374.0,
+      "satFat": 12.307,
+      "sugar": 0.0,
+      "protein": 23.54
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 10
+    },
+    "aliases": [
+      "Salami",
+      "Wurst"
+    ],
+    "blsName": "Salami"
+  },
+  {
+    "code": "W211200",
+    "name": "Wiener Würstchen",
+    "category": "Wurst und Aufschnitt",
+    "per100": {
+      "kcal": 289.0,
+      "satFat": 9.218,
+      "sugar": 0.0,
+      "protein": 12.9
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 50
+    },
+    "aliases": [
+      "Wiener",
+      "Würstchen",
+      "Wurst"
+    ],
+    "blsName": "Wiener Würstchen"
+  },
+  {
+    "code": "W234000",
+    "name": "Fleischwurst",
+    "category": "Wurst und Aufschnitt",
+    "per100": {
+      "kcal": 306.0,
+      "satFat": 11.044,
+      "sugar": 0.24,
+      "protein": 12.11
+    },
+    "zero": false,
+    "portion": {
+      "label": "Scheibe",
+      "grams": 20
+    },
+    "aliases": [
+      "Fleischwurst",
+      "Lyoner",
+      "Wurst"
+    ],
+    "blsName": "Fleischwurst"
+  },
+  {
+    "code": "T121902",
+    "name": "Thunfisch in eigenem Saft (Dose)",
+    "category": "Fisch",
+    "per100": {
+      "kcal": 95.0,
+      "satFat": 0.1583,
+      "sugar": 0.0,
+      "protein": 22.87
+    },
+    "zero": true,
+    "portion": {
+      "label": "Dose (abgetropft)",
+      "grams": 140
+    },
+    "aliases": [
+      "Thunfisch Dose",
+      "Thunfisch natur"
+    ],
+    "blsName": "Thunfisch im eigenen Saft, Konserve, abgetropft"
+  },
+  {
+    "code": "T121702",
+    "name": "Thunfisch in Öl (Dose)",
+    "category": "Fisch",
+    "per100": {
+      "kcal": 207.0,
+      "satFat": 1.8,
+      "sugar": 0.0,
+      "protein": 28.262
+    },
+    "zero": false,
+    "portion": {
+      "label": "Dose (abgetropft)",
+      "grams": 140
+    },
+    "aliases": [
+      "Thunfisch in Öl",
+      "Thunfisch Dose"
+    ],
+    "blsName": "Thunfisch in Öl, Konserve, abgetropft"
+  },
+  {
+    "code": "T410600",
+    "name": "Räucherlachs",
+    "category": "Fisch",
+    "per100": {
+      "kcal": 170.0,
+      "satFat": 1.73,
+      "sugar": 0.16,
+      "protein": 21.25
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 50
+    },
+    "aliases": [
+      "Räucherlachs",
+      "Lachs geräuchert"
+    ],
+    "blsName": "Lachs geräuchert (Räucherlachs)"
+  },
+  {
+    "code": "T753132",
+    "name": "Garnelen, gekocht",
+    "category": "Fisch",
+    "per100": {
+      "kcal": 94.0,
+      "satFat": 0.43553,
+      "sugar": 0.0,
+      "protein": 19.11
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Garnelen",
+      "Shrimps",
+      "Krabben",
+      "Scampi",
+      "Gambas"
+    ],
+    "blsName": "Garnele/Granat/Krabbe, gekocht"
+  },
+  {
+    "code": "T930162",
+    "name": "Fischstäbchen aus dem Ofen",
+    "category": "Fisch",
+    "per100": {
+      "kcal": 206.0,
+      "satFat": 1.34,
+      "sugar": 1.09,
+      "protein": 13.75
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 30
+    },
+    "aliases": [
+      "Fischstäbchen"
+    ],
+    "blsName": "Fischstäbchen (Alaska-Seelachs) paniert, tiefgefroren, gebraten ohne Fett (Ofen)"
+  },
+  {
+    "code": "H742902",
+    "name": "Kidneybohnen aus der Dose, abgetropft",
+    "category": "Hülsenfrüchte",
+    "per100": {
+      "kcal": 128.0,
+      "satFat": 0.051,
+      "sugar": 0.9,
+      "protein": 8.5
+    },
+    "zero": true,
+    "portion": {
+      "label": "Dose (abgetropft)",
+      "grams": 250
+    },
+    "aliases": [
+      "Kidneybohnen Dose",
+      "rote Bohnen",
+      "Bohnen"
+    ],
+    "blsName": "Kidneybohne reif, Konserve, abgetropft"
+  },
+  {
+    "code": "H720902",
+    "name": "Kichererbsen aus der Dose, abgetropft",
+    "category": "Hülsenfrüchte",
+    "per100": {
+      "kcal": 136.0,
+      "satFat": 0.363,
+      "sugar": 1.2,
+      "protein": 7.5
+    },
+    "zero": true,
+    "portion": {
+      "label": "Dose (abgetropft)",
+      "grams": 250
+    },
+    "aliases": [
+      "Kichererbsen Dose",
+      "Kichererbsen"
+    ],
+    "blsName": "Kichererbse reif, Konserve, abgetropft"
+  },
+  {
+    "code": "H960000",
+    "name": "Hummus",
+    "category": "Hülsenfrüchte",
+    "per100": {
+      "kcal": 324.0,
+      "satFat": 3.5,
+      "sugar": 0.7,
+      "protein": 5.9
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 20
+    },
+    "aliases": [
+      "Hummus",
+      "Humus",
+      "Kichererbsenmus"
+    ],
+    "blsName": "Hummus/Kichererbsenmus"
+  },
+  {
+    "code": "G311100",
+    "name": "Blumenkohl",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 35.0,
+      "satFat": 0.042,
+      "sugar": 2.16,
+      "protein": 2.424
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Blumenkohl"
+    ],
+    "blsName": "Blumenkohl roh"
+  },
+  {
+    "code": "G470100",
+    "name": "Lauch (Porree)",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 36.0,
+      "satFat": 0.044,
+      "sugar": 3.8,
+      "protein": 2.14
+    },
+    "zero": true,
+    "portion": {
+      "label": "Stange",
+      "grams": 150
+    },
+    "aliases": [
+      "Lauch",
+      "Porree"
+    ],
+    "blsName": "Porree/Lauch, roh"
+  },
+  {
+    "code": "G510100",
+    "name": "Aubergine",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 19.0,
+      "satFat": 0.039,
+      "sugar": 2.69,
+      "protein": 0.57
+    },
+    "zero": true,
+    "portion": {
+      "label": "Stück",
+      "grams": 250
+    },
+    "aliases": [
+      "Aubergine",
+      "Melanzani"
+    ],
+    "blsName": "Aubergine roh"
+  },
+  {
+    "code": "G490100",
+    "name": "Knoblauch",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 97.0,
+      "satFat": 0.063,
+      "sugar": 2.0,
+      "protein": 6.05
+    },
+    "zero": true,
+    "portion": {
+      "label": "Zehe",
+      "grams": 4
+    },
+    "aliases": [
+      "Knoblauch"
+    ],
+    "blsName": "Knoblauch roh"
+  },
+  {
+    "code": "G130100",
+    "name": "Rucola",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 21.0,
+      "satFat": 0.066,
+      "sugar": 0.0,
+      "protein": 3.6
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 50
+    },
+    "aliases": [
+      "Rucola",
+      "Rauke",
+      "Salat"
+    ],
+    "blsName": "Rucola roh"
+  },
+  {
+    "code": "G341100",
+    "name": "Rotkohl",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 28.0,
+      "satFat": 0.0334,
+      "sugar": 3.66,
+      "protein": 1.563
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Rotkohl",
+      "Blaukraut",
+      "Rotkraut"
+    ],
+    "blsName": "Rotkohl roh"
+  },
+  {
+    "code": "G342100",
+    "name": "Weißkohl",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 32.0,
+      "satFat": 0.0334,
+      "sugar": 4.4,
+      "protein": 1.382
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Weißkohl",
+      "Kraut"
+    ],
+    "blsName": "Weißkohl roh"
+  },
+  {
+    "code": "G331100",
+    "name": "Kohlrabi",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 28.0,
+      "satFat": 0.028,
+      "sugar": 3.704,
+      "protein": 1.94
+    },
+    "zero": true,
+    "portion": {
+      "label": "Stück",
+      "grams": 250
+    },
+    "aliases": [
+      "Kohlrabi"
+    ],
+    "blsName": "Kohlrabi roh"
+  },
+  {
+    "code": "G332100",
+    "name": "Rosenkohl",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 40.0,
+      "satFat": 0.0511,
+      "sugar": 1.58,
+      "protein": 4.45
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Rosenkohl"
+    ],
+    "blsName": "Rosenkohl roh"
+  },
+  {
+    "code": "G450100",
+    "name": "Spargel",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 28.0,
+      "satFat": 0.0279,
+      "sugar": 3.8,
+      "protein": 1.96
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 250
+    },
+    "aliases": [
+      "Spargel"
+    ],
+    "blsName": "Spargel roh"
+  },
+  {
+    "code": "G568900",
+    "name": "Tomaten aus der Dose (geschält)",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 24.0,
+      "satFat": 0.0,
+      "sugar": 3.25,
+      "protein": 1.2
+    },
+    "zero": true,
+    "portion": {
+      "label": "Dose",
+      "grams": 400
+    },
+    "aliases": [
+      "Dosentomaten",
+      "Tomaten aus der Dose",
+      "Pizzatomaten",
+      "gehackte Tomaten"
+    ],
+    "blsName": "Tomate geschält, Konserve"
+  },
+  {
+    "code": "R161200",
+    "name": "Passierte Tomaten (Passata)",
+    "category": "Gemüse",
+    "per100": {
+      "kcal": 29.0,
+      "satFat": 0.02,
+      "sugar": 3.6,
+      "protein": 1.18
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Passata",
+      "passierte Tomaten",
+      "Tomatenpüree"
+    ],
+    "blsName": "Tomaten passiert/Tomatenpüree"
+  },
+  {
+    "code": "R160000",
+    "name": "Tomatenmark",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 81.0,
+      "satFat": 0.04,
+      "sugar": 12.9,
+      "protein": 3.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Tomatenmark"
+    ],
+    "blsName": "Tomatenmark"
+  },
+  {
+    "code": "F514100",
+    "name": "Kiwi",
+    "category": "Obst",
+    "per100": {
+      "kcal": 61.0,
+      "satFat": 0.0,
+      "sugar": 10.1,
+      "protein": 0.9
+    },
+    "zero": true,
+    "portion": {
+      "label": "Stück",
+      "grams": 75
+    },
+    "aliases": [
+      "Kiwi"
+    ],
+    "blsName": "Kiwi roh"
+  },
+  {
+    "code": "F516100",
+    "name": "Mango",
+    "category": "Obst",
+    "per100": {
+      "kcal": 60.0,
+      "satFat": 0.101,
+      "sugar": 11.0,
+      "protein": 0.7
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Mango"
+    ],
+    "blsName": "Mango roh"
+  },
+  {
+    "code": "F501100",
+    "name": "Ananas",
+    "category": "Obst",
+    "per100": {
+      "kcal": 46.0,
+      "satFat": 0.0208,
+      "sugar": 9.4,
+      "protein": 0.5
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Ananas"
+    ],
+    "blsName": "Ananas roh"
+  },
+  {
+    "code": "F302100",
+    "name": "Himbeeren",
+    "category": "Obst",
+    "per100": {
+      "kcal": 43.0,
+      "satFat": 0.0101,
+      "sugar": 5.2,
+      "protein": 1.0
+    },
+    "zero": true,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Himbeeren",
+      "Beeren"
+    ],
+    "blsName": "Himbeere roh"
+  },
+  {
+    "code": "F220100",
+    "name": "Pflaumen",
+    "category": "Obst",
+    "per100": {
+      "kcal": 48.0,
+      "satFat": 0.022,
+      "sugar": 8.1,
+      "protein": 0.3
+    },
+    "zero": true,
+    "portion": {
+      "label": "Stück",
+      "grams": 30
+    },
+    "aliases": [
+      "Pflaumen",
+      "Zwetschgen"
+    ],
+    "blsName": "Pflaume roh"
+  },
+  {
+    "code": "F502100",
+    "name": "Avocado",
+    "category": "Obst",
+    "per100": {
+      "kcal": 132.0,
+      "satFat": 2.589,
+      "sugar": 1.37,
+      "protein": 1.37
+    },
+    "zero": false,
+    "portion": {
+      "label": "Hälfte",
+      "grams": 70
+    },
+    "aliases": [
+      "Avocado"
+    ],
+    "blsName": "Avocado roh"
+  },
+  {
+    "code": "Y864112",
+    "name": "Apfelmus, ungesüßt",
+    "category": "Obst",
+    "per100": {
+      "kcal": 51.0,
+      "satFat": 0.176,
+      "sugar": 9.146,
+      "protein": 0.37
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 100
+    },
+    "aliases": [
+      "Apfelmus",
+      "Apfelmark"
+    ],
+    "blsName": "Apfelmus ungesüßt"
+  },
+  {
+    "code": "F504400",
+    "name": "Datteln, getrocknet",
+    "category": "Obst",
+    "per100": {
+      "kcal": 356.0,
+      "satFat": 0.0,
+      "sugar": 78.92,
+      "protein": 2.64
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 8
+    },
+    "aliases": [
+      "Datteln",
+      "Trockenobst"
+    ],
+    "blsName": "Dattel getrocknet"
+  },
+  {
+    "code": "H210100",
+    "name": "Mandeln",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 544.0,
+      "satFat": 4.01,
+      "sugar": 3.634,
+      "protein": 22.333
+    },
+    "zero": false,
+    "portion": {
+      "label": "Handvoll",
+      "grams": 25
+    },
+    "aliases": [
+      "Mandeln",
+      "Nüsse"
+    ],
+    "blsName": "Mandel süß"
+  },
+  {
+    "code": "H120100",
+    "name": "Walnüsse",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 721.0,
+      "satFat": 6.516,
+      "sugar": 2.68,
+      "protein": 16.07
+    },
+    "zero": false,
+    "portion": {
+      "label": "Handvoll",
+      "grams": 25
+    },
+    "aliases": [
+      "Walnüsse",
+      "Nüsse"
+    ],
+    "blsName": "Walnuss"
+  },
+  {
+    "code": "H130100",
+    "name": "Haselnüsse",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 667.0,
+      "satFat": 5.267,
+      "sugar": 3.85,
+      "protein": 16.25
+    },
+    "zero": false,
+    "portion": {
+      "label": "Handvoll",
+      "grams": 25
+    },
+    "aliases": [
+      "Haselnüsse",
+      "Nüsse"
+    ],
+    "blsName": "Haselnuss"
+  },
+  {
+    "code": "H110600",
+    "name": "Erdnüsse, geröstet",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 620.0,
+      "satFat": 7.7,
+      "sugar": 4.9,
+      "protein": 29.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Handvoll",
+      "grams": 25
+    },
+    "aliases": [
+      "Erdnüsse",
+      "Nüsse"
+    ],
+    "blsName": "Erdnuss geröstet"
+  },
+  {
+    "code": "H170100",
+    "name": "Cashewkerne",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 618.0,
+      "satFat": 9.262,
+      "sugar": 6.15,
+      "protein": 21.01
+    },
+    "zero": false,
+    "portion": {
+      "label": "Handvoll",
+      "grams": 25
+    },
+    "aliases": [
+      "Cashews",
+      "Cashewkerne",
+      "Nüsse"
+    ],
+    "blsName": "Cashewkern"
+  },
+  {
+    "code": "H480100",
+    "name": "Chiasamen",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 479.0,
+      "satFat": 3.54,
+      "sugar": 0.4732,
+      "protein": 22.11
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Chiasamen",
+      "Chia"
+    ],
+    "blsName": "Chia-Samen"
+  },
+  {
+    "code": "H410100",
+    "name": "Leinsamen",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 470.0,
+      "satFat": 3.597,
+      "sugar": 1.21,
+      "protein": 22.27
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Leinsamen"
+    ],
+    "blsName": "Leinsamen"
+  },
+  {
+    "code": "H310100",
+    "name": "Kürbiskerne",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 588.0,
+      "satFat": 7.692,
+      "sugar": 1.34,
+      "protein": 35.49
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Kürbiskerne"
+    ],
+    "blsName": "Kürbiskern"
+  },
+  {
+    "code": "H880200",
+    "name": "Erdnussbutter",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 606.0,
+      "satFat": 15.65,
+      "sugar": 11.72,
+      "protein": 24.08
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Erdnussbutter",
+      "Erdnusscreme",
+      "Peanutbutter"
+    ],
+    "blsName": "Erdnussbutter/Erdnusscreme"
+  },
+  {
+    "code": "H212800",
+    "name": "Mandelmus",
+    "category": "Nüsse und Samen",
+    "per100": {
+      "kcal": 559.0,
+      "satFat": 4.007,
+      "sugar": 4.43,
+      "protein": 25.3
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Mandelmus",
+      "Nussmus"
+    ],
+    "blsName": "Mandelmus"
+  },
+  {
+    "code": "Q180000",
+    "name": "Rapsöl",
+    "category": "Fette und Grundzutaten",
+    "per100": {
+      "kcal": 900.0,
+      "satFat": 7.2,
+      "sugar": 0.0,
+      "protein": 0.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Rapsöl",
+      "Öl"
+    ],
+    "blsName": "Rapsöl/Rüböl"
+  },
+  {
+    "code": "Q320000",
+    "name": "Sonnenblumenöl",
+    "category": "Fette und Grundzutaten",
+    "per100": {
+      "kcal": 900.0,
+      "satFat": 11.0,
+      "sugar": 0.0,
+      "protein": 0.0
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Sonnenblumenöl",
+      "Öl"
+    ],
+    "blsName": "Sonnenblumenöl"
+  },
+  {
+    "code": "Q4C4000",
+    "name": "Margarine",
+    "category": "Fette und Grundzutaten",
+    "per100": {
+      "kcal": 725.0,
+      "satFat": 16.44,
+      "sugar": 0.0,
+      "protein": 0.04
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teelöffel",
+      "grams": 5
+    },
+    "aliases": [
+      "Margarine",
+      "Pflanzenmargarine"
+    ],
+    "blsName": "Rapsölmargarine Vollfett, angereichert mit Vitaminen"
+  },
+  {
+    "code": "Q991000",
+    "name": "Mayonnaise",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 750.0,
+      "satFat": 6.88,
+      "sugar": 2.3,
+      "protein": 1.49
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Mayo",
+      "Mayonnaise"
+    ],
+    "blsName": "Mayonnaise (Fertigprodukt)"
+  },
+  {
+    "code": "R141100",
+    "name": "Ketchup",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 98.0,
+      "satFat": 0.032,
+      "sugar": 20.82,
+      "protein": 1.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Ketchup"
+    ],
+    "blsName": "Tomatenketchup"
+  },
+  {
+    "code": "R133000",
+    "name": "Senf, scharf",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 111.0,
+      "satFat": 0.49,
+      "sugar": 2.76,
+      "protein": 5.51
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teelöffel",
+      "grams": 5
+    },
+    "aliases": [
+      "Senf"
+    ],
+    "blsName": "Senf scharf"
+  },
+  {
+    "code": "R143000",
+    "name": "Sojasauce",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 66.0,
+      "satFat": 0.34,
+      "sugar": 4.89,
+      "protein": 6.3
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Sojasauce",
+      "Sojasoße"
+    ],
+    "blsName": "Sojasauce/Sojasoße"
+  },
+  {
+    "code": "X372012",
+    "name": "Pesto (grün)",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 542.0,
+      "satFat": 7.5,
+      "sugar": 0.7,
+      "protein": 6.7
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 15
+    },
+    "aliases": [
+      "Pesto",
+      "Pesto Genovese",
+      "Basilikumpesto"
+    ],
+    "blsName": "Pesto verde"
+  },
+  {
+    "code": "Y038213",
+    "name": "Bolognese-Sauce",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 182.0,
+      "satFat": 3.7,
+      "sugar": 2.9,
+      "protein": 9.34
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Bolognese",
+      "Hackfleischsauce",
+      "Ragù"
+    ],
+    "blsName": "Bologneser Sauce mit Rinderhackfleisch"
+  },
+  {
+    "code": "X321813",
+    "name": "Tomatensauce",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 108.0,
+      "satFat": 0.69,
+      "sugar": 3.6,
+      "protein": 1.206
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 150
+    },
+    "aliases": [
+      "Tomatensauce",
+      "Tomatensoße",
+      "Nudelsauce"
+    ],
+    "blsName": "Tomatensauce aus Tomaten Konserve"
+  },
+  {
+    "code": "X416243",
+    "name": "Gemüsebrühe",
+    "category": "Saucen und Würzmittel",
+    "per100": {
+      "kcal": 4.0,
+      "satFat": 0.1,
+      "sugar": 0.54,
+      "protein": 0.32
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teller",
+      "grams": 250
+    },
+    "aliases": [
+      "Gemüsebrühe",
+      "Brühe",
+      "Bouillon"
+    ],
+    "blsName": "Gemüsebrühe"
+  },
+  {
+    "code": "S120000",
+    "name": "Honig",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 305.0,
+      "satFat": 0.0,
+      "sugar": 70.764,
+      "protein": 0.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teelöffel",
+      "grams": 8
+    },
+    "aliases": [
+      "Honig"
+    ],
+    "blsName": "Honig"
+  },
+  {
+    "code": "S132000",
+    "name": "Marmelade (Konfitüre)",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 234.0,
+      "satFat": 0.0156,
+      "sugar": 56.3,
+      "protein": 0.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teelöffel",
+      "grams": 10
+    },
+    "aliases": [
+      "Marmelade",
+      "Konfitüre"
+    ],
+    "blsName": "Konfitüre extra"
+  },
+  {
+    "code": "S145000",
+    "name": "Nuss-Nougat-Creme",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 530.0,
+      "satFat": 9.171,
+      "sugar": 53.07,
+      "protein": 6.9
+    },
+    "zero": false,
+    "portion": {
+      "label": "Esslöffel",
+      "grams": 20
+    },
+    "aliases": [
+      "Nutella",
+      "Schokocreme",
+      "Nougatcreme"
+    ],
+    "blsName": "Nuss-Nougat-Creme"
+  },
+  {
+    "code": "S539900",
+    "name": "Vollmilchschokolade",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 555.0,
+      "satFat": 21.12,
+      "sugar": 51.38,
+      "protein": 6.34
+    },
+    "zero": false,
+    "portion": {
+      "label": "Reihe (¼ Tafel)",
+      "grams": 25
+    },
+    "aliases": [
+      "Milchschokolade",
+      "Schokolade"
+    ],
+    "blsName": "Vollmilchschokolade"
+  },
+  {
+    "code": "S560000",
+    "name": "Zartbitterschokolade",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 534.0,
+      "satFat": 19.42,
+      "sugar": 46.9,
+      "protein": 6.62
+    },
+    "zero": false,
+    "portion": {
+      "label": "Reihe (¼ Tafel)",
+      "grams": 25
+    },
+    "aliases": [
+      "Zartbitterschokolade",
+      "dunkle Schokolade",
+      "Schokolade"
+    ],
+    "blsName": "Zartbitter-/Halbbitterschokolade"
+  },
+  {
+    "code": "S361000",
+    "name": "Fruchtgummi (Gummibärchen)",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 312.0,
+      "satFat": 0.0,
+      "sugar": 56.7,
+      "protein": 4.8
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 25
+    },
+    "aliases": [
+      "Gummibärchen",
+      "Fruchtgummi"
+    ],
+    "blsName": "Fruchtgummi (Gummibonbon)"
+  },
+  {
+    "code": "D630400",
+    "name": "Butterkekse",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 456.0,
+      "satFat": 9.923,
+      "sugar": 27.06,
+      "protein": 7.54
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 6
+    },
+    "aliases": [
+      "Butterkekse",
+      "Kekse"
+    ],
+    "blsName": "Butterkekse/Butterplätzchen (Mürbeteig)"
+  },
+  {
+    "code": "S830000",
+    "name": "Müsliriegel",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 428.0,
+      "satFat": 4.3,
+      "sugar": 18.7,
+      "protein": 8.4
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 25
+    },
+    "aliases": [
+      "Müsliriegel"
+    ],
+    "blsName": "Müsli-Riegel"
+  },
+  {
+    "code": "K280100",
+    "name": "Kartoffelchips",
+    "category": "Süßes und Snacks",
+    "per100": {
+      "kcal": 526.0,
+      "satFat": 2.865,
+      "sugar": 1.53,
+      "protein": 5.5
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 30
+    },
+    "aliases": [
+      "Chips",
+      "Kartoffelchips"
+    ],
+    "blsName": "Kartoffelchips/Stapelchips, diverse Sorten"
+  },
+  {
+    "code": "X469753",
+    "name": "Chili con carne",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 158.0,
+      "satFat": 2.7,
+      "sugar": 3.1,
+      "protein": 9.9
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teller",
+      "grams": 350
+    },
+    "aliases": [
+      "Chili con carne",
+      "Chili"
+    ],
+    "blsName": "Chili con carne (mit Rinderhackfleisch)"
+  },
+  {
+    "code": "X740433",
+    "name": "Nudeln mit Bolognese",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 164.0,
+      "satFat": 2.5,
+      "sugar": 1.6,
+      "protein": 8.3
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teller",
+      "grams": 400
+    },
+    "aliases": [
+      "Spaghetti Bolognese",
+      "Nudeln Bolognese",
+      "Pasta Bolognese"
+    ],
+    "blsName": "Eierteigwaren mit Bologneser Sauce"
+  },
+  {
+    "code": "X730033",
+    "name": "Lasagne",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 197.0,
+      "satFat": 4.5,
+      "sugar": 3.1,
+      "protein": 9.69
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 350
+    },
+    "aliases": [
+      "Lasagne"
+    ],
+    "blsName": "Lasagne al forno, Teigwaren geschichtet mit Bechamel- und Bologneser Sauce, mit Käse überbacken"
+  },
+  {
+    "code": "X912033",
+    "name": "Pizza Margherita",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 238.0,
+      "satFat": 4.18,
+      "sugar": 1.6,
+      "protein": 7.77
+    },
+    "zero": false,
+    "portion": {
+      "label": "Pizza (ganz)",
+      "grams": 350
+    },
+    "aliases": [
+      "Pizza",
+      "Pizza Margherita"
+    ],
+    "blsName": "Pizza Margherita (mit Tomatensauce, Mozzarella)"
+  },
+  {
+    "code": "Y1A1000",
+    "name": "Rindergulasch (Gericht)",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 124.0,
+      "satFat": 1.7,
+      "sugar": 3.6,
+      "protein": 12.95
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 250
+    },
+    "aliases": [
+      "Gulasch",
+      "Rindergulasch"
+    ],
+    "blsName": "Gulasch (mit Rindfleisch)"
+  },
+  {
+    "code": "X461913",
+    "name": "Linseneintopf",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 122.0,
+      "satFat": 0.3,
+      "sugar": 1.7,
+      "protein": 6.84
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teller",
+      "grams": 350
+    },
+    "aliases": [
+      "Linseneintopf",
+      "Linsensuppe"
+    ],
+    "blsName": "Linsen-Eintopf mit Suppengemüse und Kartoffeln"
+  },
+  {
+    "code": "X416713",
+    "name": "Gemüsesuppe",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 25.0,
+      "satFat": 0.1,
+      "sugar": 1.7,
+      "protein": 0.9
+    },
+    "zero": false,
+    "portion": {
+      "label": "Teller",
+      "grams": 300
+    },
+    "aliases": [
+      "Gemüsesuppe"
+    ],
+    "blsName": "Gemüsesuppe"
+  },
+  {
+    "code": "Y036122",
+    "name": "Frikadellen",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 269.0,
+      "satFat": 5.62,
+      "sugar": 0.88,
+      "protein": 18.65
+    },
+    "zero": false,
+    "portion": {
+      "label": "Stück",
+      "grams": 80
+    },
+    "aliases": [
+      "Frikadelle",
+      "Bulette",
+      "Fleischpflanzerl",
+      "Fleischküchle"
+    ],
+    "blsName": "Frikadellen gebraten"
+  },
+  {
+    "code": "X850123",
+    "name": "Risotto",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 153.0,
+      "satFat": 0.4,
+      "sugar": 0.98,
+      "protein": 2.87
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 300
+    },
+    "aliases": [
+      "Risotto"
+    ],
+    "blsName": "Risotto gedünstet mit Gemüsebrühe"
+  },
+  {
+    "code": "X518233",
+    "name": "Gebratenes Gemüse",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 59.0,
+      "satFat": 0.1,
+      "sugar": 5.3,
+      "protein": 2.2
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 200
+    },
+    "aliases": [
+      "Gemüsepfanne",
+      "Pfannengemüse",
+      "gebratenes Gemüse"
+    ],
+    "blsName": "Gemüsemischung gebraten"
+  },
+  {
+    "code": "X640053",
+    "name": "Kartoffelgratin",
+    "category": "Gerichte",
+    "per100": {
+      "kcal": 128.0,
+      "satFat": 3.01,
+      "sugar": 1.75,
+      "protein": 3.42
+    },
+    "zero": false,
+    "portion": {
+      "label": "Portion",
+      "grams": 250
+    },
+    "aliases": [
+      "Kartoffelgratin",
+      "Gratin"
+    ],
+    "blsName": "Kartoffelgratin"
   }
 ]

@@ -6,11 +6,16 @@ und Gewicht. Alle Daten bleiben lokal in IndexedDB: kein Konto, Backend, Trackin
 ## Funktionsumfang
 
 Der verbindliche MVP aus dem [Umsetzungskonzept](docs/konzept/00-uebersicht.md) (AP0–AP11) ist
-implementiert:
+implementiert, ergänzt um Schnellerfassung und eine erweiterte Basisliste (AP12):
 
 - Profil mit berechneten und unabhängig überschreibbaren Tages-/Wochenbudgets.
-- 63 kuratierte BLS-4.0-Lebensmittel, eigene Lebensmittel, Favoriten, zuletzt verwendete
-  Lebensmittel und wiederverwendbare Portionen.
+- 201 kuratierte BLS-4.0-Lebensmittel in 18 Kategorien (inkl. gegarter Formen, Hackfleisch,
+  Pflanzendrinks, Brot, Saucen und fertiger Gerichte), eigene Lebensmittel, Favoriten, zuletzt
+  verwendete Lebensmittel und wiederverwendbare Portionen.
+- Fehlertolerante Suche mit Alltagsnamen/Synonymen (z. B. Nudeln, Hafermilch, Hack), eigenen
+  Suchbegriffen, Pluralformen und einfachen Tippfehlern.
+- Rezepte aus mehreren Zutaten mit Punkten pro Portion, Mahlzeit-Vorlagen, eigene Übersicht
+  „Rezepte & Vorlagen“, „Vom Vortag übernehmen“, „Speichern und weiter“ und Vorschlag der zuletzt verwendeten Menge.
 - Datum und Mahlzeiten, Live-Punkte, Einträge bearbeiten/löschen, historische Lebensmittel-Snapshots.
 - Tagesstatus und getrennte Wochenextras, begrenzte Tagesreste, rückwirkende Neuberechnung.
 - Aktivitäten ohne Budgetanrechnung; Gewichtsverlauf mit Diagramm, Tabelle und Veränderungswerten.
@@ -42,6 +47,34 @@ Basisdaten. Anschließend funktioniert auch ein Neustart offline. Bei Bereitstel
 localhost ist **HTTPS** erforderlich. Den Inhalt von `dist/` am Webserver-Wurzelpfad ausliefern.
 Updates werden nach Schließen aller App-Tabs und erneutem Öffnen aktiv, ohne Nutzerdaten zu löschen.
 
+### Auf dem Smartphone im WLAN testen
+
+Rechner und Smartphone müssen im selben WLAN sein. Am einfachsten mit dem Skript (PowerShell 7
+`pwsh` unter Windows, macOS oder Linux; Windows PowerShell 5.1 geht ebenfalls):
+
+```powershell
+./Run.ps1              # installiert bei Bedarf Abhängigkeiten, baut und startet die Vorschau
+./Run.ps1 -Port 5000   # anderer Port
+./Run.ps1 -SkipBuild   # vorhandenen Build in dist/ verwenden
+```
+
+Falls Windows die Ausführung blockiert: `powershell -ExecutionPolicy Bypass -File .\Run.ps1`.
+Manuell geht dasselbe mit:
+
+```sh
+npm run build
+npm run preview:lan    # = vite preview --host 0.0.0.0 --port 4173
+```
+
+Dann auf dem Smartphone `http://<IP-des-Rechners>:4173` öffnen (das Skript zeigt die Adressen an).
+Die Firewall-Abfrage für Node.js beim ersten Start erlauben. Einschränkungen dieses Modus:
+
+- Über `http://` mit LAN-Adresse ist die Seite **kein sicherer Kontext**. Der Service Worker
+  startet deshalb nicht: Die App läuft vollständig, aber **nicht offline**. Für Offline-Betrieb und
+  Dauernutzung über HTTPS bereitstellen (z. B. GitHub Pages, Netlify, Cloudflare Pages).
+- Daten liegen pro Adresse getrennt im Browser des Smartphones. Beim Wechsel von Adresse oder
+  Hosting mit **Daten exportieren/importieren** umziehen.
+
 ## Tests und Qualität
 
 ```sh
@@ -56,21 +89,23 @@ npm run test:e2e         # Desktop und mobile Chromium-Emulation
 Die [CI](.github/workflows/ci.yml) führt dieselben Prüfungen bei Push und Pull Request aus.
 Die Abdeckung wird unter `coverage/` erzeugt: **100 % Zweig-/Zeilenabdeckung der Domäne** und
 **mindestens 80 % Gesamtzeilenabdeckung** sind verpflichtende, automatisch geprüfte Schwellen.
-Playwright prüft E1–E6 aus dem Testkonzept sowie Tastaturfokus und mobiles Layout, gegen den
+Playwright prüft E1–E9 aus dem Testkonzept sowie Tastaturfokus und mobiles Layout, gegen den
 Produktionsbuild mit echtem Service Worker. Mobile Emulation ersetzt keinen Test auf echten
 iOS-/Android-Geräten.
 
 ## Daten und Sicherungen
 
-- IndexedDB-Schema **2**: sieben Entity-Stores; Migration von Schema 1 ergänzt Indizes ohne Datenverlust.
+- IndexedDB-Schema **3**: acht Entity-Stores (inkl. `mealTemplates`); Migrationen von Schema 1/2
+  ergänzen Indizes und den Vorlagen-Store ohne Datenverlust.
   Favoriten werden im Repository-Datenbestand gefiltert, weil IndexedDB keine booleschen Indexschlüssel unterstützt.
 - Jede Änderung und jeder Import ersetzt den Datenbestand in **einer Transaktion**. Auch bei
   synchronen Schreibfehlern erfolgt ein Rollback. Konflikte durch einen anderen Tab werden
   gemeldet, statt dessen Änderungen zu überschreiben.
 - Abgeleitete Budgets und Wochenwerte werden nicht gespeichert. Änderungen am Profil wirken auch
   auf historische Budgetanzeigen; Gewichtsaufzeichnungen ändern das Profilbudget nicht automatisch.
-- Sicherungen enthalten `schemaVersion`, `exportedAt`, Profil, Lebensmittel, Portionen, Tagebuch,
-  Aktivitäten, Gewicht **und `appMeta`** (einschließlich Seed-Version).
+- Sicherungen enthalten `schemaVersion`, `exportedAt`, Profil, Lebensmittel (inkl. Rezepte und
+  eigener Suchbegriffe), Portionen, Tagebuch, Aktivitäten, Gewicht, Mahlzeit-Vorlagen **und
+  `appMeta`** (einschließlich Seed-Version). Sicherungen der Version 2 werden beim Import migriert.
   Ohne Profil steht `profile` auf `null`. Unbekannte Versionen, fehlende Felder, doppelte IDs,
   unzulässige Werte, inkonsistente Punkte und defekte Portionsverweise werden abgewiesen.
 - Lebensmittel in historischen Einträgen bleiben dank Snapshot auch nach Änderung/Löschung gültig.
@@ -92,11 +127,33 @@ Die [versionierte Seed-Datei](src/data/seed/foods.json) ist eine kuratierte Ausw
 `PROT625` werden unverändert übernommen, identifiziert über den jeweiligen BLS-Code.
 SHA-256 des verwendeten Archivs:
 `12b7a6ba62807ec9b301eb276f897dc85f99b2292311618dec3749a12d984c91`.
+Die Erweiterung (Seed-Versionen 2 und 3) stammt aus derselben Arbeitsmappe über OpenAgrar
+(`openagrar_mods_00112643`, SHA-256 der Arbeitsmappe
+`524bbefe25b691f5cb3de7a9f3e27fa2967aebfeabf217d99414ba7806e78c60`); alle 201 Einträge stimmen mit
+ihr überein.
 
-Änderungen gegenüber der Datenquelle: Auswahl, Kategorien, eigenständige 0-Punkte-Zuordnung und
-kuratierte Standardportionen. Portionsrichtwerte stammen aus Konzept 05.3.2:
+Die Seed-Datei wird mit [`scripts/build-food-seed.py`](scripts/build-food-seed.py) erzeugt
+(Python 3 mit `openpyxl`):
+
+```sh
+python3 scripts/build-food-seed.py /pfad/zu/BLS_4_0_Daten_2025_DE.xlsx
+npx prettier --write src/data/seed/foods.json
+```
+
+Das Skript enthält Auswahl, Kategorien, Standardportionen, 0-Punkte-Zuordnung, Suchbegriffe und
+alltagstaugliche Anzeigenamen (z. B. „Nudeln, gekocht“ statt „Teigwaren eifrei, gekocht“). Die
+BLS-Bezeichnung bleibt als `blsName` erhalten und ist in der App weiterhin suchbar.
+Bestehende Einträge bleiben unverändert, neue BLS-Codes werden ergänzt. Bei Änderungen
+`seedVersion` in `src/data/seed/index.ts` erhöhen; bestehende Installationen erhalten dann
+fehlende Basislebensmittel (ab Seed-Version 3 auch neue Anzeigenamen für unveränderte Einträge; aktuell Version 4),
+ohne eigene Änderungen zu verlieren.
+
+Änderungen gegenüber der Datenquelle: Auswahl, Kategorien, eigenständige 0-Punkte-Zuordnung,
+alltagstaugliche Anzeigenamen und kuratierte Standardportionen. Portionsrichtwerte stammen aus Konzept 05.3.2:
 Scheibe Brot 45 g, Ei 55 g, Apfel 150 g, Esslöffel Öl 10 g, Becher Joghurt 150 g.
-Für Haferflocken sind 50 g vorausgewählt, sonst 100 g als direkt anpassbare Ausgangsmenge.
+Für Haferflocken sind 50 g vorausgewählt; weitere Richtwerte (z. B. Glas Getränk 200 ml,
+Beilagenportion gegart 200 g, Dose Hülsenfrüchte 250 g abgetropft) sind im Generator-Skript
+dokumentiert, sonst gelten 100 g als direkt anpassbare Ausgangsmenge.
 Dies sind **keine behaupteten BLS-Haushaltsmaße**.
 Eigene Portionen können ergänzt und als Standard festgelegt werden; ohne belastbare Umrechnungsmenge
 bleibt eine Portion nicht auswählbar.
@@ -104,7 +161,7 @@ bleibt eine Portion nicht auswählbar.
 BLS-Nährwerte sind je **100 g**, auch bei Flüssigkeiten. Es wird keine Dichte geschätzt;
 Milliliter stehen bei entsprechend angelegten eigenen Lebensmitteln zur Verfügung.
 Die Rechenbeispiele des Konzepts sind separate Testfixtures; echte BLS-Werte können davon abweichen
-(z. B. Hafer Flocken: 348 kcal/100 g, 50 g ergeben 5 Punkte). Magerquark wird als Formelbeispiel
+(z. B. Haferflocken: 348 kcal/100 g, 50 g ergeben 5 Punkte). Magerquark wird als Formelbeispiel
 ohne 0-Punkte-Ausnahme getestet, in der Basisliste aber gemäß der kuratierten Regel mit 0 bewertet.
 
 ## Architektur

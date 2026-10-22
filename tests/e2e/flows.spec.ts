@@ -25,11 +25,26 @@ async function profile(page: Page) {
 async function addOats(page: Page) {
   await page.getByRole('button', { name: '+ Hinzufügen' }).click();
   await page
-    .getByRole('button', { name: 'Hafer Flocken auswählen', exact: true })
+    .getByRole('button', { name: 'Haferflocken auswählen', exact: true })
     .click();
   await page.getByRole('button', { name: 'Eintrag speichern' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
 }
+
+test('E9 saving works without crypto.randomUUID (HTTP via LAN, e.g. iPhone)', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    // Insecure contexts (plain HTTP on a LAN address) do not expose randomUUID.
+    Reflect.deleteProperty(Crypto.prototype, 'randomUUID');
+  });
+  await page.reload();
+  expect(await page.evaluate(() => 'randomUUID' in crypto)).toBe(false);
+  await addOats(page);
+  await expect(
+    page.getByRole('button', { name: 'Haferflocken bearbeiten' }),
+  ).toBeVisible();
+});
 
 test('E1 profile → three-interaction capture → persistent dashboard', async ({
   page,
@@ -42,7 +57,7 @@ test('E1 profile → three-interaction capture → persistent dashboard', async 
     'Verbleibend19TagespunkteTagesbudget24Verbraucht5',
   );
   await expect(
-    page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }),
+    page.getByRole('button', { name: 'Haferflocken bearbeiten' }),
   ).toBeVisible();
   const weekly = await page
     .getByRole('region', { name: 'Wochenextras' })
@@ -52,14 +67,14 @@ test('E1 profile → three-interaction capture → persistent dashboard', async 
   );
   await page.reload();
   await expect(
-    page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }),
+    page.getByRole('button', { name: 'Haferflocken bearbeiten' }),
   ).toBeVisible();
 });
 
 test('E2 edit and delete → correct day and week totals', async ({ page }) => {
   await profile(page);
   await addOats(page);
-  await page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }).click();
+  await page.getByRole('button', { name: 'Haferflocken bearbeiten' }).click();
   await page.getByLabel('Menge', { exact: true }).fill('1000');
   await page.getByRole('button', { name: 'Eintrag speichern' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -69,7 +84,7 @@ test('E2 edit and delete → correct day and week totals', async ({ page }) => {
   await expect(
     page.getByRole('region', { name: 'Wochenextras' }),
   ).toContainText('Gesamt46Verbraucht74Verbleibend-28');
-  await page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }).click();
+  await page.getByRole('button', { name: 'Haferflocken bearbeiten' }).click();
   await page.getByRole('button', { name: 'Eintrag löschen' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(page.getByText(/Noch keine Einträge am/)).toBeVisible();
@@ -88,7 +103,7 @@ test('E3 retroactive entry recalculates weekly carryover', async ({ page }) => {
   await page.getByLabel('Tag auswählen').fill('2026-10-19');
   await page.getByRole('button', { name: '+ Hinzufügen' }).click();
   await page
-    .getByRole('button', { name: 'Hafer Flocken auswählen', exact: true })
+    .getByRole('button', { name: 'Haferflocken auswählen', exact: true })
     .click();
   await page
     .getByRole('combobox', { name: 'Einheit', exact: true })
@@ -97,7 +112,7 @@ test('E3 retroactive entry recalculates weekly carryover', async ({ page }) => {
   await page.getByRole('button', { name: 'Eintrag speichern' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(extras).toContainText('Davon 11 übertragene Tagesreste');
-  await page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }).click();
+  await page.getByRole('button', { name: 'Haferflocken bearbeiten' }).click();
   await page.getByRole('button', { name: 'Eintrag löschen' }).click();
   await expect(extras).toContainText('Davon 12 übertragene Tagesreste');
   await page.getByRole('button', { name: 'Heute', exact: true }).click();
@@ -125,12 +140,12 @@ test('E4 PWA starts, saves and reloads fully offline', async ({
   await context.setOffline(true);
   await page.reload();
   await expect(
-    page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }),
+    page.getByRole('button', { name: 'Haferflocken bearbeiten' }),
   ).toBeVisible();
   await addOats(page);
   await page.reload();
   await expect(
-    page.getByRole('button', { name: 'Hafer Flocken bearbeiten' }),
+    page.getByRole('button', { name: 'Haferflocken bearbeiten' }),
   ).toHaveCount(2);
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
@@ -140,6 +155,13 @@ test('E5 full export → clear local data → import identical state', async ({
 }) => {
   await profile(page);
   await addOats(page);
+  await page
+    .getByRole('button', { name: 'Mittagessen als Vorlage speichern' })
+    .click();
+  await page
+    .getByRole('button', { name: 'Vorlage speichern', exact: true })
+    .click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('button', { name: 'Gewicht', exact: true }).click();
   await page.getByLabel('Gewicht (kg)', { exact: true }).fill('79.5');
   await page.getByRole('button', { name: 'Gewicht speichern' }).click();
@@ -156,9 +178,10 @@ test('E5 full export → clear local data → import identical state', async ({
   const download = await downloadPromise;
   const buffer = await readFile((await download.path())!);
   const original = JSON.parse(buffer.toString());
+  expect(original.mealTemplates).toHaveLength(1);
   await page.evaluate(async () => {
     await new Promise<void>((resolve, reject) => {
-      const request = indexedDB.open('trackyourself', 2);
+      const request = indexedDB.open('trackyourself');
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
         const db = request.result;
@@ -247,4 +270,163 @@ test('keyboard capture and responsive layout have no horizontal overflow', async
       () => document.documentElement.scrollWidth <= window.innerWidth,
     ),
   ).toBe(true);
+});
+
+test('E7 synonym search, multi-add, meal template and previous day', async ({
+  page,
+}) => {
+  await profile(page);
+  await page.getByRole('button', { name: '+ Hinzufügen' }).click();
+  const search = page.getByLabel('Lebensmittel suchen');
+  const firstHit = page
+    .getByRole('dialog')
+    .locator('button.food-select strong')
+    .first();
+  for (const [query, hit] of [
+    ['Nudeln', 'Nudeln, gekocht'],
+    ['Kartoffeln', 'Kartoffeln, gekocht'],
+    ['Hackfleisch', 'hackfleisch'],
+    ['Hafermilch', 'Hafermilch (Haferdrink), ungesüßt'],
+  ]) {
+    await search.fill(query);
+    await expect(firstHit).toContainText(hit);
+  }
+  await page.getByRole('button', { name: 'Schließen' }).click();
+  await page.getByRole('button', { name: 'Zu Frühstück hinzufügen' }).click();
+  await search.fill('Haferflocken');
+  await page
+    .getByRole('button', { name: 'Haferflocken auswählen', exact: true })
+    .click();
+  await expect(page.getByLabel('Mahlzeit')).toHaveValue('breakfast');
+  await page.getByRole('button', { name: 'Speichern und weiter' }).click();
+  await expect(page.getByRole('status')).toHaveText(
+    'Haferflocken zu Frühstück hinzugefügt.',
+  );
+  await search.fill('Hafermilch');
+  await page
+    .getByRole('button', {
+      name: 'Hafermilch (Haferdrink), ungesüßt auswählen',
+    })
+    .click();
+  await expect(page.getByLabel('Mahlzeit')).toHaveValue('breakfast');
+  await page.getByRole('button', { name: 'Eintrag speichern' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  const breakfast = page.getByRole('region', { name: 'Frühstück' });
+  await expect(
+    breakfast.getByRole('button', { name: /bearbeiten$/ }),
+  ).toHaveCount(2);
+  const points = await page
+    .getByRole('region', { name: 'Tagespunkte' })
+    .textContent();
+
+  await page
+    .getByRole('button', { name: 'Frühstück als Vorlage speichern' })
+    .click();
+  await page.getByLabel('Name der Vorlage').fill('Porridge');
+  await page
+    .getByRole('button', { name: 'Vorlage speichern', exact: true })
+    .click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Nächster Tag' }).click();
+  await expect(page.getByLabel('Tag auswählen')).toHaveValue('2026-10-23');
+  await page
+    .getByRole('button', { name: 'Frühstück vom Vortag übernehmen' })
+    .click();
+  await expect(
+    breakfast.getByRole('button', { name: /bearbeiten$/ }),
+  ).toHaveCount(2);
+  await expect(page.getByRole('region', { name: 'Tagespunkte' })).toHaveText(
+    points!,
+  );
+
+  await page.getByRole('button', { name: 'Nächster Tag' }).click();
+  await page.getByRole('button', { name: 'Zu Frühstück hinzufügen' }).click();
+  await page
+    .getByRole('button', { name: 'Vorlage Porridge auswählen' })
+    .click();
+  await expect(page.getByLabel('Mahlzeit')).toHaveValue('breakfast');
+  await page.getByRole('button', { name: 'Vorlage eintragen' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(
+    breakfast.getByRole('button', { name: /bearbeiten$/ }),
+  ).toHaveCount(2);
+  await page.reload();
+  await expect(page.getByLabel('Tag auswählen')).toHaveValue('2026-10-22');
+
+  await page.getByRole('button', { name: 'Nächster Tag' }).click();
+  await page.getByRole('button', { name: 'Rezepte & Vorlagen' }).click();
+  await page
+    .getByRole('button', { name: 'Vorlage Porridge eintragen' })
+    .click();
+  await page.getByRole('button', { name: 'Vorlage eintragen' }).click();
+  await expect(page.getByRole('status')).toHaveText(
+    '„Porridge“ am 23.10.2026 eingetragen.',
+  );
+  await page.getByRole('button', { name: 'Tag', exact: true }).click();
+  await expect(page.getByLabel('Tag auswählen')).toHaveValue('2026-10-23');
+  await expect(
+    breakfast.getByRole('button', { name: /bearbeiten$/ }),
+  ).toHaveCount(4);
+});
+
+test('E8 chili recipe from catalog ingredients is recorded per portion', async ({
+  page,
+}) => {
+  await profile(page);
+  await page.getByRole('button', { name: 'Zu Abendessen hinzufügen' }).click();
+  await page.getByRole('button', { name: 'Rezept anlegen' }).click();
+  const recipe = page.getByRole('dialog', { name: 'Rezept anlegen' });
+  await recipe.getByLabel('Name des Rezepts').fill('Mein Chili');
+  const ingredient = recipe.getByLabel('Zutat suchen');
+  for (const [query, name, grams] of [
+    ['Rinderhack', 'Rinderhackfleisch, roh', '500'],
+    ['Kidneybohnen Dose', 'Kidneybohnen aus der Dose, abgetropft', '400'],
+    ['Zwiebeln', 'Zwiebel', '150'],
+  ]) {
+    await ingredient.fill(query);
+    await recipe
+      .getByRole('button', { name: `${name} als Zutat hinzufügen` })
+      .click();
+    await recipe.getByLabel(`${name}: Menge (g)`).fill(grams);
+  }
+  await recipe.getByLabel('Anzahl Portionen').fill('4');
+  await expect(recipe.getByRole('status')).toContainText(
+    'Gesamt 1.050 g · Portion 262,5 g ·',
+  );
+  const perPortion = Number(
+    /(\d+) Punkte pro Portion/.exec(
+      (await recipe.getByRole('status').textContent())!,
+    )![1],
+  );
+  expect(perPortion).toBeGreaterThan(0);
+  await recipe.getByRole('button', { name: 'Rezept speichern' }).click();
+  await expect(page.getByRole('heading', { name: 'Mein Chili' })).toBeVisible();
+  await expect(page.getByLabel('Mahlzeit')).toHaveValue('dinner');
+  await page.getByRole('button', { name: 'Eintrag speichern' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(
+    page
+      .getByRole('region', { name: 'Abendessen' })
+      .getByRole('button', { name: 'Mein Chili bearbeiten' }),
+  ).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Tagespunkte' })).toContainText(
+    `Verbraucht${perPortion}`,
+  );
+  await page.getByRole('button', { name: '+ Hinzufügen' }).click();
+  await page.getByLabel('Lebensmittel suchen').fill('chili');
+  await expect(
+    page.getByRole('button', { name: 'Mein Chili auswählen' }),
+  ).toContainText('Rezept · 3 Zutaten');
+  await page.getByRole('button', { name: 'Schließen' }).click();
+  await page.getByRole('button', { name: 'Rezepte & Vorlagen' }).click();
+  await expect(page.getByText('Mein Chili')).toBeVisible();
+  await expect(
+    page.getByText(`4 Portionen · 262,5 g · ${perPortion} Punkte pro Portion`),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      'Rinderhackfleisch, roh, Kidneybohnen aus der Dose, abgetropft, Zwiebel',
+    ),
+  ).toBeVisible();
 });

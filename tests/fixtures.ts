@@ -6,6 +6,7 @@ import type {
   WeightEntry,
 } from '../src/domain/types';
 import { foodPoints } from '../src/domain/points';
+import { seedVersion } from '../src/data/seed';
 
 export const stamp = '2026-10-20T10:00:00.000Z';
 export const profile: Profile = {
@@ -55,7 +56,8 @@ export function dataset(): Dataset {
     diaryEntries: [],
     activityEntries: [],
     weightEntries: [],
-    appMeta: { schemaVersion: 2, seededBaseFoodsVersion: 1 },
+    mealTemplates: [],
+    appMeta: { schemaVersion: 3, seededBaseFoodsVersion: seedVersion },
   };
 }
 export function diary(overrides: Partial<DiaryEntry> = {}): DiaryEntry {

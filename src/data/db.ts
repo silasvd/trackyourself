@@ -10,14 +10,15 @@ import type {
   Dataset,
   DiaryEntry,
   Food,
+  MealTemplate,
   Portion,
   Profile,
   WeightEntry,
 } from '../domain/types';
 import { validateDataset } from './validation';
-import { baseSeed, seedVersion } from './seed';
+import { baseBlsNames, baseSeed, seedVersion } from './seed';
 
-export const schemaVersion = 2;
+export const schemaVersion = 3;
 export const databaseName = 'trackyourself';
 interface TrackingDB extends DBSchema {
   profile: { key: string; value: Profile };
@@ -34,6 +35,7 @@ interface TrackingDB extends DBSchema {
     indexes: { date: string };
   };
   weightEntries: { key: string; value: WeightEntry; indexes: { date: string } };
+  mealTemplates: { key: string; value: MealTemplate };
   appMeta: { key: string; value: AppMeta };
 }
 const stores = [
@@ -43,6 +45,7 @@ const stores = [
   'diaryEntries',
   'activityEntries',
   'weightEntries',
+  'mealTemplates',
   'appMeta',
 ] as const;
 
@@ -56,6 +59,7 @@ async function readTransaction(
     diaryEntries,
     activityEntries,
     weightEntries,
+    mealTemplates,
     appMeta,
   ] = await Promise.all([
     tx.objectStore('profile').get('singleton'),
@@ -64,6 +68,7 @@ async function readTransaction(
     tx.objectStore('diaryEntries').getAll(),
     tx.objectStore('activityEntries').getAll(),
     tx.objectStore('weightEntries').getAll(),
+    tx.objectStore('mealTemplates').getAll(),
     tx.objectStore('appMeta').get('meta'),
   ]);
   return validateDataset({
@@ -73,6 +78,7 @@ async function readTransaction(
     diaryEntries,
     activityEntries,
     weightEntries,
+    mealTemplates,
     appMeta: {
       schemaVersion,
       seededBaseFoodsVersion: appMeta?.seededBaseFoodsVersion ?? 0,
@@ -88,6 +94,7 @@ function fingerprint(data: Dataset): string {
     'diaryEntries',
     'activityEntries',
     'weightEntries',
+    'mealTemplates',
   ] as const) {
     normalized[name].sort((a, b) => a.id.localeCompare(b.id));
   }
@@ -128,6 +135,9 @@ export async function openDatabase(name = databaseName) {
         transaction.objectStore('diaryEntries').createIndex('meal', 'meal');
         transaction.objectStore('activityEntries').createIndex('date', 'date');
         transaction.objectStore('weightEntries').createIndex('date', 'date');
+      }
+      if (oldVersion < 3) {
+        db.createObjectStore('mealTemplates', { keyPath: 'id' });
       }
     },
     blocked() {
@@ -173,6 +183,8 @@ export class Repository {
         await tx.objectStore('activityEntries').put(value);
       for (const value of data.weightEntries)
         await tx.objectStore('weightEntries').put(value);
+      for (const value of data.mealTemplates)
+        await tx.objectStore('mealTemplates').put(value);
       await tx.objectStore('appMeta').put(data.appMeta, 'meta');
       await tx.done;
     } catch (error) {
@@ -183,7 +195,7 @@ export class Repository {
 
   async seed(): Promise<void> {
     const tx = this.db.transaction(
-      ['foods', 'portions', 'appMeta'],
+      ['foods', 'portions', 'diaryEntries', 'appMeta'],
       'readwrite',
     );
     try {
@@ -192,13 +204,33 @@ export class Repository {
         await tx.done;
         return;
       }
+      const renamed = new Map<string, { from: string; to: string }>();
       for (const food of baseSeed.foods) {
-        if (!(await tx.objectStore('foods').get(food.id))) {
+        const stored = await tx.objectStore('foods').get(food.id);
+        if (stored) {
+          // Earlier seeds used BLS designations; user-edited names stay untouched.
+          const original = baseBlsNames.get(food.id);
+          if (stored.name === original && original !== food.name) {
+            await tx.objectStore('foods').put({ ...stored, name: food.name });
+            renamed.set(food.id, { from: original, to: food.name });
+          }
+        } else {
           await tx.objectStore('foods').put(food);
           for (const portion of baseSeed.portions.filter(
             (value) => value.foodId === food.id,
           )) {
             await tx.objectStore('portions').put(portion);
+          }
+        }
+      }
+      if (renamed.size) {
+        for (const entry of await tx.objectStore('diaryEntries').getAll()) {
+          const name = renamed.get(entry.foodId);
+          if (name?.from === entry.foodSnapshot.name) {
+            await tx.objectStore('diaryEntries').put({
+              ...entry,
+              foodSnapshot: { ...entry.foodSnapshot, name: name.to },
+            });
           }
         }
       }

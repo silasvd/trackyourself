@@ -4,14 +4,14 @@ import { validateDataset } from './validation';
 import type { Repository } from './db';
 
 const header = z.object({
-  schemaVersion: z.literal(2),
+  schemaVersion: z.union([z.literal(2), z.literal(3)]),
   exportedAt: z.iso.datetime(),
 });
 
 export function serializeBackup(data: Dataset, now: Date): string {
   return JSON.stringify(
     {
-      schemaVersion: 2,
+      schemaVersion: 3,
       exportedAt: now.toISOString(),
       ...validateDataset(data),
     },
@@ -27,7 +27,8 @@ export function parseBackup(text: string): Dataset {
   } catch {
     throw new Error('Die Datei enthält kein gültiges JSON.');
   }
-  if (!header.safeParse(value).success) {
+  const parsed = header.safeParse(value);
+  if (!parsed.success) {
     throw new Error(
       'Unbekannte Sicherungsversion oder ungültiger Exportzeitpunkt.',
     );
@@ -35,7 +36,17 @@ export function parseBackup(text: string): Dataset {
   const object = z.record(z.string(), z.unknown()).parse(value);
   delete object.schemaVersion;
   delete object.exportedAt;
+  if (parsed.data.schemaVersion === 2) migrateV2(object);
   return validateDataset(object);
+}
+
+// Version 2 backups predate meal templates; everything else is unchanged.
+function migrateV2(object: Record<string, unknown>): void {
+  object.mealTemplates ??= [];
+  const meta = z.record(z.string(), z.unknown()).safeParse(object.appMeta);
+  if (meta.success && meta.data.schemaVersion === 2) {
+    object.appMeta = { ...meta.data, schemaVersion: 3 };
+  }
 }
 
 export async function restoreBackup(

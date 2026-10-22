@@ -1,7 +1,9 @@
+import { newId } from '../../app/id';
 import { useState } from 'react';
 import type { Dataset, DiaryEntry, Food, Meal } from '../../domain/types';
 import { foodPoints } from '../../domain/points';
 import { portionAmount } from '../../domain/portions';
+import { lastEntryFor, markUsed, snapshotOf } from '../../domain/templates';
 import { meals, number, suggestedMeal } from '../../app/format';
 import { Field } from './Form';
 
@@ -32,6 +34,8 @@ export function EntryForm({
   save,
   busy,
   onClose,
+  initialMeal,
+  onContinue,
 }: {
   food?: Food;
   entry?: DiaryEntry;
@@ -40,6 +44,8 @@ export function EntryForm({
   save: (next: Dataset) => Promise<boolean>;
   busy: boolean;
   onClose: () => void;
+  initialMeal?: Meal;
+  onContinue?: (meal: Meal, name: string) => void;
 }) {
   const snapshot = entry?.foodSnapshot ?? food!;
   const available = data.portions.filter(
@@ -48,59 +54,75 @@ export function EntryForm({
   const defaultPortion = available.find(
     (portion) => portion.id === food?.defaultPortionId,
   );
-  const [unit, setUnit] = useState(entry ? '' : (defaultPortion?.id ?? ''));
-  const [quantity, setQuantity] = useState(
-    entry?.amount ?? (defaultPortion ? 1 : 100),
-  );
+  const [suggestion] = useState(() => {
+    if (entry) return { unit: '', quantity: entry.amount, previous: false };
+    const last = lastEntryFor(food!.id, data.diaryEntries);
+    if (!last)
+      return {
+        unit: defaultPortion?.id ?? '',
+        quantity: defaultPortion ? 1 : 100,
+        previous: false,
+      };
+    const portion = available.find(
+      (value) => value.label === last.portionLabel,
+    );
+    return portion
+      ? {
+          unit: portion.id,
+          quantity: Math.round((last.amount / portion.grams!) * 100) / 100,
+          previous: true,
+        }
+      : { unit: '', quantity: last.amount, previous: true };
+  });
+  const [unit, setUnit] = useState(suggestion.unit);
+  const [quantity, setQuantity] = useState(suggestion.quantity);
   const [meal, setMeal] = useState<Meal>(
-    entry?.meal ?? suggestedMeal(new Date().getHours()),
+    entry?.meal ?? initialMeal ?? suggestedMeal(new Date().getHours()),
   );
   const selectedPortion = available.find((portion) => portion.id === unit);
   const amount = selectedPortion
     ? portionAmount(selectedPortion, quantity)!
     : quantity;
   const valid = Number.isFinite(amount) && amount >= 0;
+  async function submit(continuing: boolean) {
+    const stamp = new Date().toISOString();
+    const next: DiaryEntry = {
+      id: entry?.id ?? newId(),
+      date,
+      meal,
+      foodId: entry?.foodId ?? food!.id,
+      foodSnapshot: snapshotOf(snapshot),
+      amount,
+      portionLabel: selectedPortion?.label ?? null,
+      points: foodPoints(snapshot, amount).points,
+      createdAt: entry?.createdAt ?? stamp,
+      updatedAt: stamp,
+    };
+    if (
+      await save({
+        ...data,
+        diaryEntries: [
+          ...data.diaryEntries.filter((value) => value.id !== next.id),
+          next,
+        ],
+        foods: markUsed(data.foods, [next.foodId], stamp),
+      })
+    ) {
+      if (continuing && onContinue) onContinue(meal, snapshot.name);
+      else onClose();
+    }
+  }
   return (
     <form
-      onSubmit={async (event) => {
+      onSubmit={(event) => {
         event.preventDefault();
-        const stamp = new Date().toISOString();
-        const next: DiaryEntry = {
-          id: entry?.id ?? crypto.randomUUID(),
-          date,
-          meal,
-          foodId: entry?.foodId ?? food!.id,
-          foodSnapshot: {
-            name: snapshot.name,
-            per100: { ...snapshot.per100 },
-            basis: snapshot.basis,
-            countsAsZero: snapshot.countsAsZero,
-            dataQuality: snapshot.dataQuality,
-          },
-          amount,
-          portionLabel: selectedPortion?.label ?? null,
-          points: foodPoints(snapshot, amount).points,
-          createdAt: entry?.createdAt ?? stamp,
-          updatedAt: stamp,
-        };
-        if (
-          await save({
-            ...data,
-            diaryEntries: [
-              ...data.diaryEntries.filter((value) => value.id !== next.id),
-              next,
-            ],
-            foods: data.foods.map((value) =>
-              value.id === next.foodId
-                ? { ...value, lastUsedAt: stamp }
-                : value,
-            ),
-          })
-        )
-          onClose();
+        void submit(false);
       }}
     >
       <h3>{snapshot.name}</h3>
+      {suggestion.previous && (
+        <p className="hint">Menge wie bei deinem letzten Eintrag.</p>
+      )}
       <label>
         Mahlzeit
         <select
@@ -163,6 +185,15 @@ export function EntryForm({
         <button className="primary" disabled={busy || !valid}>
           Eintrag speichern
         </button>
+        {onContinue && (
+          <button
+            type="button"
+            disabled={busy || !valid}
+            onClick={() => void submit(true)}
+          >
+            Speichern und weiter
+          </button>
+        )}
         {entry && (
           <button
             type="button"

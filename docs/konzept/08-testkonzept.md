@@ -91,7 +91,8 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
 | PT1 | Alltagseinheit mit `grams` (1 Scheibe = 45 g), 2 Scheiben | Menge **90 g** |
 | PT2 | Alltagseinheit ohne `grams` | Umrechnung **nicht möglich**; nur g/ml-Eingabe |
 | PT3 | eigene Portion anlegen und wiederverwenden | Portion bleibt erhalten |
-| PT4 | Standardportion vorausgewählt | korrekt im Formular gesetzt |
+| PT4 | Standardportion vorausgewählt (ohne Historie) | korrekt im Formular gesetzt |
+| PT5 | Lebensmittel erneut wählen | zuletzt verwendete Menge und Einheit vorausgewählt |
 
 ## 8.9 Konkrete Testfälle – Persistenz & Export/Import (Dok. 03/06)
 
@@ -103,7 +104,43 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
 | D4 | Import einer fehlerhaften Datei | Abweisung, bestehende Daten unverändert |
 | D5 | Seed beim ersten Start | Basisliste eingespielt, `seededBaseFoodsVersion` gesetzt |
 | D6 | Seed bei bereits vorhandener aktueller Version | kein erneutes/duplizierendes Einspielen |
-| D7 | Schemamigration (Version n→n+1) | Daten erhalten, keine Verluste |
+| D7 | Schemamigration (DB v1→v3, v2→v3; Sicherung v2→v3) | Daten erhalten, Store `mealTemplates` ergänzt |
+| D8 | Seed-Version 1 → 2 | fehlende Basislebensmittel ergänzt, bestehende/geänderte unverändert |
+| D10 | Seed-Version 2 → 3 und 3 → 4 | unveränderte Basisnamen und passende Snapshots umbenannt; eigene Namen, Punkte unverändert; als Version 3 markierte Daten mit BLS-Namen werden nachträglich umbenannt |
+| D9 | Validierung Rezepte/Vorlagen/Suchbegriffe | unbekannte/verschachtelte Zutaten, leere Vorlagen und leere Begriffe abgewiesen |
+
+## 8.9a Konkrete Testfälle – Suche, Basisliste, Rezepte, Vorlagen (Dok. 05)
+
+| # | Szenario | Erwartung |
+| --- | --- | --- |
+| S1 | Groß-/Kleinschreibung, Umlaute, ß, Akzente, Satzzeichen | werden ignoriert (ü = ue, ß = ss) |
+| S2 | Suche nach Synonym der Basisliste bzw. eigenem Suchbegriff | Lebensmittel gefunden |
+| S3 | Plural/Flexion („Kartoffel", „Bohne") | gefunden über Wortstamm |
+| S4 | mehrere Wörter, beliebige Reihenfolge, Leerzeichen | alle Wörter müssen passen |
+| S5 | ein Tippfehler ab 5 Zeichen („Brokoli") | gefunden; kurze Wörter nicht |
+| S6 | Eingaben < 3 Zeichen | nur am Wortanfang |
+| S7 | Rangfolge exakter Name → Synonym → Präfixe → Wortanfänge → Rest | wie Dok. 05, 5.2.3 |
+| S8 | Gleichstand | Favoriten, dann kürzerer Name, dann alphabetisch |
+| S9 | leere Suche | Favoriten zuerst, dann alphabetisch |
+| C1 | Alltagsbegriffe auf echter Basisliste (Nudeln, Kartoffeln, Hafermilch, Hackfleisch …) | sinnvoller erster Treffer (z. B. Nudeln → „Nudeln, gekocht") |
+| C2 | Zubereitete Formen und Gerichte | gekochte Varianten, Chili con carne u. a. vorhanden |
+| C3 | jedes Basislebensmittel | über eigenen Namen auffindbar, Portion mit Gewicht |
+| C4 | jedes Basislebensmittel | hat Suchbegriffe |
+| C5 | Anzeigenamen | eindeutig, alltagstauglich; BLS-Bezeichnung weiterhin suchbar |
+| R1 | Gesamtgewicht | Summe der Zutaten bzw. Gewicht fertig gekocht |
+| R2 | 0‑Punkte-Zutat | zählt Gewicht, keine Punkte |
+| R3 | fehlender Nährwert einer zählenden Zutat | Rezeptwert bleibt unbekannt |
+| R4 | Portionen | „Portion (1/n)" Standard, „Ganzes Rezept" |
+| R5 | Punkte einer Portion | entsprechen dem Zutatenanteil |
+| R6 | Zutat ändert sich | Rezepte neu berechnet, andere Lebensmittel unverändert |
+| R7 | Verwendungsprüfung | Rezepte mit einer Zutat ermittelt |
+| T1 | Vorlage aus Mahlzeit | gelöschte Lebensmittel übersprungen |
+| T2 | Vorlage eintragen | aktuelle Nährwerte, neu berechnete Punkte |
+| T3 | Vom Vortag übernehmen | Snapshot und Punkte unverändert |
+| T4 | Mengenvorschlag | zuletzt gespeicherter Eintrag des Lebensmittels |
+| T5 | „zuletzt verwendet" | nur verwendete Lebensmittel markiert |
+| T6 | Punkte einer Vorlage | Summe mit aktuellen Nährwerten, gelöschte Lebensmittel zählen 0 |
+| T7 | Lebensmittel/Rezept löschen | Portionen und Vorlagenpositionen entfernt, leere Vorlagen entfallen |
 
 ## 8.10 Komponententests (Beispiele)
 
@@ -111,6 +148,14 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
   Wochenextras getrennt.
 - Statusfarben werden stets von Text/Zahl begleitet (kein Farbzwang).
 - Erfassungsformular: Live-Punkteanzeige, Validierung negativer/leerer Eingaben.
+- Schnellerfassung: „Zu Mahlzeit hinzufügen", Synonymsuche, „Speichern und weiter",
+  Mengenvorschlag, eigene Suchbegriffe.
+- Vorlagen: vom Vortag übernehmen, als Vorlage speichern, Positionen abwählen/ändern, eintragen,
+  löschen.
+- Rezepte: anlegen mit Live-Vorschau, eintragen, Neuberechnung nach Zutatenänderung, Schutz vor
+  Löschen verwendeter Zutaten, Bereinigung von Vorlagen.
+- Bereich „Rezepte & Vorlagen": leere Zustände, Auflistung mit Punkten und Inhalt, Vorlage
+  umbenennen und eintragen, Rezept bearbeiten und löschen, Vorlage löschen.
 - Gewichtsdiagramm: Veränderung seit erstem und letztem Eintrag korrekt.
 
 ## 8.11 E2E-Flows (Playwright)
@@ -121,6 +166,11 @@ Werkzeuge und konkrete Testfälle fest. Die Fachlogik aus Dok. 04 ist vollständ
 - **E4:** Offline-Betrieb → App startet und funktioniert ohne Netzwerk; Einträge bleiben erhalten.
 - **E5:** Export → Daten löschen → Import → Zustand vollständig wiederhergestellt.
 - **E6:** Gewicht erfassen → Verlauf/Diagramm aktualisiert.
+- **E7:** Synonymsuche (Nudeln, Kartoffeln, Hackfleisch, Hafermilch) → Porridge mit „Speichern und
+  weiter" → als Vorlage speichern → nächster Tag „Vom Vortag übernehmen" → Folgetag Vorlage
+  eintragen → Folgetag Vorlage über „Rezepte & Vorlagen" eintragen.
+- **E8:** Chili-Rezept aus Basiszutaten anlegen → Portion eintragen → Rezept in der Suche und in
+  „Rezepte & Vorlagen" mit Punkten pro Portion und Zutaten.
 
 ## 8.12 Testdaten & Determinismus
 

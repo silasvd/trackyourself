@@ -8,11 +8,12 @@ fachlichen Entitäten, ihre Felder und Beziehungen – unabhängig von konkreten
 | Entität | Zweck |
 | --- | --- |
 | `Profile` | Persönliche Angaben und Budgeteinstellungen (genau ein Datensatz). |
-| `Food` | Lebensmittel (Basisliste, eigene, zuletzt verwendete). |
+| `Food` | Lebensmittel (Basisliste, eigene, zuletzt verwendete) und Rezepte. |
 | `Portion` | Wiederverwendbare Portionsgröße zu einem Lebensmittel. |
 | `DiaryEntry` | Ein Tagebucheintrag (Lebensmittel + Portion + Menge + Mahlzeit + Datum). |
 | `ActivityEntry` | Eine erfasste Aktivität. |
 | `WeightEntry` | Ein Gewichtseintrag. |
+| `MealTemplate` | Gespeicherte Mahlzeit (Vorlage) aus mehreren Lebensmitteln. |
 | `AppMeta` | Technische Metadaten (Schemaversion, Seed-Status). |
 
 Geldwerte gibt es nicht; alle Mengen sind metrisch (g, ml, kg, cm, Minuten).
@@ -54,12 +55,19 @@ Das effektive Budget ergibt sich aus Override (falls gesetzt) oder aus der Berec
 | `defaultPortionId` | string \| null | Standardportion. |
 | `isFavorite` | boolean | Favoritenkennzeichen. |
 | `lastUsedAt` | ISO-Datum \| null | Für „zuletzt verwendet". |
+| `aliases` | string[] (optional) | Eigene zusätzliche Suchbegriffe (Dok. 05, 5.2.3). |
+| `recipe` | Objekt (optional) | Nur bei Rezepten: `ingredients` (`foodId`, `grams`), `servings`, `yieldGrams` (g \| null). |
 | `createdAt` / `updatedAt` | ISO-Datum | Zeitstempel. |
 
 Hinweise:
 - Fehlende Nährwerte (`null`) sind erlaubt und müssen in der UI erkennbar sein. Aus unvollständigen
   Werten entstehen keine scheinbar exakten Punkte (Dok. 04, Abschnitt fehlende Werte).
 - `countsAsZero` ist unabhängig von den Nährwerten und hat Vorrang.
+- Suchbegriffe der Basisliste werden mit der App ausgeliefert und nicht gespeichert; `aliases`
+  enthält nur selbst ergänzte Begriffe.
+- Bei Rezepten sind `per100` und die Portionen („Portion (1/n)", „Ganzes Rezept") aus den Zutaten
+  abgeleitet (Dok. 05, 5.6). Rezepte haben Basis `g`, sind nie `countsAsZero` und enthalten keine
+  anderen Rezepte.
 
 ## 3.4 `Portion`
 
@@ -117,22 +125,39 @@ gelöscht wird. `points` wird beim Speichern/Ändern berechnet und persistiert.
 Mehrere, unregelmäßige Einträge sind erlaubt. Bei mehreren Einträgen pro Tag gilt der zuletzt
 erfasste als Tageswert für die Diagrammdarstellung.
 
-## 3.8 `AppMeta`
+## 3.8 `MealTemplate`
 
 | Feld | Typ | Beschreibung |
 | --- | --- | --- |
-| `schemaVersion` | number | Version des lokalen Datenschemas (für Migrationen). |
+| `id` | string (UUID) | Schlüssel. |
+| `name` | string | Anzeigename, z. B. „Porridge". |
+| `meal` | `"breakfast" \| "lunch" \| "dinner" \| "snack"` | Vorgeschlagene Mahlzeit. |
+| `items` | Liste | Mindestens ein Eintrag mit `foodId`, `amount` (g/ml, > 0), `portionLabel`. |
+| `createdAt` / `updatedAt` | ISO-Datum | Zeitstempel. |
+
+Vorlagen speichern keinen Snapshot: Beim Eintragen werden Punkte mit den aktuellen Nährwerten
+berechnet, die entstehenden Tagebucheinträge erhalten wie gewohnt ihren Snapshot.
+
+## 3.9 `AppMeta`
+
+| Feld | Typ | Beschreibung |
+| --- | --- | --- |
+| `schemaVersion` | number | Version des lokalen Datenschemas (für Migrationen), aktuell 3. |
 | `seededBaseFoodsVersion` | number | Version der eingespielten Basisliste. |
 
-## 3.9 Beziehungen & Integrität
+## 3.10 Beziehungen & Integrität
 
 - `DiaryEntry.foodId → Food.id` (mit zusätzlichem `foodSnapshot` als Ausfallsicherung).
 - `Portion.foodId → Food.id`.
+- `Food.recipe.ingredients[].foodId → Food.id` (kein Rezept); eine verwendete Zutat kann nicht
+  gelöscht werden.
+- `MealTemplate.items[].foodId → Food.id`; beim Löschen eines Lebensmittels wird es aus Vorlagen
+  entfernt, leere Vorlagen entfallen.
 - Löschen eines `Food`: bestehende `DiaryEntry` bleiben dank Snapshot gültig; das Lebensmittel
   verschwindet nur aus Auswahl/Favoriten.
 - Alle Mengen- und Nährwertfelder sind nicht-negativ; Validierung erfolgt vor dem Speichern.
 
-## 3.10 Export-/Importformat
+## 3.11 Export-/Importformat
 
 Der Export (Flow H) umfasst **alle** Entitäten in einer einzigen JSON-Datei:
 
@@ -145,10 +170,12 @@ Der Export (Flow H) umfasst **alle** Entitäten in einer einzigen JSON-Datei:
   "portions": [ ... ],
   "diaryEntries": [ ... ],
   "activityEntries": [ ... ],
-  "weightEntries": [ ... ]
+  "weightEntries": [ ... ],
+  "mealTemplates": [ ... ]
 }
 ```
 
 Der Import prüft `schemaVersion`, validiert die Struktur und ersetzt den bestehenden Datenbestand
 nach Bestätigung vollständig. Teil-/Fehlerhafte Dateien werden abgewiesen, ohne vorhandene Daten zu
-beschädigen.
+beschädigen. Sicherungen der Schemaversion 2 (ohne Vorlagen) werden beim Import migriert
+(`mealTemplates: []`); geschrieben wird immer Version 3.

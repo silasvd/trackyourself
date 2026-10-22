@@ -7,6 +7,7 @@ import { activityPoints } from '../../src/domain/activity';
 import { portionAmount } from '../../src/domain/portions';
 import { localDate, monday, shiftDate } from '../../src/domain/dates';
 import { weightHistory } from '../../src/domain/weight';
+import { newId } from '../../src/app/id';
 import { oats, profile, weight } from '../fixtures';
 
 describe('P1–P11 food rules', () => {
@@ -282,5 +283,32 @@ describe('A1–A5, PT1–PT2, calendar and weight', () => {
         weight('2026-10-20', 79, '2026-10-20T12:00:00.000Z'),
       ]).last?.weightKg,
     ).toBe(79);
+  });
+});
+
+describe('ID1 ids without a secure context', () => {
+  it('uses randomUUID when available and a v4 fallback otherwise', () => {
+    expect(newId({ randomUUID: () => 'native' } as unknown as Crypto)).toBe(
+      'native',
+    );
+    const insecure = {
+      getRandomValues: <T extends ArrayBufferView>(array: T) => {
+        new Uint8Array(array.buffer).fill(0xff);
+        return array;
+      },
+    } as unknown as Crypto;
+    expect(newId(insecure)).toBe('ffffffff-ffff-4fff-bfff-ffffffffffff');
+    const ids = new Set(
+      Array.from({ length: 50 }, () =>
+        newId({
+          getRandomValues: crypto.getRandomValues.bind(crypto),
+        } as Crypto),
+      ),
+    );
+    expect(ids.size).toBe(50);
+    for (const id of ids)
+      expect(id).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      );
   });
 });

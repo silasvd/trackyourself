@@ -1,6 +1,9 @@
+import { newId } from '../../app/id';
 import { useState } from 'react';
 import type { Dataset, Food, Portion } from '../../domain/types';
 import { nutrientQuality } from '../../domain/points';
+import { refreshRecipes } from '../../domain/recipes';
+import { baseAliases } from '../../data/seed';
 import { Field, Modal } from '../components/Form';
 
 export function FoodEditor({
@@ -18,13 +21,13 @@ export function FoodEditor({
   onClose: () => void;
   onSaved: (food: Food) => void;
 }) {
-  const [id] = useState(() => food?.id ?? crypto.randomUUID());
+  const [id] = useState(() => food?.id ?? newId());
   const [portions, setPortions] = useState<Portion[]>(() =>
     food
       ? data.portions.filter((portion) => portion.foodId === id)
       : [
           {
-            id: crypto.randomUUID(),
+            id: newId(),
             foodId: id,
             label: 'Portion',
             grams: 100,
@@ -54,6 +57,14 @@ export function FoodEditor({
             protein: nullable('protein'),
           };
           const stamp = new Date().toISOString();
+          const aliases = [
+            ...new Set(
+              String(fields.get('aliases'))
+                .split(',')
+                .map((value) => value.trim())
+                .filter(Boolean),
+            ),
+          ];
           const next: Food = {
             id,
             name: String(fields.get('name')).trim(),
@@ -67,23 +78,22 @@ export function FoodEditor({
             defaultPortionId: defaultId,
             isFavorite: food?.isFavorite ?? false,
             lastUsedAt: food?.lastUsedAt ?? null,
+            ...(aliases.length ? { aliases } : {}),
             createdAt: food?.createdAt ?? stamp,
             updatedAt: stamp,
           };
-          if (
-            await save({
-              ...data,
-              foods: [...data.foods.filter((value) => value.id !== id), next],
-              portions: [
-                ...data.portions.filter((value) => value.foodId !== id),
-                ...portions.map((portion) => ({
-                  ...portion,
-                  isDefault: portion.id === defaultId,
-                })),
-              ],
-            })
-          )
-            onSaved(next);
+          // Recipes using this food are recalculated with its new values.
+          const updated = refreshRecipes(
+            [...data.foods.filter((value) => value.id !== id), next],
+            [
+              ...data.portions.filter((value) => value.foodId !== id),
+              ...portions.map((portion) => ({
+                ...portion,
+                isDefault: portion.id === defaultId,
+              })),
+            ],
+          );
+          if (await save({ ...data, ...updated })) onSaved(next);
         }}
       >
         <Field
@@ -97,6 +107,17 @@ export function FoodEditor({
           name="category"
           defaultValue={food?.category ?? ''}
         />
+        <Field
+          label="Weitere Suchbegriffe (durch Komma getrennt)"
+          name="aliases"
+          defaultValue={food?.aliases?.join(', ') ?? ''}
+          placeholder="z. B. Nudeln, Pasta"
+        />
+        {food && baseAliases.get(food.id)?.length ? (
+          <p className="hint">
+            Bereits auffindbar unter: {baseAliases.get(food.id)!.join(', ')}
+          </p>
+        ) : null}
         <label>
           Nährwertbasis
           <select name="basis" defaultValue={food?.basis ?? 'g'}>
@@ -159,7 +180,9 @@ export function FoodEditor({
           {portions.map((portion, index) => (
             <div className="portion-row" key={portion.id}>
               <Field
-                label={`Portion ${index + 1}: Bezeichnung`}
+                label="Bezeichnung"
+                aria-label={`Portion ${index + 1}: Bezeichnung`}
+                placeholder="z. B. Scheibe"
                 required
                 value={portion.label}
                 onChange={(event) =>
@@ -173,7 +196,8 @@ export function FoodEditor({
                 }
               />
               <Field
-                label={`Portion ${index + 1}: Menge`}
+                label="Menge in g/ml"
+                aria-label={`Portion ${index + 1}: Menge`}
                 type="number"
                 min="0.1"
                 step="any"
@@ -223,7 +247,7 @@ export function FoodEditor({
               setPortions([
                 ...portions,
                 {
-                  id: crypto.randomUUID(),
+                  id: newId(),
                   foodId: id,
                   label: '',
                   grams: null,

@@ -1,3 +1,4 @@
+import { newId } from '../../app/id';
 import { useState } from 'react';
 import type { Dataset, WeightEntry } from '../../domain/types';
 import { localDate } from '../../domain/dates';
@@ -26,7 +27,7 @@ export function WeightPage({
           const fields = new FormData(event.currentTarget);
           const stamp = new Date().toISOString();
           const entry: WeightEntry = {
-            id: editing?.id ?? crypto.randomUUID(),
+            id: editing?.id ?? newId(),
             date: String(fields.get('date')),
             weightKg: Number(fields.get('weightKg')),
             createdAt: editing?.createdAt ?? stamp,

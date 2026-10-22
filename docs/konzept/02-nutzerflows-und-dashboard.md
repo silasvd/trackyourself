@@ -6,16 +6,22 @@
 
 1. Start auf dem Dashboard.
 2. Aktion **„Hinzufügen"** antippen (prominent, immer sichtbar).
-3. Mahlzeit wählen (Vorauswahl nach Tageszeit: morgens → Frühstück usw.).
+3. Mahlzeit wählen (Vorauswahl nach Tageszeit: morgens → Frühstück usw.; über „+ Mahlzeit" direkt
+   an der Mahlzeit ist sie bereits gesetzt).
 4. Lebensmittel finden über:
    - Favoriten,
    - zuletzt verwendet,
    - Basisliste,
-   - Suche (Freitext über Basis-, eigene und zuletzt verwendete Lebensmittel),
-   - „Eigenes Lebensmittel anlegen".
-5. Portion wählen (Standardportion vorausgewählt; Menge in g/ml oder Alltagseinheit anpassbar).
+   - Suche (Freitext über Basis-, eigene Lebensmittel, Rezepte und Vorlagen; findet auch
+     Alltagsnamen, Synonyme, Pluralformen und einfache Tippfehler, Dok. 05, 5.2.3),
+   - Mahlzeit-Vorlagen und Rezepte (eigene Filter),
+   - „Eigenes Lebensmittel anlegen" bzw. „Rezept anlegen".
+5. Portion wählen (zuletzt verwendete Menge vorausgewählt, sonst Standardportion; Menge in g/ml
+   oder Alltagseinheit anpassbar).
 6. Punkte werden live berechnet und angezeigt.
 7. **Speichern** → zurück zum Dashboard, der Tagesstatus aktualisiert sich sofort.
+   **Speichern und weiter** → zurück zur Suche, die Mahlzeit bleibt gesetzt (Mahlzeiten aus
+   mehreren Lebensmitteln, z. B. Porridge + Hafermilch).
 
 **Zielvorgabe:** aus dem Dashboard heraus mit höchstens drei Interaktionen bis zum gespeicherten
 Eintrag (bei bereits bekanntem Lebensmittel mit Standardportion).
@@ -66,6 +72,26 @@ Eintrag (bei bereits bekanntem Lebensmittel mit Standardportion).
 2. „Daten importieren" liest eine zuvor exportierte Datei und stellt den Stand wieder her
    (mit Bestätigungsdialog, da bestehende Daten ersetzt werden).
 
+### Flow I – Rezept anlegen und eintragen
+
+1. In Flow A „Rezept anlegen".
+2. Name, Anzahl Portionen und optional Gewicht fertig gekocht eingeben.
+3. Zutaten über die Zutatensuche hinzufügen und Gramm angeben (z. B. Chili: Hackfleisch,
+   Kidneybohnen, Tomaten, Zwiebeln, Öl). Gesamtgewicht, Portionsgewicht und Punkte pro Portion
+   werden live angezeigt.
+4. Speichern → das Rezept ist direkt zum Eintragen ausgewählt (Standard: eine Portion) und steht
+   künftig wie ein Lebensmittel zur Verfügung.
+
+### Flow J – Wiederkehrende Mahlzeiten
+
+1. Mahlzeit einmal erfassen → „Als Vorlage speichern" an der Mahlzeit, Name vergeben.
+2. Später in Flow A die Vorlage wählen, Mahlzeit prüfen, einzelne Positionen abwählen oder Mengen
+   anpassen → „Vorlage eintragen".
+3. Alternativ „Vom Vortag übernehmen" an der Mahlzeit: kopiert die Einträge des Vortags mit einer
+   Interaktion.
+4. Vorlagen und Rezepte sind zusätzlich im Bereich „Rezepte & Vorlagen" aufgelistet; von dort
+   lassen sie sich verwalten und Vorlagen direkt am im Tag-Bereich gewählten Datum eintragen.
+
 ## 2.2 Dashboard – Aufbau
 
 Das Dashboard beantwortet drei Fragen auf einen Blick:
@@ -107,11 +133,15 @@ Informationshierarchie (von oben nach unten):
 
 ## 2.4 Navigationsstruktur
 
-Untere Navigationsleiste (mobil) mit vier Bereichen:
+Untere Navigationsleiste (mobil) mit fünf Bereichen; die Beschriftungen sind kurz gehalten
+(„Rezepte", „Profil"), der vollständige Name ist der zugängliche Name der Schaltfläche:
 
 1. **Tag** (Dashboard/Tagebuch)
-2. **Aktivität**
-3. **Gewicht**
-4. **Profil/Einstellungen**
+2. **Rezepte & Vorlagen** – Übersicht aller Rezepte (Portionen, Punkte pro Portion, Zutaten;
+   anlegen, bearbeiten, löschen) und Mahlzeit-Vorlagen (Mahlzeit, Inhalt, aktuelle Punkte;
+   am gewählten Tag eintragen, umbenennen, löschen)
+3. **Aktivität**
+4. **Gewicht**
+5. **Profil/Einstellungen**
 
 Die Primäraktion „Hinzufügen" ist aus dem Tag-Bereich und als zentraler Button erreichbar.

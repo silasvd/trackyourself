@@ -45,6 +45,18 @@ export const profileSchema = z.strictObject({
   weekStartsOn: z.literal(1),
   ...timestamps,
 });
+const recipeSchema = z.strictObject({
+  ingredients: z
+    .array(
+      z.strictObject({
+        foodId: key,
+        grams: z.number().finite().positive(),
+      }),
+    )
+    .min(1),
+  servings: z.number().int().positive(),
+  yieldGrams: z.number().finite().positive().nullable(),
+});
 export const foodSchema = snapshot.safeExtend({
   id: key,
   category: z.string().nullable(),
@@ -53,6 +65,8 @@ export const foodSchema = snapshot.safeExtend({
   defaultPortionId: key.nullable(),
   isFavorite: z.boolean(),
   lastUsedAt: timestamp.nullable(),
+  aliases: z.array(z.string().trim().min(1)).optional(),
+  recipe: recipeSchema.optional(),
   ...timestamps,
 });
 export const portionSchema = z.strictObject({
@@ -106,8 +120,23 @@ export const weightSchema = z.strictObject({
   weightKg: z.number().finite().positive(),
   ...timestamps,
 });
+export const mealTemplateSchema = z.strictObject({
+  id: key,
+  name: z.string().trim().min(1),
+  meal: z.enum(['breakfast', 'lunch', 'dinner', 'snack']),
+  items: z
+    .array(
+      z.strictObject({
+        foodId: key,
+        amount: z.number().finite().positive(),
+        portionLabel: z.string().nullable(),
+      }),
+    )
+    .min(1),
+  ...timestamps,
+});
 export const metaSchema = z.strictObject({
-  schemaVersion: z.literal(2),
+  schemaVersion: z.literal(3),
   seededBaseFoodsVersion: whole,
 });
 export const datasetSchema = z
@@ -118,6 +147,7 @@ export const datasetSchema = z
     diaryEntries: z.array(diarySchema),
     activityEntries: z.array(activitySchema),
     weightEntries: z.array(weightSchema),
+    mealTemplates: z.array(mealTemplateSchema),
     appMeta: metaSchema,
   })
   .superRefine((data, ctx) => {
@@ -127,6 +157,7 @@ export const datasetSchema = z
       data.diaryEntries,
       data.activityEntries,
       data.weightEntries,
+      data.mealTemplates,
     ]) {
       if (
         new Set(collection.map((value) => value.id)).size !== collection.length
@@ -155,6 +186,30 @@ export const datasetSchema = z
           (defaults.length !== 1 || defaults[0].id !== food.defaultPortionId))
       ) {
         ctx.addIssue({ code: 'custom', message: 'Ungültige Standardportion.' });
+      }
+      for (const ingredient of food.recipe?.ingredients ?? []) {
+        const used = data.foods.find((value) => value.id === ingredient.foodId);
+        if (!used || used.recipe) {
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Rezept mit ungültiger Zutat.',
+          });
+        }
+      }
+      if (food.recipe && (food.basis !== 'g' || food.countsAsZero)) {
+        ctx.addIssue({ code: 'custom', message: 'Ungültiges Rezept.' });
+      }
+    }
+    for (const template of data.mealTemplates) {
+      if (
+        !template.items.every((item) =>
+          data.foods.some((food) => food.id === item.foodId),
+        )
+      ) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Vorlage mit unbekanntem Lebensmittel.',
+        });
       }
     }
   });
