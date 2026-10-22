@@ -8,6 +8,8 @@ import { readFileSync } from 'node:fs';
 const { version } = JSON.parse(readFileSync('./package.json', 'utf8')) as {
   version: string;
 };
+// GitHub Pages serves the app below /<repository>/; local builds and tests use the root.
+const base = process.env.BASE_PATH ?? '/';
 function commit() {
   try {
     return execSync('git rev-parse --short HEAD', {
@@ -22,6 +24,7 @@ function commit() {
 
 // `--mode https` serves dev/preview with a self-signed certificate so the camera works in the LAN.
 export default defineConfig(({ mode }) => ({
+  base,
   define: {
     __APP_VERSION__: JSON.stringify(version),
     __APP_COMMIT__: JSON.stringify(commit()),
@@ -43,11 +46,12 @@ export default defineConfig(({ mode }) => ({
         theme_color: '#164e45',
         background_color: '#f5f7f3',
         display: 'standalone',
-        start_url: '/',
+        start_url: base,
+        scope: base,
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
           {
-            src: '/icon-512.png',
+            src: 'icon-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable',
@@ -57,7 +61,7 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,svg,png,json,webmanifest}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true,
       },
     }),

@@ -92,6 +92,15 @@ Zurückkehren in die App und stündlich. Die Seite lädt dabei einmal neu; nicht
 Eingaben gehen dann verloren. Ganz unten im Profil stehen Version, Commit und Build-Zeitpunkt, so
 lässt sich der Stand prüfen. Nach `git commit` den Build wiederholen, damit der Commit stimmt.
 
+### Veröffentlichung auf GitHub Pages
+
+Der Workflow `.github/workflows/pages.yml` baut bei jedem Push auf `main` mit
+`BASE_PATH=/<Repository>/` und veröffentlicht `dist/` unter
+`https://<Benutzer>.github.io/<Repository>/`. Einmalig nötig: im Repository unter
+_Settings › Pages › Build and deployment › Source_ **GitHub Actions** wählen. GitHub Pages liefert
+HTTPS, damit funktionieren Kamera, Offline-Modus und Installation auf dem Smartphone. Lokal und in
+den Tests bleibt der Basispfad `/`.
+
 ### Auf dem Smartphone im WLAN testen
 
 Rechner und Smartphone müssen im selben WLAN sein. Am einfachsten mit dem Skript (PowerShell 7
