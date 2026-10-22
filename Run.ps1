@@ -9,10 +9,14 @@
   Port der Vorschau (Standard 4173).
 .PARAMETER SkipBuild
   Vorhandenen Build in dist/ verwenden, statt neu zu bauen.
+.PARAMETER Https
+  Über HTTPS mit selbstsigniertem Zertifikat ausliefern, damit die Barcode-Kamera im WLAN
+  funktioniert. Die Zertifikatswarnung im Browser einmal bestätigen.
 #>
 param(
   [int]$Port = 4173,
-  [switch]$SkipBuild
+  [switch]$SkipBuild,
+  [switch]$Https
 )
 
 $ErrorActionPreference = 'Stop'
@@ -51,16 +55,24 @@ $addresses = [System.Net.NetworkInformation.NetworkInterface]::GetAllNetworkInte
   ForEach-Object { $_.Address.ToString() } |
   Sort-Object -Unique
 
+$scheme = if ($Https) { 'https' } else { 'http' }
 Write-Host "`n==> TrackYourself startet" -ForegroundColor Green
-Write-Host "    Auf diesem Rechner:  http://localhost:$Port"
+Write-Host "    Auf diesem Rechner:  ${scheme}://localhost:$Port"
 if ($addresses) {
   foreach ($address in $addresses) {
-    Write-Host "    Im WLAN (Smartphone): http://${address}:$Port" -ForegroundColor Yellow
+    Write-Host "    Im WLAN (Smartphone): ${scheme}://${address}:$Port" -ForegroundColor Yellow
   }
 } else {
   Write-Host '    Keine Netzwerkadresse gefunden – ist der Rechner mit dem WLAN verbunden?' -ForegroundColor Red
 }
-Write-Host '    Hinweis: Über http:// im WLAN läuft die App ohne Offline-Modus (dafür ist HTTPS nötig).'
+if ($Https) {
+  Write-Host '    Hinweis: Selbstsigniertes Zertifikat – die Browserwarnung einmal bestätigen.'
+  Write-Host '    Kamera-Scan funktioniert; Offline-Modus und App-Installation meist nicht.'
+} else {
+  Write-Host '    Hinweis: Über http:// im WLAN läuft die App ohne Offline-Modus und ohne Kamera-Scan.'
+  Write-Host '    Für den Kamera-Scan mit -Https starten.'
+}
 Write-Host '    Beenden mit Strg+C.'
 
-npx vite preview --host 0.0.0.0 --port $Port --strictPort
+$modeArgs = if ($Https) { @('--mode', 'https') } else { @() }
+npx vite preview --host 0.0.0.0 --port $Port --strictPort @modeArgs

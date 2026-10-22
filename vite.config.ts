@@ -1,10 +1,13 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig({
+// `--mode https` serves dev/preview with a self-signed certificate so the camera works in the LAN.
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    mode === 'https' && basicSsl({ name: 'trackyourself' }),
     VitePWA({
       registerType: 'prompt',
       includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
@@ -55,4 +58,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

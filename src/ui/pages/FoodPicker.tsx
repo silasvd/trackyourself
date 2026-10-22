@@ -9,6 +9,7 @@ import { EntryForm } from '../components/EntryForm';
 import { TemplateForm } from '../components/TemplateForm';
 import { FoodEditor } from './FoodEditor';
 import { RecipeEditor } from './RecipeEditor';
+import { BarcodeIcon, BarcodeScan } from '../components/BarcodeScan';
 
 const filters = [
   ['all', 'Alle'],
@@ -17,6 +18,7 @@ const filters = [
   ['templates', 'Vorlagen'],
   ['recipes', 'Rezepte'],
   ['custom', 'Eigene'],
+  ['scanned', 'Gescannt'],
   ['base', 'Basisliste'],
 ] as const;
 type Filter = (typeof filters)[number][0];
@@ -28,6 +30,7 @@ export function FoodPicker({
   busy,
   onClose,
   initialMeal,
+  startScan = false,
 }: {
   data: Dataset;
   date: string;
@@ -35,6 +38,7 @@ export function FoodPicker({
   busy: boolean;
   onClose: () => void;
   initialMeal?: Meal;
+  startScan?: boolean;
 }) {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
@@ -46,6 +50,7 @@ export function FoodPicker({
   const [notice, setNotice] = useState('');
   const [problem, setProblem] = useState('');
   const [menu, setMenu] = useState(false);
+  const [scanning, setScanning] = useState(startScan);
   const create = (kind: 'food' | 'recipe') => {
     setMenu(false);
     if (kind === 'food') setEditing('new');
@@ -70,6 +75,7 @@ export function FoodPicker({
       (filter === 'recent' && food.lastUsedAt !== null) ||
       (filter === 'recipes' && food.recipe !== undefined) ||
       (filter === 'custom' && food.source === 'custom') ||
+      (filter === 'scanned' && food.source === 'openfoodfacts') ||
       (filter === 'base' && food.source === 'base'),
   );
   const foods =
@@ -139,6 +145,17 @@ export function FoodPicker({
             >
               Zurück zur Auswahl
             </button>
+            {selected?.source === 'openfoodfacts' && (
+              <button
+                disabled={busy}
+                onClick={() => {
+                  setSelected(null);
+                  setScanning(true);
+                }}
+              >
+                Weiteren Barcode scannen
+              </button>
+            )}
             {selected && (
               <EntryForm
                 food={selected}
@@ -186,6 +203,15 @@ export function FoodPicker({
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Suchen, z. B. Nudeln, Hafermilch …"
               />
+              <button
+                className="icon search-scan"
+                aria-label="Barcode scannen"
+                title="Barcode scannen"
+                disabled={busy}
+                onClick={() => setScanning(true)}
+              >
+                <BarcodeIcon />
+              </button>
             </div>
             {!typing ? (
               <div className="chips" role="group" aria-label="Auswahl">
@@ -312,7 +338,7 @@ export function FoodPicker({
                   >
                     ✎
                   </button>
-                  {food.source === 'custom' && (
+                  {food.source !== 'base' && (
                     <button
                       className="icon"
                       title="Löschen"
@@ -333,6 +359,23 @@ export function FoodPicker({
           </>
         )}
       </Modal>
+      {scanning && (
+        <BarcodeScan
+          data={data}
+          save={save}
+          busy={busy}
+          onClose={() => setScanning(false)}
+          onSaved={(food, cached) => {
+            setScanning(false);
+            setSelected(food);
+            setNotice(
+              cached
+                ? 'Produkt aus lokalem Speicher geladen.'
+                : 'Produkt von Open Food Facts lokal gespeichert.',
+            );
+          }}
+        />
+      )}
       {editing && (
         <FoodEditor
           food={editing === 'new' ? undefined : editing}

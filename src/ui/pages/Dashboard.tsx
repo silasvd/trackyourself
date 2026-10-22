@@ -10,6 +10,7 @@ import { DaySummary } from '../components/DaySummary';
 import { Field, Modal } from '../components/Form';
 import { EntryForm, PointLabel } from '../components/EntryForm';
 import { FoodPicker } from './FoodPicker';
+import { BarcodeIcon } from '../components/BarcodeScan';
 
 export function Dashboard({
   data,
@@ -28,7 +29,9 @@ export function Dashboard({
   setDate: (date: string) => void;
   navigate: (page: 'activity' | 'weight' | 'profile') => void;
 }) {
-  const [adding, setAdding] = useState<{ meal?: Meal } | null>(null);
+  const [adding, setAdding] = useState<{ meal?: Meal; scan?: boolean } | null>(
+    null,
+  );
   const [editing, setEditing] = useState<DiaryEntry | null>(null);
   const [saving, setSaving] = useState<Meal | null>(null);
   const budget = data.profile ? budgets(data.profile) : null;
@@ -87,6 +90,14 @@ export function Dashboard({
           </button>
         </section>
       )}
+      <button
+        className="add-food scan-food"
+        aria-label="Barcode scannen"
+        title="Barcode scannen"
+        onClick={() => setAdding({ scan: true })}
+      >
+        <BarcodeIcon />
+      </button>
       <button
         className="primary add-food"
         aria-label="Lebensmittel hinzufügen"
@@ -202,6 +213,7 @@ export function Dashboard({
           save={save}
           busy={busy}
           initialMeal={adding.meal}
+          startScan={adding.scan}
           onClose={() => setAdding(null)}
         />
       )}

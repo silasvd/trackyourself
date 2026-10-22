@@ -97,6 +97,17 @@ export function Settings({
           Portionsgrößen sind anpassbar.
         </p>
         <p>
+          Barcode-Produkte:{' '}
+          <a href="https://world.openfoodfacts.org/">Open Food Facts</a> unter{' '}
+          <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL</a>.
+          Beim ersten Abruf werden Barcode und technisch notwendige
+          Verbindungsdaten an Open Food Facts übertragen, keine Tagebuch- oder
+          Profildaten. Erfolgreiche Abrufe bleiben lokal und sind in Sicherungen
+          enthalten. Nährwerte können unvollständig oder fehlerhaft sein.
+          Herstellerportionen stammen aus den Produktdaten; zusätzliche
+          Portionen sind ausdrücklich geschätzte, bearbeitbare Richtwerte.
+        </p>
+        <p>
           Installieren: im Browsermenü „App installieren“ bzw. „Zum
           Home-Bildschirm“. Nach dem ersten vollständigen Laden auch offline
           verfügbar.

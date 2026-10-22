@@ -32,7 +32,7 @@ export interface FoodSnapshot {
 export interface Food extends FoodSnapshot, Timestamps {
   id: string;
   category: string | null;
-  source: 'base' | 'custom';
+  source: 'base' | 'custom' | 'openfoodfacts';
   sourceRef: string | null;
   defaultPortionId: string | null;
   isFavorite: boolean;

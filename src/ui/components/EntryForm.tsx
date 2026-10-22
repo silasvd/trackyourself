@@ -120,6 +120,25 @@ export function EntryForm({
       }}
     >
       <h3>{snapshot.name}</h3>
+      {food?.source === 'openfoodfacts' && (
+        <p className="hint">
+          Quelle:{' '}
+          <a href={`https://world.openfoodfacts.org/product/${food.sourceRef}`}>
+            Open Food Facts
+          </a>{' '}
+          · lokal gespeichert. Nährwerte je 100 {food.basis} und
+          Herstellerportionen mit der Verpackung prüfen. „Geschätzt“ bezeichnet
+          anpassbare Richtwerte; Scheibendicke und Packungsgrößen können
+          abweichen.
+        </p>
+      )}
+      {food?.recipe && (
+        <p className="hint">
+          Die Einheit „Portion“ enthält den entsprechenden Anteil aller Zutaten.
+          So muss z. B. Hackfleisch in einer Soße nicht separat auf dem Teller
+          gewogen werden.
+        </p>
+      )}
       {suggestion.previous && (
         <p className="hint">Menge wie bei deinem letzten Eintrag.</p>
       )}

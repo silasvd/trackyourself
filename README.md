@@ -14,6 +14,8 @@ implementiert, ergänzt um Schnellerfassung und eine erweiterte Basisliste (AP12
   verwendete Lebensmittel und wiederverwendbare Portionen.
 - Fehlertolerante Suche mit Alltagsnamen/Synonymen (z. B. Nudeln, Hafermilch, Hack), eigenen
   Suchbegriffen, Pluralformen und einfachen Tippfehlern.
+- EAN-/UPC-Scan per Kamera oder manueller Barcodeeingabe, Open-Food-Facts-Anbindung und
+  dauerhafter lokaler Produktcache, inklusive Herstellerportionen und gekennzeichneter Schätzportionen.
 - Rezepte aus mehreren Zutaten mit Punkten pro Portion, Mahlzeit-Vorlagen, eigene Übersicht
   „Rezepte & Vorlagen“, „Vom Vortag übernehmen“, „Speichern und weiter“ und Vorschlag der zuletzt verwendeten Menge.
 - Datum und Mahlzeiten, Live-Punkte, Einträge bearbeiten/löschen, historische Lebensmittel-Snapshots.
@@ -22,8 +24,48 @@ implementiert, ergänzt um Schnellerfassung und eine erweiterte Basisliste (AP12
 - Installierbare PWA mit Offline-Start und lokalem JSON-Export/-Import mit Bestätigung und Validierung.
 - Mobile Darstellung, beschriftete Eingaben, Tastaturbedienung und textuelle Statusanzeigen.
 
-Die ausdrücklich später geplanten Funktionen (Barcode, Online-Suche, Cloud-Sync, Gamification usw.)
+Die ausdrücklich später geplanten Funktionen (Online-Textsuche, Cloud-Sync, Gamification usw.)
 sind nicht Teil des MVP.
+
+### Barcode und Portionen
+
+Unter „Lebensmittel hinzufügen → Barcode scannen“ die Kamera starten oder die Nummer eingeben.
+Die Kamera benötigt HTTPS (oder localhost) und eine Browserberechtigung. Die Bilder werden
+ausschließlich auf dem Gerät ausgewertet; die Scannerbibliothek ist Teil der offline gespeicherten App.
+Über unverschlüsseltes LAN-HTTP bleibt die manuelle Eingabe nutzbar; zum Testen im WLAN siehe
+„HTTPS im WLAN für den Kamera-Scan“ weiter unten.
+
+Vor jedem Onlineabruf wird der lokale Lebensmittelbestand geprüft. Bekannte Produkte benötigen
+auch nach einem Neustart keine Onlineabfrage. Unbekannte Produkte werden gezielt über die
+Open-Food-Facts-API v3 abgerufen; dabei werden nur Barcode und technische Verbindungsdaten
+übertragen, keine Profil- oder Tagebuchdaten. Erfolgreiche Abrufe werden vor der Buchung in
+IndexedDB gespeichert und mit exportiert/importiert. Es gibt keine automatische Aktualisierung.
+Unter „Gescannt“ sind sie auffindbar und bearbeitbar. Löschen entfernt auch den lokalen Cacheeintrag.
+UPC-A und entsprechende EAN-/GTIN-Darstellungen werden vereinheitlicht.
+
+Die Punkte verwenden dasselbe Modell wie die übrigen Lebensmittel. Energie in kJ wird bei
+fehlenden kcal umgerechnet. Fehlende andere Nährwerte bleiben sichtbar unvollständig;
+ohne Produktnamen oder Energie wird kein Produkt gespeichert. Fehler, Zeitüberschreitungen,
+unbekannte Barcodes und Abfragelimits werden angezeigt; manuelles Anlegen bleibt möglich.
+
+Herstellerportionen und Packungsmengen werden übernommen, sofern Menge und Einheit vorliegen.
+Zusätzlich gibt es passende **geschätzte** Alltagseinheiten, z. B. dünne/dicke Scheiben
+Aufschnitt (10/20 g), Schnittkäse (25 g), Brot (45 g), Joghurtbecher (150 g) oder eine
+Handfläche rohes Hackfleisch (100 g). Diese Werte sind keine produktspezifischen Messungen.
+Die Auswahl zeigt immer die Umrechnungsmenge; über „Bearbeiten“ lassen sich alle Portionen
+anpassen. Nährwerte und Herstellerangaben mit der Verpackung vergleichen.
+
+Für Hackfleisch **in einer Soße** ein Rezept mit den Mengen des gesamten Topfes und der
+Portionsanzahl anlegen. Beispiel: 500 g Hackfleisch auf 4 gleich große Portionen verteilen,
+anschließend eine Rezeptportion buchen. Sie enthält rechnerisch 125 g Hackfleisch plus die
+übrigen anteiligen Zutaten. Der Barcode allein kann die Zusammensetzung des Tellers nicht bestimmen.
+
+Produktdaten: [Open Food Facts](https://world.openfoodfacts.org/),
+Lizenz [ODbL](https://opendatacommons.org/licenses/odbl/1-0/).
+Vor öffentlichem Betrieb die [Nutzungsbedingungen](https://world.openfoodfacts.org/terms-of-use)
+beachten und die Anwendung über das in der
+[API-Dokumentation](https://openfoodfacts.github.io/openfoodfacts-server/api/) verlinkte Formular
+anmelden. Die App führt nur explizite Einzelabfragen durch, keine Online-Suche beim Tippen.
 
 ## Starten
 
@@ -56,6 +98,7 @@ Rechner und Smartphone müssen im selben WLAN sein. Am einfachsten mit dem Skrip
 ./Run.ps1              # installiert bei Bedarf Abhängigkeiten, baut und startet die Vorschau
 ./Run.ps1 -Port 5000   # anderer Port
 ./Run.ps1 -SkipBuild   # vorhandenen Build in dist/ verwenden
+./Run.ps1 -Https       # HTTPS mit selbstsigniertem Zertifikat (für den Kamera-Scan)
 ```
 
 Falls Windows die Ausführung blockiert: `powershell -ExecutionPolicy Bypass -File .\Run.ps1`.
@@ -63,7 +106,8 @@ Manuell geht dasselbe mit:
 
 ```sh
 npm run build
-npm run preview:lan    # = vite preview --host 0.0.0.0 --port 4173
+npm run preview:lan        # = vite preview --host 0.0.0.0 --port 4173
+npm run preview:lan:https  # dasselbe über HTTPS mit selbstsigniertem Zertifikat
 ```
 
 Dann auf dem Smartphone `http://<IP-des-Rechners>:4173` öffnen (das Skript zeigt die Adressen an).
@@ -72,8 +116,19 @@ Die Firewall-Abfrage für Node.js beim ersten Start erlauben. Einschränkungen d
 - Über `http://` mit LAN-Adresse ist die Seite **kein sicherer Kontext**. Der Service Worker
   startet deshalb nicht: Die App läuft vollständig, aber **nicht offline**. Für Offline-Betrieb und
   Dauernutzung über HTTPS bereitstellen (z. B. GitHub Pages, Netlify, Cloudflare Pages).
+- Die **Barcode-Kamera** braucht ebenfalls einen sicheren Kontext. Über `http://` bleibt nur die
+  Barcode-Eingabe von Hand.
 - Daten liegen pro Adresse getrennt im Browser des Smartphones. Beim Wechsel von Adresse oder
   Hosting mit **Daten exportieren/importieren** umziehen.
+
+**HTTPS im WLAN für den Kamera-Scan:** `./Run.ps1 -Https` bzw. `npm run preview:lan:https` erzeugt
+beim ersten Start ein selbstsigniertes Zertifikat (gespeichert in `node_modules/.vite/basic-ssl`,
+ca. 30 Tage gültig, wird danach automatisch erneuert). Auf dem Smartphone
+`https://<IP-des-Rechners>:4173` öffnen und die Zertifikatswarnung bestätigen (Safari: „Details
+einblenden“ › „Diese Website besuchen“). Danach funktionieren Kamera und Barcode-Erkennung.
+Einschränkungen: Weil das Zertifikat nicht vertrauenswürdig ist, startet der Service Worker in der
+Regel nicht (kein Offline-Modus, keine App-Installation), und `https://` gilt als andere Adresse als
+`http://` – vorhandene Einträge per Export/Import übernehmen.
 
 ## Tests und Qualität
 

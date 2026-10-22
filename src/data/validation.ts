@@ -60,7 +60,7 @@ const recipeSchema = z.strictObject({
 export const foodSchema = snapshot.safeExtend({
   id: key,
   category: z.string().nullable(),
-  source: z.enum(['base', 'custom']),
+  source: z.enum(['base', 'custom', 'openfoodfacts']),
   sourceRef: z.string().nullable(),
   defaultPortionId: key.nullable(),
   isFavorite: z.boolean(),

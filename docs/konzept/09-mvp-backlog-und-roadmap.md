@@ -13,64 +13,77 @@ Aufwandsschätzungen enthalten.
 ## 9.2 MVP-Arbeitspakete
 
 ### AP0 – Projekt-Setup
+
 - Vite + React + TypeScript, ESLint/Prettier, Vitest, Playwright, CI-Pipeline (Dok. 07/08).
 - Grundgerüst der Projektstruktur (Dok. 07.3).
 - **Fertig, wenn:** Build, Lint, Typecheck und ein Beispieltest in CI grün sind.
 
 ### AP1 – Domänenlogik Punkte & Budget
+
 - `points`, `budget`, `weekly`, `activity`, `rounding` als reine Funktionen (Dok. 04).
 - Vollständige Unit-Tests inkl. aller Grenz-/Sonderfälle (Dok. 08.4–8.7).
 - **Fertig, wenn:** alle Testfälle aus Dok. 08.4–8.7 grün und Domänenabdeckung 100 %.
 
 ### AP2 – Datenmodell & Persistenz
+
 - Entitäten (Dok. 03), IndexedDB-Kapselung, Repositories, Schemaversion/Migration (Dok. 06).
 - Integrationstests mit Fake-IndexedDB (Dok. 08.9).
 - **Fertig, wenn:** CRUD je Entität getestet, Snapshot-Prinzip für DiaryEntry umgesetzt.
 
 ### AP3 – Seed-Daten
+
 - Kuratierte Basisliste aus BLS 4.0 und 0‑Punkte-Liste als versionierte Seed-Dateien (Dok. 05).
 - Einspiel-Mechanismus inkl. Versionsprüfung (Dok. 06.4).
 - Quellennennung Max Rubner-Institut / CC BY 4.0 an geeigneter Stelle (Dok. 05.2.1).
 - **Fertig, wenn:** Seed reproduzierbar, keine Duplikate, Lizenzhinweis vorhanden.
 
 ### AP4 – Profil & Budget-UI
+
 - Profilerfassung, automatische Budgetberechnung, manuelles Überschreiben ohne Hinweise
   (Dok. 02 Flow E, Dok. 04.2).
 - **Fertig, wenn:** Budget erscheint und ist überschreibbar; Komponententests grün.
 
 ### AP5 – Lebensmittel & Erfassung
+
 - Basisliste, eigene Lebensmittel (anlegen/bearbeiten/löschen), Favoriten, zuletzt verwendet,
   Portionsauswahl inkl. Umrechnungsregel (Dok. 02 Flow A/B, Dok. 05.3).
 - **Fertig, wenn:** Eintrag in ≤ 3 Interaktionen möglich; Portionstests grün (Dok. 08.8).
 
 ### AP6 – Ernährungstagebuch & Dashboard
+
 - Einträge je Datum/Mahlzeit, bearbeiten/löschen, frühere Tage, Tages-/Wochenstatus,
   Dashboard-Hierarchie und „verbleibend"-Definition (Dok. 02).
 - **Fertig, wenn:** Tages-/Wochenwerte korrekt aus Rohdaten abgeleitet; Komponententests grün.
 
 ### AP7 – Aktivitäten
+
 - Erfassung (Aktivität, Dauer, Intensität), Anzeige der Aktivitätspunkte ohne Budgetverrechnung
   (Dok. 02 Flow F, Dok. 04.4).
 - **Fertig, wenn:** Aktivitätstests grün (Dok. 08.7).
 
 ### AP8 – Gewicht
+
 - Erfassung, Verlaufsdiagramm, Veränderung seit erstem/letztem Eintrag (Dok. 02 Flow G).
 - **Fertig, wenn:** Diagramm und Veränderungswerte korrekt; Komponententest grün.
 
 ### AP9 – Offline & PWA
+
 - Service Worker, Manifest, Installierbarkeit, Offline-Start (Dok. 06).
 - **Fertig, wenn:** E2E-Offlinetest (Dok. 08.11 E4) grün.
 
 ### AP10 – Export/Import
+
 - Vollständiger JSON-Export und validierender Import mit Bestätigung (Dok. 03.10, Dok. 06.5).
 - **Fertig, wenn:** E2E-Round-Trip (Dok. 08.11 E5) grün.
 
 ### AP11 – Barrierefreiheit & Feinschliff
+
 - Kontraste, Beschriftungen, Fokus/Tastatur, kein Farbzwang (Dok. 02.3).
 - E2E-Hauptflows (Dok. 08.11), Fehlermeldungen, leere Zustände.
 - **Fertig, wenn:** alle E2E-Flows grün, A11y-Grundanforderungen erfüllt.
 
 ### AP12 – Schnellerfassung & Lebensmitteldaten (nach Nutzerfeedback)
+
 - Basisliste auf 201 BLS‑4.0-Einträge erweitert (gegarte Formen, Hackfleisch, Pflanzendrinks,
   Brot, Saucen, Gerichte) inkl. Generator-Skript, alltagstauglicher Anzeigenamen und
   Seed-Version 4 (Dok. 05.2.1/05.2.2).

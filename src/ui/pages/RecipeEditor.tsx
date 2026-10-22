@@ -130,7 +130,12 @@ export function RecipeEditor({
         />
         <p>
           Ohne Endgewicht zählt die Summe der Zutaten. Wiege den fertigen Topf,
-          wenn beim Kochen viel Wasser verdampft oder aufgenommen wird.
+          wenn beim Kochen viel Wasser verdampft oder aufgenommen wird. Für
+          Hackfleischsoße z. B. die Hackfleischmenge der ganzen Packung sowie
+          die übrigen Zutaten erfassen und die Anzahl gleich großer Portionen
+          angeben. Anschließend im Tagebuch „Portion“ wählen: Bei 500 g
+          Hackfleisch und 4 Portionen entfallen 125 g auf jede Portion, ohne das
+          Fleisch aus der Soße herauswiegen zu müssen.
         </p>
         <fieldset>
           <legend>Zutaten</legend>
