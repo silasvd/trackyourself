@@ -21,7 +21,12 @@ export function recipeNutrients(
   foods: readonly Food[],
 ): Nutrients {
   const weight = recipeWeight(recipe);
-  const result: Nutrients = { kcal: 0, satFat: 0, sugar: 0, protein: 0 };
+  const result: Record<keyof Nutrients, number> = {
+    kcal: 0,
+    satFat: 0,
+    sugar: 0,
+    protein: 0,
+  };
   for (const ingredient of recipe.ingredients) {
     const food = foods.find((value) => value.id === ingredient.foodId);
     if (!food) throw new Error('Rezept enthält ein unbekanntes Lebensmittel.');
@@ -29,15 +34,12 @@ export function recipeNutrients(
     for (const key of keys) {
       const value = food.per100[key];
       if (value === null) continue;
-      result[key] = (result[key] ?? 0) + (value * ingredient.grams) / 100;
+      result[key] += (value * ingredient.grams) / 100;
     }
   }
   for (const key of keys) {
     const value = result[key];
-    result[key] =
-      value === null
-        ? null
-        : Math.round(((value * 100) / weight) * 1000) / 1000;
+    result[key] = Math.round(((value * 100) / weight) * 1000) / 1000;
   }
   return result;
 }
