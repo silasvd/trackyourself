@@ -13,7 +13,8 @@ export function recipeWeight(recipe: Recipe): number {
 /**
  * Points-relevant nutrients per 100 g of the finished recipe. Zero-point
  * ingredients add weight but no nutrients, matching their 0 points as single
- * entries. A nutrient is unknown when any counted ingredient lacks it.
+ * entries. Ingredients lacking a nutrient contribute 0 to it; the recipe is then
+ * marked incomplete (see recipeIsIncomplete) while known values are kept.
  */
 export function recipeNutrients(
   recipe: Recipe,
@@ -27,11 +28,8 @@ export function recipeNutrients(
     if (food.countsAsZero) continue;
     for (const key of keys) {
       const value = food.per100[key];
-      const current = result[key];
-      result[key] =
-        value === null || current === null
-          ? null
-          : current + (value * ingredient.grams) / 100;
+      if (value === null) continue;
+      result[key] = (result[key] ?? 0) + (value * ingredient.grams) / 100;
     }
   }
   for (const key of keys) {
@@ -42,6 +40,20 @@ export function recipeNutrients(
         : Math.round(((value * 100) / weight) * 1000) / 1000;
   }
   return result;
+}
+
+export function recipeIsIncomplete(
+  recipe: Recipe,
+  foods: readonly Food[],
+): boolean {
+  return recipe.ingredients.some((ingredient) => {
+    const food = foods.find((value) => value.id === ingredient.foodId);
+    return (
+      !!food &&
+      !food.countsAsZero &&
+      nutrientQuality(food.per100) === 'incomplete'
+    );
+  });
 }
 
 export function recipePortions(
@@ -84,7 +96,9 @@ export function recipeFood(
       per100,
       basis: 'g',
       countsAsZero: false,
-      dataQuality: nutrientQuality(per100),
+      dataQuality: recipeIsIncomplete(recipe, foods)
+        ? 'incomplete'
+        : 'complete',
       defaultPortionId,
       recipe,
     },

@@ -381,7 +381,7 @@ describe('strict structural and semantic validation', () => {
     ],
     [
       (d) => {
-        d.foods[0].dataQuality = 'incomplete';
+        d.foods[0].per100.satFat = null;
       },
       'false quality',
     ],

@@ -23,9 +23,14 @@ const snapshot = z
     countsAsZero: z.boolean(),
     dataQuality: z.enum(['complete', 'incomplete']),
   })
-  .refine((value) => value.dataQuality === nutrientQuality(value.per100), {
-    message: 'Nährwertqualität stimmt nicht mit den Daten überein.',
-  });
+  .refine(
+    (value) =>
+      value.dataQuality === 'incomplete' ||
+      nutrientQuality(value.per100) === 'complete',
+    {
+      message: 'Nährwertqualität stimmt nicht mit den Daten überein.',
+    },
+  );
 
 export const profileSchema = z.strictObject({
   id: z.literal('singleton'),
