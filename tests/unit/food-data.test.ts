@@ -239,6 +239,26 @@ describe('R1–R7 recipes', () => {
     expect(recipeFood(food('r', 'R'), withSauce, foods).food.dataQuality).toBe(
       'incomplete',
     );
+    const explicitlyIncomplete = {
+      ...sauce,
+      per100: { kcal: 50, satFat: 2, sugar: 5, protein: 1 },
+    };
+    expect(
+      recipeFood(
+        food('r', 'R'),
+        {
+          ...recipe,
+          ingredients: [
+            ...recipe.ingredients,
+            { foodId: explicitlyIncomplete.id, grams: 100 },
+          ],
+        },
+        [
+          ...foods.filter((value) => value.id !== sauce.id),
+          explicitlyIncomplete,
+        ],
+      ).food.dataQuality,
+    ).toBe('incomplete');
     expect(recipeFood(food('r', 'R'), recipe, foods).food.dataQuality).toBe(
       'complete',
     );

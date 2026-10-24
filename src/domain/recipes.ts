@@ -53,7 +53,8 @@ export function recipeIsIncomplete(
     return (
       !!food &&
       !food.countsAsZero &&
-      nutrientQuality(food.per100) === 'incomplete'
+      (food.dataQuality === 'incomplete' ||
+        nutrientQuality(food.per100) === 'incomplete')
     );
   });
 }
@@ -124,6 +125,11 @@ export function refreshRecipes(
     return rebuilt.food;
   });
   return { foods: nextFoods, portions: nextPortions };
+}
+
+export function refreshDatasetRecipes(data: Dataset): Dataset {
+  const { foods, portions } = refreshRecipes(data.foods, data.portions);
+  return { ...data, foods, portions };
 }
 
 export function recipesUsing(foodId: string, foods: readonly Food[]): Food[] {
