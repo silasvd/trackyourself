@@ -17,5 +17,11 @@ export function foodPoints(food: FoodSnapshot, amount: number) {
       (sugar ?? 0) * 0.12 -
       (protein ?? 0) * 0.098) *
     (amount / 100);
-  return { points: ceilPoints(raw), status: nutrientQuality(food.per100) };
+  return {
+    points: ceilPoints(raw),
+    status:
+      food.dataQuality === 'incomplete'
+        ? 'incomplete'
+        : nutrientQuality(food.per100),
+  };
 }

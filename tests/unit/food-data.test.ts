@@ -229,21 +229,39 @@ describe('R1–R7 recipes', () => {
       125,
     );
   });
-  it('R3 a missing nutrient of a counted ingredient stays unknown', () => {
+  it('R3 a missing nutrient of an ingredient keeps known contributions and marks the recipe incomplete', () => {
     const withSauce = {
       ...recipe,
       ingredients: [...recipe.ingredients, { foodId: 'sauce', grams: 100 }],
     };
-    expect(recipeNutrients(withSauce, foods).satFat).toBeNull();
+    expect(recipeNutrients(withSauce, foods).satFat).toBeCloseTo(2.727, 3);
+    expect(recipeNutrients(withSauce, foods).kcal).toBeCloseTo(95.455, 2);
+    expect(recipeFood(food('r', 'R'), withSauce, foods).food.dataQuality).toBe(
+      'incomplete',
+    );
+    const explicitlyIncomplete = {
+      ...sauce,
+      per100: { kcal: 50, satFat: 2, sugar: 5, protein: 1 },
+    };
     expect(
-      recipeNutrients(
+      recipeFood(
+        food('r', 'R'),
         {
-          ...withSauce,
-          ingredients: [...withSauce.ingredients, { foodId: 'beef', grams: 1 }],
+          ...recipe,
+          ingredients: [
+            ...recipe.ingredients,
+            { foodId: explicitlyIncomplete.id, grams: 100 },
+          ],
         },
-        foods,
-      ).satFat,
-    ).toBeNull();
+        [
+          ...foods.filter((value) => value.id !== sauce.id),
+          explicitlyIncomplete,
+        ],
+      ).food.dataQuality,
+    ).toBe('incomplete');
+    expect(recipeFood(food('r', 'R'), recipe, foods).food.dataQuality).toBe(
+      'complete',
+    );
     expect(() =>
       recipeNutrients(
         { ...recipe, ingredients: [{ foodId: 'gone', grams: 1 }] },

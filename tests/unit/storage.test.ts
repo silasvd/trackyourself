@@ -131,6 +131,55 @@ describe('D1–D7 persistence', () => {
     await restoreBackup(repository, json);
     expect(await repository.read()).toEqual(data);
   });
+  it('recalculates stored recipes on load without changing diary snapshots', async () => {
+    const data = withRecipe(dataset());
+    const recipe = data.foods.find((value) => value.id === 'recipe')!;
+    const snapshot = snapshotOf(recipe);
+    data.diaryEntries = [
+      diary({
+        foodId: recipe.id,
+        foodSnapshot: snapshot,
+        points: foodPoints(snapshot, 50).points,
+      }),
+    ];
+    const ingredient = data.foods.find((value) => value.id === oats.id)!;
+    ingredient.per100.kcal = (ingredient.per100.kcal ?? 0) + 100;
+    await repository.replace(data);
+
+    const loaded = await repository.read();
+    const recalculated = loaded.foods.find((value) => value.id === recipe.id)!;
+    expect(recalculated.per100.kcal).not.toBe(recipe.per100.kcal);
+    expect(loaded.diaryEntries[0].foodSnapshot).toEqual(snapshot);
+    expect(loaded.diaryEntries[0].points).toBe(foodPoints(snapshot, 50).points);
+
+    repository.close();
+    repository = new Repository(await openDatabase(name));
+    expect(await repository.read()).toEqual(loaded);
+  });
+  it('recalculates recipes restored from backups and preserves diary snapshots', async () => {
+    const data = withRecipe(dataset());
+    const recipe = data.foods.find((value) => value.id === 'recipe')!;
+    const snapshot = snapshotOf(recipe);
+    data.diaryEntries = [
+      diary({
+        foodId: recipe.id,
+        foodSnapshot: snapshot,
+        points: foodPoints(snapshot, 50).points,
+      }),
+    ];
+    const ingredient = data.foods.find((value) => value.id === oats.id)!;
+    ingredient.per100.kcal = (ingredient.per100.kcal ?? 0) + 100;
+
+    await restoreBackup(repository, serializeBackup(data, new Date(stamp)));
+    const restored = await repository.read();
+    expect(
+      restored.foods.find((value) => value.id === recipe.id)!.per100.kcal,
+    ).not.toBe(recipe.per100.kcal);
+    expect(restored.diaryEntries[0].foodSnapshot).toEqual(snapshot);
+    expect(restored.diaryEntries[0].points).toBe(
+      foodPoints(snapshot, 50).points,
+    );
+  });
   it('invalid import never modifies existing data', async () => {
     const data = dataset();
     await repository.replace(data);
@@ -381,7 +430,7 @@ describe('strict structural and semantic validation', () => {
     ],
     [
       (d) => {
-        d.foods[0].dataQuality = 'incomplete';
+        d.foods[0].per100.satFat = null;
       },
       'false quality',
     ],

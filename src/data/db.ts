@@ -15,6 +15,7 @@ import type {
   Profile,
   WeightEntry,
 } from '../domain/types';
+import { refreshDatasetRecipes } from '../domain/recipes';
 import { validateDataset } from './validation';
 import { baseBlsNames, baseSeed, seedVersion } from './seed';
 
@@ -154,10 +155,37 @@ export class Repository {
   constructor(private readonly db: IDBPDatabase<TrackingDB>) {}
 
   async read(): Promise<Dataset> {
-    const tx = this.db.transaction(stores, 'readonly');
-    const data = await readTransaction(tx);
-    await tx.done;
-    return data;
+    const tx = this.db.transaction(stores, 'readwrite');
+    try {
+      const data = await readTransaction(tx);
+      const refreshed = validateDataset(refreshDatasetRecipes(data));
+      if (
+        JSON.stringify(data.foods) !== JSON.stringify(refreshed.foods) ||
+        JSON.stringify(data.portions) !== JSON.stringify(refreshed.portions)
+      ) {
+        const recipeIds = new Set(
+          data.foods.filter((food) => food.recipe).map((food) => food.id),
+        );
+        for (const food of refreshed.foods) {
+          if (food.recipe) await tx.objectStore('foods').put(food);
+        }
+        for (const portion of data.portions) {
+          if (recipeIds.has(portion.foodId)) {
+            await tx.objectStore('portions').delete(portion.id);
+          }
+        }
+        for (const portion of refreshed.portions) {
+          if (recipeIds.has(portion.foodId)) {
+            await tx.objectStore('portions').put(portion);
+          }
+        }
+      }
+      await tx.done;
+      return refreshed;
+    } catch (error) {
+      await rollback(tx);
+      throw error;
+    }
   }
 
   async replace(input: Dataset, expected?: Dataset): Promise<void> {

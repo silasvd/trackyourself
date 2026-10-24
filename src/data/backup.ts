@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { refreshDatasetRecipes } from '../domain/recipes';
 import type { Dataset } from '../domain/types';
 import { validateDataset } from './validation';
 import type { Repository } from './db';
@@ -37,7 +38,7 @@ export function parseBackup(text: string): Dataset {
   delete object.schemaVersion;
   delete object.exportedAt;
   if (parsed.data.schemaVersion === 2) migrateV2(object);
-  return validateDataset(object);
+  return validateDataset(refreshDatasetRecipes(validateDataset(object)));
 }
 
 // Version 2 backups predate meal templates; everything else is unchanged.

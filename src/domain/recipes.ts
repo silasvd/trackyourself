@@ -13,35 +13,50 @@ export function recipeWeight(recipe: Recipe): number {
 /**
  * Points-relevant nutrients per 100 g of the finished recipe. Zero-point
  * ingredients add weight but no nutrients, matching their 0 points as single
- * entries. A nutrient is unknown when any counted ingredient lacks it.
+ * entries. Ingredients lacking a nutrient contribute 0 to it; the recipe is then
+ * marked incomplete (see recipeIsIncomplete) while known values are kept.
  */
 export function recipeNutrients(
   recipe: Recipe,
   foods: readonly Food[],
 ): Nutrients {
   const weight = recipeWeight(recipe);
-  const result: Nutrients = { kcal: 0, satFat: 0, sugar: 0, protein: 0 };
+  const result: Record<keyof Nutrients, number> = {
+    kcal: 0,
+    satFat: 0,
+    sugar: 0,
+    protein: 0,
+  };
   for (const ingredient of recipe.ingredients) {
     const food = foods.find((value) => value.id === ingredient.foodId);
     if (!food) throw new Error('Rezept enthält ein unbekanntes Lebensmittel.');
     if (food.countsAsZero) continue;
     for (const key of keys) {
       const value = food.per100[key];
-      const current = result[key];
-      result[key] =
-        value === null || current === null
-          ? null
-          : current + (value * ingredient.grams) / 100;
+      if (value === null) continue;
+      result[key] += (value * ingredient.grams) / 100;
     }
   }
   for (const key of keys) {
     const value = result[key];
-    result[key] =
-      value === null
-        ? null
-        : Math.round(((value * 100) / weight) * 1000) / 1000;
+    result[key] = Math.round(((value * 100) / weight) * 1000) / 1000;
   }
   return result;
+}
+
+export function recipeIsIncomplete(
+  recipe: Recipe,
+  foods: readonly Food[],
+): boolean {
+  return recipe.ingredients.some((ingredient) => {
+    const food = foods.find((value) => value.id === ingredient.foodId);
+    return (
+      !!food &&
+      !food.countsAsZero &&
+      (food.dataQuality === 'incomplete' ||
+        nutrientQuality(food.per100) === 'incomplete')
+    );
+  });
 }
 
 export function recipePortions(
@@ -84,7 +99,9 @@ export function recipeFood(
       per100,
       basis: 'g',
       countsAsZero: false,
-      dataQuality: nutrientQuality(per100),
+      dataQuality: recipeIsIncomplete(recipe, foods)
+        ? 'incomplete'
+        : 'complete',
       defaultPortionId,
       recipe,
     },
@@ -108,6 +125,11 @@ export function refreshRecipes(
     return rebuilt.food;
   });
   return { foods: nextFoods, portions: nextPortions };
+}
+
+export function refreshDatasetRecipes(data: Dataset): Dataset {
+  const { foods, portions } = refreshRecipes(data.foods, data.portions);
+  return { ...data, foods, portions };
 }
 
 export function recipesUsing(foodId: string, foods: readonly Food[]): Food[] {
